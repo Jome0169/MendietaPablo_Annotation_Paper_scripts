@@ -1,0 +1,245 @@
+import pandas as pd
+import glob
+import os
+from itertools import product
+
+
+
+##### load config and sample sheets #####
+configfile: "lncRNA_calculate_TPM_config.yaml"
+
+##############################################
+##############################################
+#######Config file looks like this:######### 
+#maize_v5_annotation: 00.data/gtf_file/Zea_mays.AGPv4.38.chr.gtf
+#novel_key_file: 01.data/bed_files/novel_key_file.txt
+#PM_lncRNAs_gtf: 00.data/gtf_file/novel_all_fastas_combined.gtf
+#intergenic_lncRNA_bed: 00.data/bed_files/Zea_mays.AGPv4.38.chr.lncRNA.no_gene_overlap.bed
+#novel_lncRNA_bed: 00.data/bed_files/novel_lncRNA_identified.bed
+#gene_bed: 00.data/bed_files/Zea_mays.AGPv4.38.chr.genes.bed
+#STARR_seq_regions: 00.data/bed_files/STARRpeaks.eFDR5.bed
+#HI_c_loops:
+#    Maize_Loops_K27:
+#    Maize_Loops_K4:
+#samples:
+#    2-4_mm_from_tip_of_ear_primordium:
+#    6-8_mm_from_tip_of_ear_primordium:
+#    Cortex:
+#    embryos_20DAP:
+#    EMBRYOS:
+#    endosperm_crown:
+#    EZ:
+#    Germinating_Kernels:
+#    GROWTH_ZONE:
+#    Internode_6-7:
+#    Internode_7-8:
+#    mature_female_spikelets:
+#    MATURE_LEAF_TISSUE_leaf:
+#    Mature_pollen:
+#    MZ:
+#    pericarp_aleurone:
+#    PR:
+#    RNA_B73_ear:
+#    RNA_B73_leaf:
+#    RNA_B73_root:
+#    silks:
+#    SR:
+#    STOMATAL_DIVISION_ZONE:
+#    SYMMETRICAL_DIVISION_ZONE:
+#    Vegetative_Meristem_Surrounding_Tissue:
+##############################################
+##############################################
+
+
+
+
+maize_v4_annotation = config['maize_v4_annotation']
+samples = config['samples']
+
+rule all:
+    input:
+        "01.reformatted_GTF_file/PM_combined.gtf",
+        expand("02.Maize_v4_annotation_TPM_per_sample/{sample}_tpm.txt", sample = samples),
+        "03.Names/cloesest_lncRNA_gene.bed",
+        "00.data/bed_files/all_known_lncRNAs.bed",
+        "03.Names/lncRNAs_all_names.txt",
+        "03.Names/known_gene_names.txt",
+        "03.Names/lncRNAs_overlapping_enhancer_names.txt",
+        #HiC Loops
+        expand("04.HiC_looping/lncRNA_{loop_type}.bed", loop_type =
+                config["HI_c_loops"]),
+        expand("04.HiC_looping/genes_{loop_type}.bed", loop_type =
+            config["HI_c_loops"])
+
+
+#Take the original generated GTf file from the lncRNA ID pipeline, and 
+#filter it down to the lncRNAs that actually have passed the lncRNA definition
+#set by my processesGgg
+rule filter_novel_gtf_file:
+    input:
+        novel_key_file = config["novel_key_file"],
+        novel_gtf_file = config["PM_lncRNAs_gtf"]
+    output:
+        "00.data/gtf_file/novel_surviving_lncRNA.gtf"
+    shell:"""
+
+    awk '{{print $1}}' {input.novel_key_file} > passing_list.txt
+    
+    grep -f passing_list.txt {input.novel_gtf_file} > {output}
+    
+    rm passing_list.txt
+    """
+
+rule transform_novel_gtf_file:
+    input:
+        novel_key_file = config["novel_key_file"],
+        novel_gtf_file = "00.data/gtf_file/novel_surviving_lncRNA.gtf"
+    params:
+        intermed = "00.data/gtf_file/novel_surviving_lncRNA.gtf.2"
+    output:
+        "00.data/gtf_file/novel_renamed_lncRNA.gtf"
+    shell:"""
+
+    cp {input.novel_gtf_file} {params.intermed}
+
+    while read original new ; do sed -i "s/${{original}}/${{new}}/g" {params.intermed} ; done < {input.novel_key_file} 
+
+    mv {params.intermed} {output}
+    """
+
+
+#Make the GTF pretty with correct transcript ID and everything
+rule reformat_GTF_file:
+    input:
+        "00.data/gtf_file/novel_renamed_lncRNA.gtf"
+    output:
+        "01.reformatted_GTF_file/novel_reformatted.gtf"
+    shell:"""
+
+    sed 's/\"\"//g' {input} > intermed.gtf
+
+    python scripts/reformat_gtf_file.py -gtf intermed.gtf -o {output}
+    """
+
+
+
+
+rule cat_gtf_files:
+    input:
+        maize_all_gtf_original = config['maize_v4_annotation'],
+        novel_gtf = "01.reformatted_GTF_file/novel_reformatted.gtf"
+    output:
+        combined_gtf = "01.reformatted_GTF_file/PM_combined.gtf"
+    shell:"""
+
+    cat {input.maize_all_gtf_original} {input.novel_gtf} | sed 's/\"//g' | sed 's/\"\"//g' | bedtools sort -i - > {output}
+    """
+
+
+#These are the TPM annotations for the original maizev4 annotation with the
+#original genes and ~2000 lncRNAs. This will be a useful thing to have and be
+#kept here
+
+rule calculate_counts:
+    input:
+        gtf = "01.reformatted_GTF_file/PM_combined.gtf",
+        bam = "00.data/RNA_seq_data/{sample}_Aligned.sortedByCoord.out.bam"
+    output:
+        "02.Maize_v4_annotation_TPM_per_sample/{sample}_counts.txt"
+    shell:""" 
+        ml HTSeq
+
+        htseq-count --stranded=reverse -f bam {input.bam} {input.gtf} > {output}
+    """
+
+
+rule calculate_TPM_v4_annotation:
+    input:
+        gtf = "01.reformatted_GTF_file/PM_combined.gtf",
+        bam_counts = "02.Maize_v4_annotation_TPM_per_sample/{sample}_counts.txt"
+    output:
+        "02.Maize_v4_annotation_TPM_per_sample/{sample}_tpm.txt"
+    shell:""" 
+        python scripts/calculate_TPM_HT_seq_counts.py -gtf {input.gtf} -bam {input.bam_counts} -val TPM -strand z -o {output}
+    """
+
+rule generate_lcnRNA_final_bed:
+    input:
+        novel_lncRNA = config['novel_lncRNA_bed'],
+        known_lncRNA = config['intergenic_lncRNA_bed']
+    params:
+        "00.data/bed_files/Zea_mays.AGPv4.38.chr.lncRNA.no_gene_reformatted.bed"
+    output:
+        combined_lncRNAs = "00.data/bed_files/all_known_lncRNAs.bed",
+        names = "03.Names/lncRNAs_all_names.txt"
+    shell:"""
+
+    awk '{{print $1,$2,$3,$4,$5,$6}}' OFS='\t' {input.known_lncRNA} > {params}
+
+    cat {input.novel_lncRNA} {params} | bedtools sort -i - > {output.combined_lncRNAs}
+
+    awk '{{ print $4}}' {output.combined_lncRNAs} > {output.names}
+    """
+
+rule lncRNA_overlapping_enhancer:
+    input:
+        combined_lncRNAs = "00.data/bed_files/all_known_lncRNAs.bed",
+        STARR_regions = config['STARR_seq_regions']
+    output:
+        lncRNA_overlapping_enhancers = "03.Names/lncRNA_STAR_enhancers.bed",
+        lncRNA_overlapping_enhancers_names = "03.Names/lncRNAs_overlapping_enhancer_names.txt",
+        lncRNA_NOT_overlapping_enhancers = "03.Names/lncRNA_non_star_enhancers.bed",
+        lncRNA_NOT_overlapping_enhancers_names = "03.Names/lncRNA_non_star_enhancer_names.txt"
+    shell:"""
+    bedtools intersect -a {input.combined_lncRNAs} -b {input.STARR_regions} > {output.lncRNA_overlapping_enhancers}
+
+    awk '{{ print $4}}' {output.lncRNA_overlapping_enhancers} > {output.lncRNA_overlapping_enhancers_names}
+
+    bedtools intersect -a {input.combined_lncRNAs} -b {input.STARR_regions} -v > {output.lncRNA_NOT_overlapping_enhancers}
+
+    awk '{{ print $4}}' {output.lncRNA_NOT_overlapping_enhancers} > {output.lncRNA_NOT_overlapping_enhancers_names}
+    """
+
+# ID THE CLOSEST GENE AND DISECT THE TOPOLOGY
+
+
+rule lncRNA_overlapping_hi_c_loops:
+    input:
+        combined_lncRNAs = "00.data/bed_files/all_known_lncRNAs.bed",
+        loop_type = "00.data/bed_files/{loop_type}.bed"
+    output:
+        "04.HiC_looping/lncRNA_{loop_type}.bed"
+    shell:"""
+    bedtools intersect -a {input.combined_lncRNAs} -b {input.loop_type} -wao > {output}
+    """
+
+rule gene_overlapping_hi_c_loops:
+    input:
+        known_genes = config['gene_bed'],
+        loop_type = "00.data/bed_files/{loop_type}.bed"
+    output:
+        "04.HiC_looping/genes_{loop_type}.bed"
+    shell:"""
+    bedtools intersect -a {input.known_genes} -b {input.loop_type} -wao > {output}
+    """
+
+#Going to keep this because I imagine not all lncRNAs are actually looping. If
+#this is the case this isn't then a bad Null
+rule closest_lncRNA_to_gene:
+    input:
+        known_genes = config['gene_bed'],
+        combined_lncRNAs = "00.data/bed_files/all_known_lncRNAs.bed",
+    output:
+        "03.Names/cloesest_lncRNA_gene.bed"
+    shell:"""
+    bedtools closest -a {input.combined_lncRNAs} -b {input.known_genes} -d -t first > {output}
+    """
+
+rule gene_names:
+    input:
+        config['gene_bed']
+    output:
+        "03.Names/known_gene_names.txt"
+    shell:"""
+    awk '{{ print $4}}' {input} > {output}
+    """

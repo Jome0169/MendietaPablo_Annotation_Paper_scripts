@@ -1,0 +1,13 @@
+regions:
+    extension: regions/extension.bed
+    gene_merger: regions/gene_merger.bed
+    good_gene: regions/good_gene.bed
+    novel: regions/novel.bed
+file_to_intersect:
+    leaf_rep1_H3K36me3: leaf_rep1_H3K36me3_unique_bowtie2_algn.bam
+    leaf_rep1_H3K4me1: leaf_rep1_H3K4me1_unique_bowtie2_algn.bam
+    leaf_rep1_H3K4me3: leaf_rep1_H3K4me3_unique_bowtie2_algn.bam
+    leaf_rep1_H3K56ac: leaf_rep1_H3K56ac_unique_bowtie2_algn.bam
+    leaf_rep1_input: leaf_rep1_input_unique_bowtie2_algn.bam
+RNA_file:
+    RNA_B73_leaf: RNA_B73_leaf_Aligned.sortedByCoord.out.bam

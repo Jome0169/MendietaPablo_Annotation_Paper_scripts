@@ -1,0 +1,36 @@
+maize_v4_annotation: 00.data/gtf_file/Zea_mays.AGPv4.38.chr.gtf
+novel_key_file: 00.data/bed_files/novel_key_file.txt
+PM_lncRNAs_gtf: 00.data/gtf_file/novel_all_fastas_combined.gtf
+intergenic_lncRNA_bed: 00.data/bed_files/Zea_mays.AGPv4.38.chr.lncRNA.no_gene_overlap.bed
+novel_lncRNA_bed: 00.data/bed_files/novel_lncRNA_identified.bed
+gene_bed: 00.data/bed_files/Zea_mays.AGPv4.38.chr.genes.bed
+STARR_seq_regions: 00.data/bed_files/STARRpeaks.eFDR5.bed
+HI_c_loops:
+    Maize_Loops_K27:
+    Maize_Loops_K4:
+samples:
+    2-4_mm_from_tip_of_ear_primordium:
+    6-8_mm_from_tip_of_ear_primordium:
+    Cortex:
+    embryos_20DAP:
+    EMBRYOS:
+    endosperm_crown:
+    EZ:
+    Germinating_Kernels:
+    GROWTH_ZONE:
+    Internode_6-7:
+    Internode_7-8:
+    mature_female_spikelets:
+    MATURE_LEAF_TISSUE_leaf:
+    Mature_pollen:
+    MZ:
+    pericarp_aleurone:
+    PR:
+    RNA_B73_ear:
+    RNA_B73_leaf:
+    RNA_B73_root:
+    silks:
+    SR:
+    STOMATAL_DIVISION_ZONE:
+    SYMMETRICAL_DIVISION_ZONE:
+    Vegetative_Meristem_Surrounding_Tissue:

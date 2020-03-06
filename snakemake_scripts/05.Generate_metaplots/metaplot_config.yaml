@@ -1,0 +1,17 @@
+samples: metaplot_samples.txt
+reference: 00.data/reference/Zea_mays.AGPv4.dna.toplevel.unwrapped.nocontigs.reorderd.fa
+fai_file: 00.data/reference/Zea_mays.AGPv4.dna.toplevel.unwrapped.nocontigs.reorderd.fa.fai
+bed_overlap_H3K36me3:
+    root_genes: 00.data/bed_files/genes_root_H3K36me3_H3K4me1_intersection.bed
+    root_lncRNAs: 00.data/bed_files/lncRNAs_root_H3K36me3_H3K4me1_intersection.bed
+    root_mystery: 00.data/bed_files/root_mystery.bed
+    root_RNA_only: 00.data/bed_files/RNA_B73_root_novel_transcripts.RNA_ONLY.bed
+    leaf_genes: 00.data/bed_files/genes_leaf_H3K36me3_H3K4me1_intersection.bed 
+    leaf_lncRNAs: 00.data/bed_files/lncRNAs_leaf_H3K36me3_H3K4me1_intersection.bed
+    leaf_mystery: 00.data/bed_files/leaf_mystery.bed
+    leaf_RNA_only: 00.data/bed_files/RNA_B73_leaf_novel_transcripts.RNA_ONLY.bed
+    ear_genes: 00.data/bed_files/genes_ear_H3K36me3_H3K4me1_intersection.bed 
+    ear_lncRNAs: 00.data/bed_files/lncRNAs_ear_H3K36me3_H3K4me1_intersection.bed
+    ear_mystery: 00.data/bed_files/ear_mystery.bed
+    ear_RNA_only: 00.data/bed_files/RNA_B73_ear_novel_transcripts.RNA_ONLY.bed
+

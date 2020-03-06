@@ -1,0 +1,11 @@
+annotated_sequences: 00.data/01.bed_files/Zea_mays.AGPv4.38.chr.ALL.sorted.bed
+reference: 00.data/ref/Zea_mays.AGPv4.38.chr.bed
+bed_files:
+    hyper_large_genes: 00.data/bed_files/hyper_large_genes.bed
+    major_extension_genes: 00.data/bed_files/major_extension_genes.bed
+    merged_genes: 00.data/bed_files/merged_genes.bed
+    minor_extension_genes: 00.data/bed_files/minor_extension_genes.bed
+bam_files:
+    RNA_B73_ear: 00.data/rna_seq/RNA_B73_ear_Aligned.sortedByCoord.out.bam
+    RNA_B73_leaf: 00.data/rna_seq/RNA_B73_leaf_Aligned.sortedByCoord.out.bam
+    RNA_B73_root: 00.data/rna_seq/RNA_B73_root_Aligned.sortedByCoord.out.bam

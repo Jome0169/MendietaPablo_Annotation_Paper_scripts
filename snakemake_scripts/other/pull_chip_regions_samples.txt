@@ -1,0 +1,6 @@
+leaf_rep1_H3K36me3_unique_bowtie2_algn.bam
+leaf_rep1_H3K4me1_unique_bowtie2_algn.bam
+leaf_rep1_H3K4me3_unique_bowtie2_algn.bam
+leaf_rep1_H3K56ac_unique_bowtie2_algn.bam
+leaf_rep1_input_unique_bowtie2_algn.bam
+RNA_data_B73_leaf.merged.bam

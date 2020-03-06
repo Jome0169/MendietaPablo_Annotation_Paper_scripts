@@ -1,0 +1,71 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob
+import os
+
+##### load config and sample sheets #####
+#configfile: "novel_lncRNA_assemble.config.yaml"
+configfile: "assemble_RNA_alignments.yaml"
+
+
+rule all:
+    input:
+        #expand("01.string_tie_assembly/{region}_tissue_assembly.gtf", region = config["RNA_seq_data_sets"])
+        #expand("02.cuffcompare/{region}_vs_reference.out", region = config["RNA_seq_data_sets"]),
+        expand("03.RNA_novel_transcripts/{region}_novel_transcripts.RNA_ONLY.bed", region = config["RNA_seq_data_sets"])
+
+
+
+def input_BAM_files(wildcards):
+    print((wildcards.region + "_Aligned.sortedByCoord.out.bam"))
+    z = glob.glob(os.path.join("00.data/rna_seq/", (wildcards.region + "_Aligned.sortedByCoord.out.bam")))
+    return z
+
+rule run_string_tie:
+    input:
+        current_annotation = config['reference_annotation'],
+        bam_file = input_BAM_files
+    output:
+        "01.string_tie_assembly/{region}_tissue_assembly.gtf"
+    threads:
+        10
+    shell:"""
+    stringtie {input.bam_file} --rf -l {wildcards.region} -G {input.current_annotation} -g 20 -f 0.01 -a 10 -j 1 -m 200 -c 5 -o {output}
+    """
+
+
+rule cuff_compare:
+    input:
+        novel_annotation = "01.string_tie_assembly/{region}_tissue_assembly.gtf",
+        current_annotation = config['reference_annotation']
+    params:
+        cuff_class_compare = "01.string_tie_assembly/{region}_vs_reference"
+    output:
+        class_code = "01.string_tie_assembly/{region}_vs_reference.{region}_tissue_assembly.gtf.tmap"
+    shell:"""
+    cuffcompare {input.novel_annotation} {input.current_annotation} -o {params.cuff_class_compare}
+    """
+
+rule pull_novel_transcripts:
+    input:
+        full_assembly = "01.string_tie_assembly/{region}_tissue_assembly.gtf",
+        class_code = "01.string_tie_assembly/{region}_vs_reference.{region}_tissue_assembly.gtf.tmap"
+    output:
+        novel_transcript_list = "03.RNA_novel_transcripts/{region}_novel_transcripts_list.txt",
+        novel_transcript_gtf = "03.RNA_novel_transcripts/{region}_novel_transcripts.gtf"
+    shell:"""
+    awk '$3 == "u" {{print $4}}' {input.class_code} > {output.novel_transcript_list}
+    python scripts/ID_novel_transcripts.py {output.novel_transcript_list} {input.full_assembly} > {output.novel_transcript_gtf}
+    """
+
+rule generate_novel_bed_file:
+    input:
+        novel_transcript_gtf = "03.RNA_novel_transcripts/{region}_novel_transcripts.gtf"
+    output:
+        novel_transcript_gtf = "03.RNA_novel_transcripts/{region}_novel_transcripts.RNA_ONLY.bed"
+    shell:"""
+    gtf2bed < {input} | awk '$8 == "transcript" {{print $0}}' > {output}
+    """ 
+
+
+

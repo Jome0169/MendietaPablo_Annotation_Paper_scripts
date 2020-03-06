@@ -1,0 +1,3 @@
+[0m[38;5;51m00.data/rna_seq/RNA_B73_ear_Aligned.sortedByCoord.out.bam[0m
+[38;5;51m00.data/rna_seq/RNA_B73_leaf_Aligned.sortedByCoord.out.bam[0m
+[38;5;51m00.data/rna_seq/RNA_B73_root_Aligned.sortedByCoord.out.bam[0m

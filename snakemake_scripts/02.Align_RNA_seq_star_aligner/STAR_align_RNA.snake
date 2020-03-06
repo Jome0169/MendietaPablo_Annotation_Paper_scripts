@@ -1,0 +1,128 @@
+configfile: "RNA_SEQ_config.yaml"
+samples = config["samples"]
+reference = config["reference"]
+
+rule all:
+    input:
+        #expand()"00.data/trimmed_reads/{samples}_trimmed.fq"
+        expand("00.data/reference/{reference}_index", reference = reference),
+        expand("01.STAR_ALIGNMENTS/{samples}_Aligned.sortedByCoord.out.bam", samples=samples),
+        expand("01.STAR_ALIGNMENTS/{samples}_Aligned.sortedByCoord.out.bw.plus",
+                samples=samples),
+
+        expand("02.STAR_ALIGNMENTS_conservative_intron/{samples}_Aligned.sortedByCoord.out.bw.plus",
+                samples=samples)
+
+rule trim_reads:
+    input:
+        fq_samp = "00.data/raw_reads/{samples}_all.fastq"
+    params:
+       "00.data/raw_reads/log_files/{samples}.log"
+    output:
+       "00.data/trimmed_reads/{samples}_trimmed.fq"
+    threads: 5
+    message: """Trimming"""
+    shell:
+    	"""
+    	java -jar /usr/local/apps/eb/Trimmomatic/0.36-Java-1.8.0_144/trimmomatic-0.36.jar \
+    	SE -threads {threads} -phred33 {input} {output} \
+    	ILLUMINACLIP:/scratch/jpm73279/04.lncRNA/02.Analysis/23.generate_all_metaplots/00.data/adapter.fa:2:30:10 \
+    	LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+    	"""
+
+rule generate_star_index:
+    input:
+        "00.data/reference/{reference}.fa"
+    output:
+        directory("00.data/reference/{reference}_index")
+    threads:
+        10
+    shell:"""
+    mkdir {output}
+
+    STAR --runMode genomeGenerate \
+    --genomeDir {output} \
+    --genomeFastaFiles {input} \
+    --runThreadN {threads} ;
+    """
+
+rule generate_genome_index:
+    input:
+        "00.data/reference/{reference}.fa"
+    params:
+        "00.data/reference/{reference}.fa.fai"
+    output:
+       "00.data/reference/{reference}.chrom.sizes"
+    shell:
+        """ 
+        samtools faidx {input} > {params}
+
+        awk -v OFS="\t" {{'print $1,$2'}} {params} > {output}
+        """
+
+rule align_reads_to_genomes:
+    input:
+        index_dir=expand("00.data/reference/{reference}_index",reference = reference),
+        fq_samp = "00.data/trimmed_reads/{samples}_trimmed.fq"
+    threads: 
+        10
+    params:
+        "01.STAR_ALIGNMENTS/{samples}_"
+    output:
+        "01.STAR_ALIGNMENTS/{samples}_Aligned.sortedByCoord.out.bam"
+    shell:"""
+        STAR --runThreadN {threads} \
+        --genomeDir {input.index_dir} \
+        --readFilesIn {input.fq_samp} \
+        --outSAMmapqUnique 255 \
+        --alignIntronMax 100000 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outFileNamePrefix {params}
+    """
+
+rule generate_BW_files:
+    input:
+        bam_file = "01.STAR_ALIGNMENTS/{samples}_Aligned.sortedByCoord.out.bam",
+        fasta_index = expand("00.data/reference/{reference}.chrom.sizes", reference = reference)
+    output:
+        "01.STAR_ALIGNMENTS/{samples}_Aligned.sortedByCoord.out.bw.plus"
+    shell:"""
+        ml ucsc
+
+        python3 /work/rjslab/bth29393/jbscripts/file_to_bigwig_pe.py -sort -index -strand {input.fasta_index} {input.bam_file}
+        """
+
+
+
+rule align_reads_to_genomes_conservative_intron:
+    input:
+        index_dir=expand("00.data/reference/{reference}_index",reference = reference),
+        fq_samp = "00.data/trimmed_reads/{samples}_trimmed.fq"
+    threads: 
+        10
+    params:
+        "02.STAR_ALIGNMENTS_conservative_intron/{samples}_"
+    output:
+        "02.STAR_ALIGNMENTS_conservative_intron/{samples}_Aligned.sortedByCoord.out.bam"
+    shell:"""
+        STAR --runThreadN {threads} \
+        --genomeDir {input.index_dir} \
+        --readFilesIn {input.fq_samp} \
+        --outSAMmapqUnique 255 \
+        --alignIntronMax 2000 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outFileNamePrefix {params}
+    """
+
+rule generate_BW_files_2:
+    input:
+        bam_file = "02.STAR_ALIGNMENTS_conservative_intron/{samples}_Aligned.sortedByCoord.out.bam",
+        fasta_index = expand("00.data/reference/{reference}.chrom.sizes", reference = reference)
+    output:
+        "02.STAR_ALIGNMENTS_conservative_intron/{samples}_Aligned.sortedByCoord.out.bw.plus"
+    shell:"""
+        ml ucsc
+
+        python3 /work/rjslab/bth29393/jbscripts/file_to_bigwig_pe.py -sort -index -strand {input.fasta_index} {input.bam_file}
+        """
+

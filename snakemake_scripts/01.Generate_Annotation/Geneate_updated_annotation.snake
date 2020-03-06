@@ -1,0 +1,673 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+##### load config and sample sheets #####
+configfile: "H3K36me3_config.yaml"
+
+#Load reference File
+ref = config['reference']
+gene_bed_file = config['genes']
+lncRNA_bed_File = config['lncRNAs']
+
+#L3oad Samples from the CSV file - index the important ones
+samples = pd.read_csv(config["samples"], sep=' ')#.set_index(["tissue", "replicate", "chip"], drop=False)
+rna_files = samples[samples['chip'] == "RNA_B73"].set_index(["tissue", "replicate", "chip"], drop=False)
+
+samples_clean = samples[samples['chip'] != "RNA_B73"].set_index(["tissue", "replicate", "chip"], drop=False)
+samples_clean.index = samples_clean.index.set_levels([i.astype(str) for i in samples_clean.index.levels])  # enforce str in index
+
+# which sample_type is used as control for calling peaks: e.g. Input, IgG...
+chip_file_types = list(samples_clean.chip.unique())
+chip_file_types.remove('input')
+
+gather_broad_peaks = config['broad'].split(' ') 
+gather_narrow_peaks = config['narrow'].split(' ')
+
+
+two_classes = ["broad", "narrow"]
+all_peak_names = gather_broad_peaks + gather_narrow_peaks
+
+#seperates these guys for later processing. Sorts them by the type of histone
+#mods they are b/c they'll use different algorithms
+narrow_peaks = samples_clean[samples_clean['chip'].isin(gather_narrow_peaks)]
+broad_peaks = samples_clean[samples_clean['chip'].isin(gather_broad_peaks)]
+
+RNA_file = list(rna_files.chip.unique())
+
+possible_output_groups = ["novel_genes", "merged_genes", "minor_extension_genes","major_extension_genes",
+"hyper_large_genes"] #"un_altered_genes"]
+
+#Unique tissue types present. This is useful as downbelow on expands we dont' 
+#expand on everything a TON
+#samples_clean
+
+uniq_tis = samples_clean['tissue'].unique()
+
+#Due to the RNA BAM files being too big, I have to split them up by
+#chromosomes. Since I don't want this hard coded into the script, these files
+#generate all the chromosomes I need
+command="grep '>' %s" % str(ref) + ".fa"
+command_output=list(os.popen(command))
+chromosomes = [x.strip().replace(">","") for x in command_output ]
+
+
+
+rule all:
+    input:
+        "00.data/reference/bowtie_idx.1.bt2",
+        expand("02.unique_align/tis_{tissue}_rep_{replicate}_mod_{chip}_unique_bowtie2_algn.bam", 
+                tissue = samples_clean['tissue'], replicate = samples_clean['replicate'], 
+                chip = samples_clean['chip']),
+        #This is a fancy little call that basically only populates the outputs
+        #that we want. So calling peaks for NON input files
+        expand("03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_broad_region.bed",
+                tissue = broad_peaks['tissue'], 
+                replicate = broad_peaks['replicate'], 
+                chip = gather_broad_peaks),
+        expand("03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_narrow_region.bed",
+                tissue = narrow_peaks['tissue'], 
+                replicate = narrow_peaks['replicate'], 
+                chip = gather_narrow_peaks),
+        expand("04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed",
+            tissue = broad_peaks['tissue'], 
+            chip = gather_broad_peaks,
+            group = "broad"),
+        expand("04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed",
+            tissue = narrow_peaks['tissue'], 
+            chip = gather_narrow_peaks,
+            group = "narrow"),
+        expand("05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam",
+                RNA = rna_files['chip'], 
+                tissue = rna_files["tissue"]),
+        expand("06.split_chromosomes/{RNA}_tis_{tissue}_split_chrom_{chromosome}.bam",
+                RNA = rna_files['chip'], 
+                tissue = rna_files["tissue"],
+                chromosome = chromosomes),
+        expand("06.split_chromosomes/tis_{tissue}_mod_{chip}_group_{group}_merged_chrom_{chromosome}.bed",
+                tissue = broad_peaks['tissue'],    
+                chip = gather_broad_peaks,         
+                group = "broad",                  
+                chromosome = chromosomes),
+        expand("06.split_chromosomes/tis_{tissue}_mod_{chip}_group_{group}_merged_chrom_{chromosome}.bed",
+                tissue = broad_peaks['tissue'],    
+                chip = gather_narrow_peaks,         
+                group = "narrow",                  
+                chromosome = chromosomes),
+        expand("08.updated_annotation_output/{tissue}_all_chrom_updated_annotation.bed",
+                tissue = uniq_tis),
+        expand("08.updated_annotation_output/merged/{tissue}_annotation_{split_file_name}.bed",
+                tissue = uniq_tis, split_file_name = possible_output_groups),
+        expand("08.updated_annotation_output/merged/{split_file_name}_ven_diagram.png", 
+                split_file_name = possible_output_groups),
+        expand("09.diff_tissue_merged_file_type/{split_file_name}.bed",
+                split_file_name = possible_output_groups),
+        
+        #Generate Annotations Overlapping Merged values
+        expand("11.Annotated_features_merged_intersect/lncRNAs_{tissue}_H3K36me3_H3K4me1_intersection.bed",
+                tissue = broad_peaks['tissue'], BED = gene_bed_file),
+        expand("11.Annotated_features_merged_intersect/genes_{tissue}_H3K36me3_H3K4me1_intersection.bed",
+                tissue = broad_peaks['tissue'],  BED = lncRNA_bed_File ),
+        expand("11.Annotated_features_merged_intersect/genes_{tissue}_H3K56ac_H3K4me3_intersection.bed",
+                tissue = broad_peaks['tissue'], BED = gene_bed_file),
+        expand("11.Annotated_features_merged_intersect/lncRNAs_{tissue}_H3K56ac_H3K4me3_intersection.bed",
+                tissue = broad_peaks['tissue'],  BED = lncRNA_bed_File ),
+        
+        #Generate the individual Overlaps
+        expand("11.Annotated_features_merged_intersect/genes_{tissue}_overlapping_{chip}_{group}.bed", 
+                tissue = broad_peaks['tissue'], chip = gather_broad_peaks, group = "broad"),
+        expand("11.Annotated_features_merged_intersect/lncRNAs_{tissue}_overlapping_{chip}_{group}.bed",
+                tissue = broad_peaks['tissue'], chip = gather_broad_peaks, group = "broad"),
+        expand("11.Annotated_features_merged_intersect/genes_{tissue}_overlapping_{chip}_{group}.bed", 
+                tissue = broad_peaks['tissue'], chip = gather_narrow_peaks,
+                group = "narrow"),
+        expand("11.Annotated_features_merged_intersect/lncRNAs_{tissue}_overlapping_{chip}_{group}.bed",
+                tissue = broad_peaks['tissue'], chip = gather_narrow_peaks,
+                group = "narrow")
+
+
+rule generate_reference_index:
+    input:
+        expand("{ref}.fa", ref = ref)
+    params:
+        output_name = "00.data/reference/bowtie_idx"
+    output:
+        "00.data/reference/bowtie_idx.1.bt2"
+    threads: 6
+    shell:
+        "bowtie2-build {input} {params.output_name} -p {threads}"
+
+def get_chip_mods(wildcards):
+    final_list = samples_clean.loc[(wildcards.tissue, wildcards.replicate, wildcards.chip), ["file"]].dropna()
+    return final_list
+
+rule trim_reads:
+    input:
+        get_chip_mods
+    params:
+        "00.data/trimmed_chip/log_files/{tissue}_{chip}_{replicate}.log"
+    output:
+        "00.data/trimmed_chip/{tissue}_{chip}_{replicate}_trimmed.fq"
+    threads: 5
+    message: """Trimming"""
+    shell:
+       """
+       java -jar /usr/local/apps/eb/Trimmomatic/0.36-Java-1.8.0_144/trimmomatic-0.36.jar \
+       SE -threads {threads} -phred33 {input} {output} \
+       ILLUMINACLIP:/scratch/jpm73279/04.lncRNA/02.Analysis/23.generate_all_metaplots/00.data/adapter.fa:2:30:10 \
+       LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+       """
+
+rule align_regions_to_genome:
+    input:
+       "00.data/trimmed_chip/{tissue}_{chip}_{replicate}_trimmed.fq"
+    priority: 80
+    output:
+        chip_mod="01.bowtie_align/tis_{tissue}_rep_{replicate}_mod_{chip}_bowtie2_algn.sam"
+    threads: 10 
+    shell:
+        """
+        bowtie2 -x 00.data/reference/bowtie_idx -U {input} -S {output.chip_mod} -p {threads} ;
+        """
+
+rule unique_reads_to_BAM:
+    input:
+        chip_mod="01.bowtie_align/tis_{tissue}_rep_{replicate}_mod_{chip}_bowtie2_algn.sam"
+    priority: 60
+    output:
+        chip_mod_unique_sam = "02.unique_align/tis_{tissue}_rep_{replicate}_mod_{chip}_unique_bowtie2_algn.sam",
+        chip_mod_unique_bam = "02.unique_align/tis_{tissue}_rep_{replicate}_mod_{chip}_unique_bowtie2_algn.bam"
+    threads: 10 
+    shell: """
+        grep -E "@|NM:" {input.chip_mod} | grep -v "XS:" > {output.chip_mod_unique_sam} ;
+        samtools sort {output.chip_mod_unique_sam} > {output.chip_mod_unique_bam} -@ {threads} ; 
+        """ 
+
+def get_input(wildcards):
+    z = glob.glob(os.path.join("02.unique_align/", "tis_" + (wildcards.tissue + "_rep_" + \
+        wildcards.replicate + "_mod_" + "input_unique_bowtie2_algn.bam")))
+    return z
+
+
+def get_chip(wildcards):
+    z = glob.glob(os.path.join("02.unique_align/", "tis_" + (wildcards.tissue + "_rep_" + \
+        wildcards.replicate + "_mod_" + wildcards.chip + "_unique_bowtie2_algn.bam")))
+    return z
+
+#Note that BCP caller biass itself towards only calling `broad` peaks, so as of 
+#12/17/2019 I modified this step to call both broad and narrow peaks on our
+#broad marks and merge them
+rule run_bcp_peak_caller_broad:
+    input:
+        chip_input = get_input,
+        chip_mod = get_chip
+    params:
+        broad_region_base = "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_broad_1",
+        narrow_region_base = "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_narrow"
+    output:
+        "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_broad_region.bed"
+    shell:"""
+    peakranger bcp \
+    --format bam \
+    --verbose \
+    --pval .001 \
+    --data {input.chip_mod} \
+    --control {input.chip_input} \
+    --output {params.broad_region_base}
+
+    peakranger ranger \
+    --format bam \
+    --ext_length 250 \
+    --verbose \
+    --pval .001 \
+    --data {input.chip_mod} \
+    --control {input.chip_input} \
+    --output {params.narrow_region_base}
+
+    cat {params.narrow_region_base}_region.bed {params.broad_region_base}_region.bed | \
+    bedtools sort -i - | bedtools merge -i - -d 100 -c 3,4,5 -o distinct,distinct,distinct -delim "|"> {output}
+    """
+
+#conda:
+#    "envs/MACS_2.yml"    
+    #shell:
+        #"""
+        #macs2 callpeak -t {input.chip_mod} -c {input.chip_input} -f BAM -g 2.4e9 --broad -n {params} --broad-cutoff 0.1 -q .05
+
+        #mv {params}_peaks.broadPeak {output}
+        #"""
+
+rule run_bcp_peak_caller_narrow:
+    input:
+        chip_input = get_input,
+        chip_mod2 = get_chip
+    params:
+        "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_narrow"
+    output:
+        "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_narrow_region.bed"
+    shell:"""
+    peakranger ranger \
+    --format bam \
+    --ext_length 250 \
+    --verbose \
+    --pval .001 \
+    --data {input.chip_mod2} \
+    --control {input.chip_input} \
+    --output {params}
+    """
+#conda:
+#    "envs/MACS_2.yml"
+#    shell:"""
+#    macs2 callpeak -t {input.chip_mod2} -c {input.chip_input} -f BAM -g 2.4e9 -q .01  -n {params}
+#
+#    mv {params}_peaks.narrowPeak {output}
+#    """
+
+
+rule quick_filter:
+    #Bullshit thing where bcp sometimes messes up
+    input:
+        "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_{group}_region.bed"
+    output:
+        "03.called_peaks/tis_{tissue}_rep_{replicate}_mod_{chip}_peaks_{group}_region.filtered.bed"
+    shell: """awk -F "\\t" "{{ if(\$3 >= \$2) {{ print }}}}" {input} > {output}"""
+
+rule take_intersecting_peaks:
+    input:
+        replicate1 = "03.called_peaks/tis_{tissue}_rep_rep1_mod_{chip}_peaks_{group}_region.filtered.bed",
+        replicate2 = "03.called_peaks/tis_{tissue}_rep_rep2_mod_{chip}_peaks_{group}_region.filtered.bed"
+    params:
+        ven_title = "{tissue}_{chip}",
+        ven_out = "04.intersecting_peaks_same_mod/{tissue}_{chip}_{group}_intersection.png"
+    output:
+        "04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed"
+    shell:"""
+    cat {input.replicate1} {input.replicate2} | bedtools sort -i - | bedtools \
+    merge -d 25 -c 4,5 -o collapse -i - | bedtools sort -i - > {output} ;
+
+    /home/jpm73279/.conda/envs/python3_dev/bin/python /scratch/jpm73279/04.lncRNA/01.scripts/generate_ven_diagrams.py -bed {input.replicate1} {input.replicate2}  \
+    -header_name rep1 rep2 -title {params.ven_title} -o {params.ven_out} ;
+    """
+
+rule trim_RNA_reads:
+    input:
+        "00.data/rna/raw/{RNA}_tis_{tissue}_all.fastq"
+    params:
+       "00.data/raw_reads/log_files/{RNA}_{tissue}.log"
+    output:
+        "00.data/rna/trimmed/{RNA}_tis_{tissue}_all.fastq"
+    threads: 5
+    message: """Trimming"""
+    shell:"""
+    java -jar /usr/local/apps/eb/Trimmomatic/0.36-Java-1.8.0_144/trimmomatic-0.36.jar \
+    SE -threads {threads} -phred33 {input} {output} \
+    ILLUMINACLIP:/scratch/jpm73279/04.lncRNA/02.Analysis/23.generate_all_metaplots/00.data/adapter.fa:2:30:10 \
+    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+    """
+
+rule generate_star_index:
+    input:
+        expand("{ref}.fa", ref = ref)
+    output:
+        directory("00.data/reference/{reference}_index")
+    threads:
+        10
+    shell:"""
+    mkdir {output}
+
+    STAR --runMode genomeGenerate \
+    --genomeDir {output} \
+    --genomeFastaFiles {input} \
+    --runThreadN {threads} ;
+    """
+
+rule align_RNA_reads_to_genomes:
+    input:
+        index_dir=expand("00.data/reference/{reference}_index", reference = ref),
+        fq_samp = "00.data/rna/trimmed/{RNA}_tis_{tissue}_all.fastq"
+    threads: 
+        12
+    params:
+        "05.RNA_alignment/{RNA}_tis_{tissue}_"
+    output:
+        "05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam"
+    shell:"""
+        STAR --runThreadN {threads} \
+        --genomeDir {input.index_dir} \
+        --outSAMstrandField intronMotif \
+        --readFilesIn {input.fq_samp} \
+        --outSAMmapqUnique 255 \
+        --alignIntronMax 50000 \
+        --outSAMtype SAM \
+        --outFileNamePrefix {params} ; 
+
+        samtools view -b -h {params}Aligned.out.sam | samtools sort - > {params}Aligned.sortedByCoord.out.bam
+    """
+
+rule index_BAM_file:
+    input:
+        "05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam"
+    output:
+        "05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam.bai" 
+    shell:
+        "samtools index {input}"
+
+rule split_BAM_file:
+    input:
+        BAM_file = "05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam",
+        BAM_index = "05.RNA_alignment/{RNA}_tis_{tissue}_Aligned.sortedByCoord.out.bam.bai"
+    params:
+        "{chromosome}"
+    output:
+        "06.split_chromosomes/{RNA}_tis_{tissue}_split_chrom_{chromosome}.bam"
+    threads:
+        2
+    shell:"""
+    samtools view -@ {threads} -bh {input.BAM_file} {params} > {output}
+    """
+
+rule index_split_BAM_file:
+    input:
+        "06.split_chromosomes/{RNA}_tis_{tissue}_split_chrom_{chromosome}.bam"
+    output:
+        "06.split_chromosomes/{RNA}_tis_{tissue}_split_chrom_{chromosome}.bam.bai"
+    shell:
+        "samtools index {input}"
+
+
+rule split_BED_file:
+    input:
+        "04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed"
+    params:
+        "{chromosome}"
+    output:
+        "06.split_chromosomes/tis_{tissue}_mod_{chip}_group_{group}_merged_chrom_{chromosome}.bed"
+    shell:"""
+    ml BEDOPS 
+
+    bedextract {params} {input} > {output}
+    """
+
+rule generate_updated_annotation:
+    input:
+        broad_H3K36me3 = \
+        expand("06.split_chromosomes/tis_{{tissue}}_mod_{chip}_group_{group}_merged_chrom_{{chromosome}}.bed".split(),
+            zip, tissue = samples_clean["tissue"], chip =
+            gather_broad_peaks[0], group = "broad",
+            chromosome = chromosomes),
+
+        broad_H3K4me1 = \
+        expand("06.split_chromosomes/tis_{{tissue}}_mod_{chip}_group_{group}_merged_chrom_{{chromosome}}.bed".split(), 
+            zip, 
+            chip = gather_broad_peaks[1],
+            group = "broad",
+            chromosome = chromosomes),
+        narrow_peaks = \
+        expand("06.split_chromosomes/tis_{{tissue}}_mod_{chip}_group_{group}_merged_chrom_{{chromosome}}.bed".split(), 
+            group = "narrow", 
+            chip = gather_narrow_peaks),
+        rna_file = \
+        expand("06.split_chromosomes/{RNA}_tis_{{tissue}}_split_chrom_{{chromosome}}.bam",
+            RNA = RNA_file),
+        gene_annotation = gene_bed_file,
+        lncRNA_annotation = lncRNA_bed_File
+    conda:
+        "envs/pydev_1.yml"
+    output:
+        "07.updated_annotation_output/{tissue}_split_{chromosome}_updated_annotation.bed"
+    shell:"""
+        /home/jpm73279/.conda/envs/python3_dev/bin/python scripts/Update_annotation.py -H3K36me3 {input.broad_H3K36me3}\
+        -H3K4me1 {input.broad_H3K4me1} -narrow \
+        {input.narrow_peaks} -annotation {input.gene_annotation}\
+        -RNA {input.rna_file} -lncRNA {input.lncRNA_annotation} -o {output}
+        """
+
+#Aggegate aggregated fasta files
+def gather_split_chrom_files(wildcards):
+    files = expand("07.updated_annotation_output/{{tissue}}_split_{chromosome}_updated_annotation.bed", chromosome = chromosomes)
+    print(files)
+    return(files)
+
+rule gather_chromosomes:
+    input:
+        gather_split_chrom_files
+    output:
+        "08.updated_annotation_output/{tissue}_all_chrom_updated_annotation.bed"
+    shell:"""
+    cat {input} | bedtools sort -i - > {output}
+    """
+
+#Check out zip function usage for expand here 
+#https://stackoverflow.com/questions/56975504/preventing-input-function-from-generating-files-not-present-in-sample-file
+rule seperate_annotation_files:
+    input:
+        "08.updated_annotation_output/{tissue}_all_chrom_updated_annotation.bed"
+    conda:
+        "envs/pydev_1.yml"
+    params:
+        "08.updated_annotation_output/split/{tissue}_annotation"
+    output:
+        "08.updated_annotation_output/split/{tissue}_annotation_{split_file_name}.bed"
+    shell:"""
+        python scripts/seperate_into_groups.py {input} {params}
+        """
+
+
+#Issue where similar annotations are sometimes nested, so need to merge them
+#before we take intersection
+
+
+#Note the awk command is becase bedtool merge does a stupid thing when using
+#strand command where it's output as the 4th column. This is redundent and
+#reuins the file format
+rule merge_annotation_updates:
+    input:
+        "08.updated_annotation_output/split/{tissue}_annotation_{split_file_name}.bed"
+    params:
+        "08.updated_annotation_output/merged/{tissue}_annotation_{split_file_name}.intemed.bed"
+    output:
+        "08.updated_annotation_output/merged/{tissue}_annotation_{split_file_name}.bed"
+    shell:"""
+        bedtools sort -i {input} | bedtools merge -s -d 10 -c 4,5,6 -o distinct,mean,distinct -delim "|" -i - > {output}
+    """
+
+def gather_different_tissues_same_file(wildcards):
+    same_file = expand("08.updated_annotation_output/merged/{tissue}_annotation_{{split_file_name}}.bed", tissue = uniq_tis)
+    return(same_file)
+
+
+#Note I've been having issues loading pybedtools here for some odd reason.
+#Work around at the moment has been to use ML pybedtools which probably isn't a
+#great solution
+rule generate_ven_diagams:
+    input:
+        gather_different_tissues_same_file
+    conda:
+        "envs/pydev_1.yml"
+    params:
+        names = ' '.join(uniq_tis),
+        R_script_name = "{split_file_name}_Rscript",
+        file_name = "{split_file_name}_ven_diagram",
+        output_dir = "08.updated_annotation_output/merged/"
+    output:
+        "08.updated_annotation_output/merged/{split_file_name}_ven_diagram.png"
+    shell:"""
+        /home/jpm73279/.conda/envs/python3_dev/bin/python scripts/generate_ven_diagram_script.py -beds {input} -names {params.names} -script_name {params.R_script_name} -dir {params.output_dir} -o {params.file_name} 
+    """
+
+rule merge_file_types:
+    input:
+        gather_different_tissues_same_file
+    params:
+        "09.diff_tissue_merged_file_type/{split_file_name}.intemed.bed"
+    output:
+        "09.diff_tissue_merged_file_type/{split_file_name}.bed"
+    shell:"""
+    cat {input} | bedtools sort -i - | bedtools merge -s -d 10 -c 4,5,6 -o \
+    distinct,mean,distinct -delim "|" -i - > {output}
+    """
+
+
+#THIS below section is to identify the overlaps between correlated elongations
+#modifications
+def get_mod1(wildcards):
+
+
+    z = glob.glob(os.path.join("04.intersecting_peaks_same_mod/", \
+            ("tis_" + wildcards.tissue + "_mod_" + gather_broad_peaks[0] + "_group_broad_merged.bed")))
+    return z
+
+def get_mod2(wildcards):
+    z = glob.glob(os.path.join("04.intersecting_peaks_same_mod/", ("tis_" + wildcards.tissue + "_mod_" + gather_broad_peaks[1] + "_group_broad_merged.bed")))
+    return z
+
+#Take the intersecting peaks of different mods
+rule take_intersecting_peaks_diff_mods_elongation:
+    input:
+        H3K36me3 = get_mod1,
+        H3K4me1 = get_mod2
+    params:
+        ven_title = "{tissue}_H3K36me3_H3K4me1",
+        ven_out = "10.merged_histone_mods/{tissue}_H3K4me1_H3K36me3_intersection.png"
+    output:
+        "10.merged_histone_mods/{tissue}_H3K36me3_H3K4me1_intersection.bed"
+    shell:"""
+
+    bedtools intersect -a {input.H3K36me3} -b {input.H3K4me1} -wa -wb > {output} ;
+    
+    /home/jpm73279/.conda/envs/python3_dev/bin/python /scratch/jpm73279/04.lncRNA/01.scripts/generate_ven_diagrams.py -bed {input.H3K4me1} {input.H3K36me3} \
+    -header_name H3K4me1 H3K36me3 -title {params.ven_title} -o {params.ven_out} ;
+    """
+
+#THIS below section is to identify the overlaps between correlated INITATION 
+#modifications
+def get_narrow_mod1(wildcards):
+    z = glob.glob(os.path.join("04.intersecting_peaks_same_mod/", \
+            ( "tis_" + wildcards.tissue + "_mod_" + gather_narrow_peaks[0] + \
+            "_group_narrow_merged.bed")))
+    return z
+
+def get_narrow_mod2(wildcards):
+    z = glob.glob(os.path.join("04.intersecting_peaks_same_mod/", \
+        ("tis_" + wildcards.tissue + "_mod_" + gather_narrow_peaks[1] + "_group_narrow_merged.bed")))
+    return z
+
+#Take the intersecting peaks of different mods
+rule take_intersecting_peaks_diff_mods_initiation:
+    input:
+        H3K56ac  = get_narrow_mod1,
+        H3K4me3 = get_narrow_mod2 
+    conda:
+        "envs/pydev_1.yml"
+    params:
+        ven_title = "{tissue}_H3K56ac_H3K4me3",
+        ven_out = "10.merged_histone_mods/{tissue}_H3K4me3_H3K56ac_intersection.png"
+    output:
+        "10.merged_histone_mods/{tissue}_H3K4me3_H3K56ac_intersection.bed"
+    shell:"""
+
+    bedtools intersect -a {input.H3K56ac} -b {input.H3K4me3} -wa -wb > {output} ;
+    
+    /home/jpm73279/.conda/envs/python3_dev/bin/python \
+    /scratch/jpm73279/04.lncRNA/01.scripts/generate_ven_diagrams.py -bed {input.H3K56ac} {input.H3K4me3} \
+    -header_name H3K4me3 H3K56ac -title {params.ven_title} -o {params.ven_out} ;
+    """
+
+#Great Example on how to reference the input to 
+rule intersect_elongation_mod_peaks_with_beds_genes:
+    input:
+        BED = config['genes'],
+        peaks = "10.merged_histone_mods/{tissue}_H3K36me3_H3K4me1_intersection.bed"
+    output:
+        "11.Annotated_features_merged_intersect/genes_{tissue}_H3K36me3_H3K4me1_intersection.bed"
+    shell:
+        "bedtools intersect -a {input.BED} -b {input.peaks} -wao > {output}"
+
+
+#This rule will only look for interGENIC lnCRNAs which is why it's a bit longer
+#than normal
+rule intersect_elongation_mod_peaks_with_beds_lncRNAs:
+    input:
+        BED = config['lncRNAs'],
+        gene_BED = config['genes'],
+        peaks = "10.merged_histone_mods/{tissue}_H3K36me3_H3K4me1_intersection.bed"
+    output:
+        "11.Annotated_features_merged_intersect/lncRNAs_{tissue}_H3K36me3_H3K4me1_intersection.bed"
+    shell:"""
+    grep "lincRNA" {input.BED} > intermediate.lincRNAs.gff ; 
+    
+    bedtools intersect -a intermediate.lincRNAs.gff -b {input.gene_BED} -wa -v -s > intergenic.lncRNAs.bed ;
+    
+    bedtools intersect -a intergenic.lncRNAs.bed -b {input.peaks} -wao > {output}
+    rm intermediate.lincRNAs.gff
+    rm intergenic.lncRNAs.bed
+
+    """
+
+
+#Great Example on how to reference the input to 
+rule intersect_initiation_mod_peaks_with_beds_genes:
+    input:
+        BED = config['genes'],
+        peaks = "10.merged_histone_mods/{tissue}_H3K4me3_H3K56ac_intersection.bed"
+    output:
+        "11.Annotated_features_merged_intersect/genes_{tissue}_H3K56ac_H3K4me3_intersection.bed"
+    shell:
+        "bedtools intersect -a {input.BED} -b {input.peaks} -wao > {output}"
+
+
+#This rule will only look for interGENIC lnCRNAs which is why it's a bit longer
+#than normal
+rule intersect_initiation_mod_peaks_with_beds_lncRNAs:
+    input:
+        BED = config['lncRNAs'],
+        gene_BED = config['genes'],
+        peaks = "10.merged_histone_mods/{tissue}_H3K4me3_H3K56ac_intersection.bed"
+
+    output:
+        "11.Annotated_features_merged_intersect/lncRNAs_{tissue}_H3K56ac_H3K4me3_intersection.bed"
+    shell:"""
+    grep "lincRNA" {input.BED} > intermediate.lincRNAs.gff ; 
+
+    bedtools intersect -a intermediate.lincRNAs.gff -b {input.gene_BED} -wa -v -s > intergenic.lncRNAs.bed ;
+
+    bedtools intersect -a intergenic.lncRNAs.bed -b {input.peaks} -wao > {output}
+    rm intermediate.lincRNAs.gff
+    rm intergenic.lncRNAs.bed
+    """
+
+# Thu Nov  7 09:29:20 EST 2019
+# Intersecting Either or histone modification with both genes and lncRNAs.
+# Issue is that using the overlap tends to bias these results to one of the
+# libraries. So this way we have all the information we need for later analysis 
+
+rule genes_interecting_individual_mods:
+    input:
+        BED = config['genes'],
+        peaks = "04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed"
+    output:
+        "11.Annotated_features_merged_intersect/genes_{tissue}_overlapping_{chip}_{group}.bed"
+    shell:
+        "bedtools intersect -a {input.BED} -b {input.peaks} -wao > {output}"
+
+
+#This rule will only look for interGENIC lnCRNAs which is why it's a bit longer
+#than normal
+rule lncRNAs_intersecting_individual_mods:
+    input:
+        BED = config['lncRNAs'],
+        gene_BED = config['genes'],
+        peaks = "04.intersecting_peaks_same_mod/tis_{tissue}_mod_{chip}_group_{group}_merged.bed"
+    output:
+        "11.Annotated_features_merged_intersect/lncRNAs_{tissue}_overlapping_{chip}_{group}.bed"
+    shell:"""
+    bedtools intersect -a {input.BED} -b {input.gene_BED} -wa -v -s > intergenic.lncRNAs.bed ;
+
+    bedtools intersect -a intergenic.lncRNAs.bed -b {input.peaks} -wao > {output}
+    rm intergenic.lncRNAs.bed
+    """
+
+
+    
+    

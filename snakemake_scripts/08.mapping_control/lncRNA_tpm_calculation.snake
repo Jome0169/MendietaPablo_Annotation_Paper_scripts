@@ -1,0 +1,102 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+##### load config and sample sheets #####
+configfile: "lncRNA_calculate_TPM_config.yaml"
+
+maize_v4_annotation = config['maize_v4_annotation']
+samples = config['samples']
+
+mappability_file = config['mappability'] 
+
+rule all:
+    input:
+        expand("02.TPM_per_sample_updated_annotation/{sample}_TPM_genes.bed",sample = samples)
+
+
+
+#These are the TPM annotations for the original maizev4 annotation with the
+#original genes and ~2000 lncRNAs. This will be a useful thing to have and be
+#kept here
+
+
+if mappability_file != None:
+    print("Only Calculating TPM values for Gene Regions That pass Mappability Analysis ")
+
+    rule fitler_genes_for_mappability:
+        input:
+            mappability_tract = config['mappability'],
+            current_full_annotation = maize_v4_annotation
+        params:
+            "00.data/00.bed_files/genome_annotation_surviving_mappability_analysis.values.bed"
+        output:
+            "00.data/00.bed_files/genome_annotation_surviving_mappability_analysis.bed"
+        shell:"""
+        bedtools intersect -a {input.current_full_annotation} -b {input.mappability_tract} -sorted -wa -wb \
+                | bedtools groupby -i - -g 1-10 -c 15 -o mean > {params}
+        
+        
+        python scripts/filter_mappability.py {params} .8 > {output}
+        """
+
+    rule calculate_TPM_v4_annotation:
+        input:
+            bed = "00.data/00.bed_files/genome_annotation_surviving_mappability_analysis.bed",
+            bam = "00.data/01.RNA_seq_BAMs/{sample}_Aligned.sortedByCoord.out.bam"
+        output:
+            "01.Maize_v4_annotation_TPM_per_sample/{sample}_TPM.txt"
+        shell:
+            "python scripts/calculate_fpkm_over_region.py \
+            -bed {input.bed} -bam {input.bam} -strand antisense -val TPM -o {output}"
+    
+    rule calculate_RPKM_v4_annotation:
+        input:
+            bed = "00.data/00.bed_files/genome_annotation_surviving_mappability_analysis.bed",
+            bam = "00.data/01.RNA_seq_BAMs/{sample}_Aligned.sortedByCoord.out.bam"
+        output:
+            "01.Maize_v4_annotation_RPKM_per_sample/{sample}_RPKM.txt"
+        shell:
+            "python scripts/calculate_fpkm_over_region.py -bed {input.bed} \
+            -bam {input.bam} -strand antisense -val RPKM -o {output}"
+
+elif mappability_file == None:
+    print("Calculating TPM values All Gene Regions")
+
+    rule calculate_TPM_v4_annotation:
+        input:
+            bed = maize_v4_annotation,
+            bam = "00.data/01.RNA_seq_BAMs/{sample}_Aligned.sortedByCoord.out.bam"
+        output:
+            "01.Maize_v4_annotation_TPM_per_sample/{sample}_TPM.txt"
+        shell:
+            "python scripts/calculate_fpkm_over_region.py \
+            -bed {input.bed} -bam {input.bam} -strand antisense -val TPM -o {output}"
+    
+    rule calculate_RPKM_v4_annotation:
+        input:
+            bed = maize_v4_annotation,
+            bam = "00.data/01.RNA_seq_BAMs/{sample}_Aligned.sortedByCoord.out.bam"
+        output:
+            "01.Maize_v4_annotation_RPKM_per_sample/{sample}_RPKM.txt"
+        shell:
+            "python scripts/calculate_fpkm_over_region.py -bed {input.bed} \
+            -bam {input.bam} -strand antisense -val RPKM -o {output}"
+
+
+rule gathered_lncRNAs_gene_beds:
+    input:
+        gene_file = config['maize_genes'],
+        lncRNA_file = config['maize_lncRNAs'],
+        tpm_file =  "01.Maize_v4_annotation_TPM_per_sample/{sample}_TPM.txt"
+    output:
+        genes = "02.TPM_per_sample_updated_annotation/{sample}_TPM_genes.bed",
+        lncRNAs = "02.TPM_per_sample_updated_annotation/{sample}_TPM_lncRNAs.bed"
+    shell:"""
+        awk -F'\t' '{{print $4}}' {input.gene_file} | grep -f - {input.tpm_file} > {output.genes} ;
+        awk -F'\t' '{{print $4}}' {input.lncRNA_file} | grep -f - {input.tpm_file} > {output.lncRNAs}
+        """
+
+
+

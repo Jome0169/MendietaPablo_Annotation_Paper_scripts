@@ -1,0 +1,9 @@
+name: STAR-seq
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - star=2.7.3a=0
+prefix: /home/jpm73279/.conda/envs/STAR-seq
+

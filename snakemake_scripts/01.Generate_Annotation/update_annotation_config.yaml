@@ -1,0 +1,10 @@
+ruleorder: generate_reference_index > align_regions_to_genome
+samples: H3K36me3_samples.txt
+reference: 00.data/reference/Zea_mays.AGPv4.dna.toplevel.unwrapped.nocontigs.reorderd
+control: 'input'
+broad: 'H3K36me3 H3K4me1'
+narrow: "H3K56ac H3K4me3"
+H3K4me3: 00.data/chip_seq/H3K4me3/root_H3K36me3_merged.bam
+Black_list: 00.data/black_list/maize_v4_blacklist.bed
+genes: 00.data/bed_files/Zea_mays.AGPv4.38.chr.genes.bed
+lncRNAs: 00.data/bed_files/Zea_mays.AGPv4.38.chr.lncRNA.bed

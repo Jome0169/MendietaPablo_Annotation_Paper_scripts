@@ -1,0 +1,6 @@
+RNA_seq_data_sets:
+    RNA_B73_ear: 00.data/rna_seq/RNA_B73_ear_Aligned.sortedByCoord.out.bam
+    RNA_B73_leaf: 00.data/rna_seq/RNA_B73_leaf_Aligned.sortedByCoord.out.bam
+    RNA_B73_root: 00.data/rna_seq/RNA_B73_root_Aligned.sortedByCoord.out.bam
+reference_annotation: 00.data/ref_annotation/Zea_mays.AGPv4.38.chr.gtf
+

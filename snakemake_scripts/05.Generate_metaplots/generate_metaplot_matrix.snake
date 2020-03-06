@@ -1,0 +1,278 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+
+
+################# THIS IS THE SECOND HALF OF THIS PIPELINE. THE FIRST HALF CAN #################
+#BE FOUND IN align_chip_seq_reads.snake. THIS IS ONLY FOR THE GENERATION OF ################
+#METAPLOTS
+#### load config and sample sheets #####
+configfile: "metaplot_config.yaml"
+
+
+##################################################
+###########CONFIG#################################
+##################################################
+#samples: metaplot_samples.txt
+#reference: 00.data/reference/Zm-B73-REFERENCE-NAM-5.0.fa
+#fai_file: 00.data/reference/Zm-B73-REFERENCE-NAM-5.0.fa.fai
+#bed_overlap_H3K36me3:
+#    root_genes: 00.data/bed_files/genes_root_H3K36me3_H3K4me1_intersection.bed
+#    root_lncRNAs: 00.data/bed_files/lncRNAs_root_H3K36me3_H3K4me1_intersection.bed
+#    root_mystery: 00.data/bed_files/root_mystery.bed
+#    root_RNA_only: 00.data/bed_files/RNA_B73_root_novel_transcripts.RNA_ONLY.bed
+#    leaf_genes: 00.data/bed_files/genes_leaf_H3K36me3_H3K4me1_intersection.bed
+#    leaf_lncRNAs: 00.data/bed_files/lncRNAs_leaf_H3K36me3_H3K4me1_intersection.bed
+#    leaf_mystery: 00.data/bed_files/leaf_mystery.bed
+#    leaf_RNA_only: 00.data/bed_files/RNA_B73_leaf_novel_transcripts.RNA_ONLY.bed
+#    ear_genes: 00.data/bed_files/genes_ear_H3K36me3_H3K4me1_intersection.bed
+#    ear_lncRNAs: 00.data/bed_files/lncRNAs_ear_H3K36me3_H3K4me1_intersection.bed
+#    ear_mystery: 00.data/bed_files/ear_mystery.bed
+#    ear_RNA_only: 00.data/bed_files/RNA_B73_ear_novel_transcripts.RNA_ONLY.bed
+
+
+overlap_bed = config['bed_overlap_H3K36me3']
+
+#Load Samples from the CSV file - index the important ones
+samples = pd.read_csv(config["samples"], sep=' ')
+
+
+ChIP_samples = samples[samples['type'] != "ATAC"].set_index(["tissue", "type"], drop=False)
+ATAC_samples = samples[samples['type'] == "ATAC"].set_index(["tissue", "type"], drop=False)
+
+
+ChIP_samples.index = ChIP_samples.index.set_levels([i.astype(str) for i in ChIP_samples.index.levels])  # enforce str in index
+ATAC_samples.index = ATAC_samples.index.set_levels([i.astype(str) for i in ATAC_samples.index.levels])  # enforce str in index
+
+#Gather the number of reads for ATAC-seq normalization 
+
+rule all:
+    input:
+        expand("04.merged_bw/{tissue}_{chip}_merged.bw", tissue = ChIP_samples['tissue'], chip = ChIP_samples["type"]),
+        expand("05.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{chip}_TSS.gz",
+                BED = overlap_bed, tissue = ChIP_samples["tissue"], chip = ChIP_samples["type"]),
+        expand("05.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{chip}_TES.gz",
+                BED = overlap_bed, tissue = ChIP_samples["tissue"], chip = ChIP_samples["type"]),
+        expand("05.Generate_matrix_ATAC/{BED}_{tissue}_ATAC_TES.gz",
+                BED = overlap_bed, tissue = ATAC_samples["tissue"]),
+        expand("05.Generate_matrix_ATAC/{BED}_{tissue}_ATAC_TSS.gz",
+                BED = overlap_bed, tissue = ATAC_samples["tissue"]),
+        expand("06.Generate_matrix_ATAC_non_scaled/{BED}_{tissue}_ATAC_TSS.gz",
+                BED = overlap_bed, tissue = ATAC_samples["tissue"]),
+        expand("06.Generate_matrix_ATAC_non_scaled/{BED}_{tissue}_ATAC_TES.gz",
+                BED = overlap_bed, tissue = ATAC_samples["tissue"])
+
+
+
+rule generate_bw_files_merged:
+    input:
+        "03.merged_align/{tissue}_{type}_merged.bam"
+    output:
+        "04.merged_bw/{tissue}_{type}_merged.bw"
+    threads:
+        5
+    shell:
+        """
+        bamCoverage -p {threads} -bs 2 -b {input} -o {output}
+        """
+
+
+rule calculate_matrix_H3K36me3_overlap_TSS:
+    input:
+        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw",
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}")
+    params:
+        chip_mod = "{type}"
+    threads:
+        5
+    output:
+        "05.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{type}_TSS.gz"
+    shell:
+        """
+        ml deepTools 
+
+        computeMatrix reference-point \
+        --referencePoint TSS \
+        -p {threads} \
+        -R {input.BED} \
+        -S {input.chip_mod} \
+        --samplesLabel {params.chip_mod} \
+        -bs 20 \
+        -b 2000 -a 2000 \
+        --outFileName {output} \
+        --missingDataAsZero
+        """
+
+rule calculate_matrix_H3K36me3_overlap_TES:
+    input:
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw"
+    params:
+        chip_mod = "{type}"
+    threads:
+        5
+    output:
+        "05.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{type}_TES.gz"
+    shell:"""
+        computeMatrix reference-point \
+        --referencePoint TES \
+        -p {threads} \
+        -R {input.BED} \
+        -S {input.chip_mod} \
+        --samplesLabel {params.chip_mod} \
+        -bs 20 \
+        -b 2000 -a 2000 \
+        --outFileName {output} \
+        --missingDataAsZero
+        """
+
+def get_ATAC_mods(wildcards):
+    other_list = ATAC_samples.loc[(wildcards.tissue, "ATAC"), ["histone_file"]].dropna()
+    print(other_list)
+    return other_list 
+
+rule generate_ATAC_scaled_bedgraph:
+    input:
+        ATAC_mods = get_ATAC_mods
+    params:
+        sorted_bam = "04.ATAC_bed_graph/{tissue}_{type}_merged.sorted.bam"
+    threads:
+        5
+    output:
+        bedgraph = "04.ATAC_bed_graph/{tissue}_{type}_merged.bdg",
+        bedgraph_sorted = "04.ATAC_bed_graph/{tissue}_{type}_merged.sorted.bdg"
+    shell:"""
+    scale_calc=`samtools view -f 0 -c {input.ATAC_mods}`
+
+    samtools sort -@ {threads} {input.ATAC_mods} > {params.sorted_bam}
+    
+    genomeCoverageBed -ibam {params.sorted_bam} -bga -scale 1000000/${{scale_calc}} > {output.bedgraph}
+
+    sort -k1,1 -k2,2n {output.bedgraph} > {output.bedgraph_sorted}
+    """
+
+
+rule bedGraphToBW:
+    input:
+        bedgraph_sorted = "04.ATAC_bed_graph/{tissue}_{type}_merged.sorted.bdg",
+        fai_file = config['fai_file']
+    output:
+        "05.ATAC_bw/{tissue}_{type}_merged.sorted.bw"
+    threads:
+        5
+    shell:"""
+    ml ucsc 
+
+    bedGraphToBigWig {input.bedgraph_sorted} {input.fai_file} {output}
+    """
+
+
+rule generate_ATAC_scaled_matrix_TSS:
+    input:
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+        chip_mod = "05.ATAC_bw/{tissue}_{type}_merged.sorted.bw"
+    params: "ATAC"
+    threads: 10
+    output:
+        "05.Generate_matrix_ATAC/{BED}_{tissue}_{type}_TSS.gz"
+    shell:"""
+        ml deepTools 
+
+        computeMatrix reference-point \
+        --referencePoint TSS \
+        -p {threads} \
+        -R {input.BED} \
+        -S {input.chip_mod} \
+        --samplesLabel {params} \
+        -bs 20 \
+        -b 2000 -a 2000 \
+        --outFileName {output} \
+        --missingDataAsZero
+        """
+
+
+rule generate_ATAC_scaled_matrix_TES:
+    input:
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+        chip_mod = "05.ATAC_bw/{tissue}_{type}_merged.sorted.bw"
+    params: "ATAC"
+    threads: 10
+    output:
+        "05.Generate_matrix_ATAC/{BED}_{tissue}_{type}_TES.gz"
+    shell:"""
+            computeMatrix reference-point \
+            --referencePoint TES \
+            -p {threads} \
+            -R {input.BED} \
+            -S {input.chip_mod} \
+            --samplesLabel {params} \
+            -bs 20 \
+            -b 2000 -a 2000 \
+            --outFileName {output} \
+            --missingDataAsZero
+            """
+
+
+rule generate_bw_files_ATAC:
+    input:
+        ATAC_mods = get_ATAC_mods
+    params:
+        sorted_bam = "03.ATAC_non_scaled_BW/{tissue}_{type}_merged.sorted.bam"
+    output:
+        "03.ATAC_non_scaled_BW/{tissue}_{type}_merged.bw"
+    threads:
+        5
+    shell:
+        """
+        samtools sort -@ {threads} {input.ATAC_mods} > {params.sorted_bam}
+        samtools index {params.sorted_bam}
+
+        bamCoverage -p {threads} -bs 1 -b {params.sorted_bam} -o {output}
+        """
+
+rule generate_ATAC_non_scaled_matrix_TSS:
+    input:
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+        chip_mod = "03.ATAC_non_scaled_BW/{tissue}_{type}_merged.bw"
+    params: "ATAC"
+    threads: 10
+    output:
+        "06.Generate_matrix_ATAC_non_scaled/{BED}_{tissue}_{type}_TSS.gz"
+    shell:"""
+        ml deepTools 
+
+        computeMatrix reference-point \
+        --referencePoint TSS \
+        -p {threads} \
+        -R {input.BED} \
+        -S {input.chip_mod} \
+        --samplesLabel {params} \
+        -bs 20 \
+        -b 2000 -a 2000 \
+        --outFileName {output} \
+        --missingDataAsZero
+        """
+
+
+rule generate_ATAC_non_scaled_matrix_TES:
+    input:
+        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+        chip_mod = "03.ATAC_non_scaled_BW/{tissue}_{type}_merged.bw"
+    params: "ATAC"
+    threads: 10
+    output:
+        "06.Generate_matrix_ATAC_non_scaled/{BED}_{tissue}_{type}_TES.gz"
+    shell:"""
+            computeMatrix reference-point \
+            --referencePoint TES \
+            -p {threads} \
+            -R {input.BED} \
+            -S {input.chip_mod} \
+            --samplesLabel {params} \
+            -bs 20 \
+            -b 2000 -a 2000 \
+            --outFileName {output} \
+            --missingDataAsZero
+            """

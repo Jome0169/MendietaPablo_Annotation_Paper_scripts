@@ -1,0 +1,176 @@
+import pandas as pd
+from snakemake.utils import validate
+#import glob
+import os
+from itertools import product
+
+#UPDATED ANALYSIS
+#https://github.com/PacificBiosciences/IsoSeq_SA3nUP/wiki/Tutorial:-Installing-and-Running-Iso-Seq-3-using-Conda
+
+
+##### load config and sample sheets #####
+configfile: "iso_seq_config.yaml"
+
+#Load the Sample File
+all_base_names = config['samples']
+#Index the Sample File
+Iso_seq_runs = pd.read_csv(config["samples"], sep=' ').set_index("file_base_name", drop=False)
+
+print(Iso_seq_runs)
+
+rule all:
+    input:
+        expand("00.data/ref/{reference}_index", reference = config['reference']),
+        #expand("06.aligned_raws_to_genome/{file_base_name}.bam",
+        #        file_base_name = Iso_seq_runs['file_base_name']),
+
+        expand("02.STAR_ALIGNMENTS/{file_base_name}_Aligned.sortedByCoord.out.bam",
+                file_base_name = Iso_seq_runs['file_base_name']),
+
+
+
+def grab_fastq_reads(wildcards):
+    final_list = Iso_seq_runs.loc[(wildcards.file_base_name), ["sample_file"]].dropna()
+    print(final_list)
+
+    #final_list = Iso_seq_runs_clean.loc[(wildcards.tissue, wildcards.replicate, wildcards.chip), ["file"]].dropna()
+    return final_list
+
+#
+#rule take_consensus_reads:
+#    input:
+#        grab_bam_subreads
+#    params:
+#        "00.data/consenses_reads/{file_base_name}.ccs.log"
+#    output:
+#        "00.data/consenses_reads/{file_base_name}.ccs.bam"
+#    message: "Takeing Consensus Sequences"
+#    threads: 15 
+#    shell:"""
+#    ccs {input} {output} -j {threads} --log-file {params} --min-rq 0.9
+#    """
+#
+#
+##https://github.com/pacificbiosciences/barcoding#how-can-i-demultiplex-isoseq-data
+#rule take_full_length_sequences:
+#    input:
+#        "00.data/consenses_reads/{file_base_name}.ccs.bam"
+#    params:
+#        config['primer_file']
+#    output:
+#        "01.full_length/{file_base_name}.dmux_reads.bam"
+#    message: "Taking Full Length Reads"
+#    threads: 15
+#    shell:"""
+#    lima --isoseq --dump-clips --peek-guess -j {threads} {input} {params} {output}
+#    """
+
+
+#rule polish_final_sequences:
+#    input:
+#        "01.full_length/{file_base_name}.dmux_reads.bam"
+#    output:
+#        "02.polished_reads/{file_base_name}.polished.bam"
+#    message: "Generating Polished Reads"
+#    threads: 15
+#    shell:"""
+#    isoseq3 refine -j {threads} --require-polya {input} barcodes.fasta flnc.bam
+#    isoseq3 cluster flnc.bam -j {threads} --verbose --use-qvs
+#    """
+
+
+rule align_raw_sequences_to_genome:
+    input:
+        fa_reference = config['genome_file'],
+        grab_raw_fastq = grab_fastq_reads
+    output:
+        raw_aligned_2_genome = "06.aligned_raws_to_genome/sam_files/{file_base_name}.sam",
+        raw_aligned_2_genome_log = "06.aligned_raws_to_genome/{file_base_name}.log"
+    message: "Generating Polished Reads"
+    threads: 5 
+    shell:"""
+    minimap2 -t {threads} -ax splice -uf --secondary=no -C5 \
+            {input.fa_reference} {input.grab_raw_fastq} \
+            > {output.raw_aligned_2_genome} 2> {output.raw_aligned_2_genome_log}
+    """
+
+
+rule generate_sorted_bam:
+    input:
+        "06.aligned_raws_to_genome/sam_files/{file_base_name}.sam"
+    output:
+        "06.aligned_raws_to_genome/{file_base_name}.bam"
+    message: "Generating BAM of alignment"
+    threads: 5 
+    shell:"""
+    samtools sort -@ {threads} {input} -o {output}
+    samtools index {output}
+    """
+
+
+rule filter_reads_STAR:
+    input:
+        grab_fastq_reads
+    output:
+        "00.data/filtered/{file_base_name}.filtered.fastq"
+    shell:"""
+    zcat {input} | bioawk -cfastx '{{OFS="\\n"}} {{if (length($qual) == length($seq)) print "@"$name,$seq,"+",$qual}}' > {output}
+    """
+
+rule generate_star_index:
+    input:
+        fa_reference = config['genome_file']
+    output:
+        directory("00.data/ref/{reference}_index")
+    threads:
+        30
+    shell:"""
+    mkdir -p {output}
+
+    STAR --runMode genomeGenerate \
+    --genomeDir {output} \
+    --genomeFastaFiles {input} \
+    --runThreadN {threads} ;
+    """
+
+rule rune_star_long:
+    input:
+        index_dir=expand("00.data/ref/{reference}_index", reference = config['reference']),
+        fq = "00.data/filtered/{file_base_name}.filtered.fastq"
+    params:
+        "02.STAR_ALIGNMENTS/{file_base_name}_"
+    output:
+        "02.STAR_ALIGNMENTS/{file_base_name}_Aligned.sortedByCoord.out.bam"
+    threads:
+        15
+    conda:
+        "env/STAR.yml"
+    shell:"""
+
+    STARlong --runMode alignReads \
+    --readNameSeparator space \
+    --outFilterMultimapScoreRange 1 \
+    --outFilterMismatchNmax 2000 \
+    --winAnchorMultimapNmax 200 \
+    --scoreGapNoncan -20 \
+    --scoreGapGCAG -4 \
+    --scoreGapATAC -8 \
+    --scoreDelBase -1 \
+    --scoreDelOpen -1 \
+    --scoreInsOpen -1 \
+    --scoreInsBase -1 \
+    --seedSearchLmax 30 \
+    --seedSearchStartLmax 50 \
+    --seedPerReadNmax 100000 \
+    --seedPerWindowNmax 1000 \
+    --alignTranscriptsPerReadNmax 100000 \
+    --alignTranscriptsPerWindowNmax 10000 \
+    --alignEndsType Local \
+    --runThreadN {threads} \
+    --genomeDir {input.index_dir} \
+    --readFilesIn {input.fq} \
+    --outSAMmapqUnique 255 \
+    --outSAMtype BAM SortedByCoordinate \
+    --outFileNamePrefix {params}
+    """
+

@@ -1,0 +1,4 @@
+base_output_name: "novel"
+samples: novel_region_list.txt
+annotated_sequences: 00.data/01.bed_files/Zm-B73-REFERENCE-NAM-5.0.0_Zm00001e.1.genes.bed
+reference: 00.data/ref/Zm-B73-REFERENCE-NAM-5.0.fa

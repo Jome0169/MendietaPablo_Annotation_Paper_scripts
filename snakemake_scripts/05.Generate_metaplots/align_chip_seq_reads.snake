@@ -1,0 +1,279 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+
+##### load config and sample sheets #####
+configfile: "align_chip_seq_config.yaml"
+
+#Load reference File
+ref = config['reference']
+##bed = config['bed_files']
+#overlap_bed = config['bed_overlap_H3K36me3']
+
+#Load Samples from the CSV file - index the important ones
+samples = pd.read_csv(config["samples"], sep=' ').set_index(["tissue", "type", "replicate"], drop=False)
+samples.index = samples.index.set_levels([i.astype(str) for i in samples.index.levels])  # enforce str in index
+
+
+all_types = samples["type"].unique()
+
+
+rule all:
+    input:
+        "00.data/reference.1.bt2",
+        expand("00.data/trimmed_chip/{tissue}_{chip}_{replicate}_trimmed.fq" , tissue = samples["tissue"], 
+                chip = samples["type"], replicate = samples["replicate"]),
+        expand("02.unique_align/{tissue}_{chip}_{replicate}_bowtie2_algn.bam", tissue = samples["tissue"],
+                chip = all_types, replicate = samples["replicate"]),
+        expand("02.unique_align/{tissue}_{chip}_{replicate}.bw", tissue = samples["tissue"],
+                chip = all_types, replicate = samples["replicate"]),
+        expand("03.merged_align/{tissue}_{chip}_merged.bam", tissue = samples["tissue"],
+                chip = all_types) 
+        ##Generate BigWig
+        #expand("04.merged_bw/{tissue}_{chip}_merged.bw", tissue =
+        #        samples['tissue'], chip = samples["type"])
+        ##Generate TSS
+        ##expand("06.Generate_matrix_TSS_TES/{BED}_{tissue}_{chip}_TSS.gz", BED =
+        ##        bed, tissue = samples["tissue"], chip = samples["type"]),
+        ##expand("06.Generate_matrix_TSS_TES/{BED}_{tissue}_{chip}_TES.gz", BED =
+        ##        bed, tissue = samples["tissue"], chip = samples["type"]),
+        ##expand("05.Generate_matrix_scaled_regions/{BED}_{tissue}_{chip}.gz", BED =
+        ##        bed, tissue = samples["tissue"], chip = samples["type"]),
+        #expand("07.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{chip}_TSS.gz",
+        #        BED = overlap_bed, tissue = samples["tissue"], chip = samples["type"]),
+        #
+        #expand("07.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{chip}_TES.gz",
+        #        BED = overlap_bed, tissue = samples["tissue"], chip = samples["type"])
+
+
+
+rule generate_reference_index:
+    input:
+        expand("{ref}.fa", ref = ref)
+    params:
+        output_name = "00.data/reference"
+    output:
+        "00.data/reference.1.bt2"
+    threads: 15
+    shell:"""
+    ml Bowtie2 
+    bowtie2-build {input} {params.output_name} -p {threads}
+    """
+
+def get_chip_mods(wildcards):
+    final_list = samples.loc[(wildcards.tissue, wildcards.type, wildcards.replicate), ["file"]].dropna()
+    return final_list
+
+
+rule trim_reads:
+    input:
+        get_chip_mods
+    params:
+        "00.data/trimmed_chip/log_files/{tissue}_{type}_{replicate}.log"
+    output:
+        "00.data/trimmed_chip/{tissue}_{type}_{replicate}_trimmed.fq"
+    threads: 5
+    message:"""Trimming"""
+    shell:
+        """
+        java -jar /usr/local/apps/eb/Trimmomatic/0.36-Java-1.8.0_144/trimmomatic-0.36.jar \
+        SE -threads {threads} -phred33 {input} {output} \
+        ILLUMINACLIP:/scratch/jpm73279/04.lncRNA/02.Analysis/23.generate_all_metaplots/00.data/adapter.fa:2:30:10 \
+        LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+        """
+
+rule align_regions_to_genome:
+    input:
+        reads = "00.data/trimmed_chip/{tissue}_{type}_{replicate}_trimmed.fq",
+        genome_reference = "00.data/reference",
+        other = "00.data/reference.1.bt2"
+    output:
+        chip_mod="01.bowtie_align/{tissue}_{type}_{replicate}_bowtie2_algn.sam"
+    message:"""Aligning"""
+    threads: 10 
+    shell:
+        """
+        ml Bowtie2 
+
+        bowtie2 -x {input.genome_reference} -U {input.reads} -S {output.chip_mod} -p {threads} ;
+        """
+
+rule unique_reads_to_BAM:
+    input:
+        chip_mod="01.bowtie_align/{tissue}_{type}_{replicate}_bowtie2_algn.sam"
+    output:
+        chip_mod_unique_sam = "02.unique_align/{tissue}_{type}_{replicate}_bowtie2_algn.sam",
+        chip_mod_unique_bam = "02.unique_align/{tissue}_{type}_{replicate}_bowtie2_algn.bam"
+    threads: 10 
+    shell: """
+        grep -E "@|NM:" {input.chip_mod} | grep -v "XS:" > {output.chip_mod_unique_sam} ;
+        samtools sort {output.chip_mod_unique_sam} > {output.chip_mod_unique_bam} -@ {threads}
+        """
+
+
+rule generate_bw_files_replicates:
+    input:
+        "02.unique_align/{tissue}_{type}_{replicate}_bowtie2_algn.bam"
+    output:
+        "02.unique_align/{tissue}_{type}_{replicate}.bw"
+    threads:
+        5
+    shell:
+        """
+        samtools index {input} 
+
+        bamCoverage -p {threads} -bs 1 -b {input} -o {output}
+        """
+
+rule merge_same_BAMS:
+    input:
+       chip_mod_rep1 = "02.unique_align/{tissue}_{type}_rep1_bowtie2_algn.bam",
+       chip_mod_rep2 = "02.unique_align/{tissue}_{type}_rep2_bowtie2_algn.bam"
+    output:
+        "03.merged_align/{tissue}_{type}_merged.bam"
+    threads: 10 
+    shell:
+        """
+        samtools merge {output} {input.chip_mod_rep1} {input.chip_mod_rep2};
+        samtools index {output}
+        """
+
+#rule generate_bw_files_merged:
+#    input:
+#        "03.merged_align/{tissue}_{type}_merged.bam"
+#    output:
+#        "04.merged_bw/{tissue}_{type}_merged.bw"
+#    threads:
+#        5
+#    shell:
+#        """
+#        bamCoverage -p {threads} -bs 2 -b {input} -o {output}
+#        """
+#
+##sample_ids, run_ids = glob_wildcards("data/Raw_reads/{sample}_R1_{run}.fastq.gz")
+#
+#rule calculate_matrix_scale_region:
+#    input:
+#        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw",
+#        BED = lambda wildcards: (f"{config['bed_files'][wildcards.BED]}"),
+#    params:
+#        chip_mod = "{type}"
+#    threads:
+#        5
+#    output:
+#        "05.Generate_matrix_scaled_regions/{BED}_{tissue}_{type}.gz"
+#    shell:
+#        """
+#        ml deepTools 
+#
+#        computeMatrix scale-regions \
+#        -p {threads} \
+#        -R {input.BED} \
+#        -S {input.chip_mod} \
+#        --samplesLabel {params.chip_mod} \
+#        -bs 20 \
+#        -m 3000 -b 2000 -a 2000 \
+#        --outFileName {output} \
+#        --skipZeros \
+#        --missingDataAsZero
+#        """
+#
+#rule calculate_matrix_reference_region_TSS:
+#    input:
+#        BED = lambda wildcards: (f"{config['bed_files'][wildcards.BED]}"),
+#        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw"
+#    params:
+#        chip_mod = "{type}"
+#    threads:
+#        5
+#    output:
+#        "06.Generate_matrix_TSS_TES/{BED}_{tissue}_{type}_TSS.gz"
+#    shell:
+#        """
+#        ml deepTools 
+#
+#        computeMatrix reference-point \
+#        --referencePoint TSS \
+#        -p {threads} \
+#        -R {input.BED} \
+#        -S {input.chip_mod} \
+#        --samplesLabel {params.chip_mod} \
+#        -bs 20 \
+#        -b 2000 -a 2000 \
+#        --outFileName {output} \
+#        --missingDataAsZero
+#        """
+#
+#rule calculate_matrix_reference_region_TES:
+#    input:
+#        BED = lambda wildcards: (f"{config['bed_files'][wildcards.BED]}"),
+#        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw"
+#    params:
+#        chip_mod = "{type}"
+#    threads:
+#        5
+#    output:
+#        "06.Generate_matrix_TSS_TES/{BED}_{tissue}_{type}_TES.gz"
+#    shell:"""
+#        computeMatrix reference-point \
+#        --referencePoint TES \
+#        -p {threads} \
+#        -R {input.BED} \
+#        -S {input.chip_mod} \
+#        --samplesLabel {params.chip_mod} \
+#        -bs 20 \
+#        -b 2000 -a 2000 \
+#        --outFileName {output} \
+#        --missingDataAsZero
+#        """
+#
+#rule calculate_matrix_H3K36me3_overlap_TSS:
+#    input:
+#        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw",
+#        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}")
+#    params:
+#        chip_mod = "{type}"
+#    threads:
+#        5
+#    output:
+#        "07.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{type}_TSS.gz"
+#    shell:
+#        """
+#        ml deepTools 
+#
+#        computeMatrix reference-point \
+#        --referencePoint TSS \
+#        -p {threads} \
+#        -R {input.BED} \
+#        -S {input.chip_mod} \
+#        --samplesLabel {params.chip_mod} \
+#        -bs 20 \
+#        -b 2000 -a 2000 \
+#        --outFileName {output} \
+#        --missingDataAsZero
+#        """
+#
+#rule calculate_matrix_H3K36me3_overlap_TES:
+#    input:
+#        BED = lambda wildcards: (f"{config['bed_overlap_H3K36me3'][wildcards.BED]}"),
+#        chip_mod = "04.merged_bw/{tissue}_{type}_merged.bw"
+#    params:
+#        chip_mod = "{type}"
+#    threads:
+#        5
+#    output:
+#        "07.Generate_matrix_TSS_TES_overlapping_H3K36me3/{BED}_{tissue}_{type}_TES.gz"
+#    shell:"""
+#        computeMatrix reference-point \
+#        --referencePoint TES \
+#        -p {threads} \
+#        -R {input.BED} \
+#        -S {input.chip_mod} \
+#        --samplesLabel {params.chip_mod} \
+#        -bs 20 \
+#        -b 2000 -a 2000 \
+#        --outFileName {output} \
+#        --missingDataAsZero
+#        """

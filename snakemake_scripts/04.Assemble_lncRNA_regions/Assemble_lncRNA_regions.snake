@@ -1,0 +1,249 @@
+import pandas as pd
+from snakemake.utils import validate
+#import glob
+import os
+from itertools import product
+
+##### load config and sample sheets #####
+configfile: "novel_lncRNA_assemble.config.yaml"
+#configfile: "annotated_lncRNA_assemble.config.yaml"
+
+
+
+#L3oad Samples from the CSV file - index the important ones
+samples = pd.read_csv(config["samples"], sep=' ').set_index(["region_name"], drop=False)
+
+#file_list.index = file_list.index.set_levels([i.astype(str) for i in file_list.index.levels])  # enforce str in index
+
+
+output_group_name = config['base_output_name']
+all_regions = samples['region_name'].unique()
+
+annotated_sequences = config['annotated_sequences']
+
+
+
+rule all:
+    input:
+        expand("03.string_tie_assembly_merged/{region}_assembly_merged.gtf", 
+                region = all_regions),
+        expand("07.aggregated_fasta/{group_name}_all_fastas_combined.gtf",
+                group_name = output_group_name),
+        expand("08.run_CPC2/{group_name}_cpc_calc_output.txt",
+                group_name = output_group_name),
+        expand("10.run_hmmer/{group_name}_all_fastas_hmmer_output.txt",
+                group_name = output_group_name)
+
+
+def grab_tissue_regions(wildcards):
+    final_list = samples.loc[(wildcards.region), ["file"]].dropna()
+    print(final_list)
+    return final_list
+
+rule samtools_sort:
+    input:
+        grab_tissue_regions
+    output:
+        "01.sort_index_reads/{region}.sorted.bam"
+    shell:
+        "samtools sort -T sorted_reads/{params}.tmp {input} > {output}"
+
+rule samtools_index:
+    input:
+        "01.sort_index_reads/{region}.sorted.bam"
+    output:
+        "01.sort_index_reads/{region}.sorted.bam.bai"
+    shell:"""samtools index {input}"""
+
+rule string_tie_assembly:
+    input:
+        "01.sort_index_reads/{region}.sorted.bam"
+    output:
+        "02.string_tie_assembly/{region}_assembly.gtf"
+    shell:"""
+    stringtie {input} --rf -f 0.0 -a 1 -j 1 -m 150 -c 2.5 -o {output}
+    """
+
+
+rule filter_generated_genes:
+    input:
+        assemblies = "02.string_tie_assembly/{region}_assembly.gtf",
+        known_regions = annotated_sequences
+    output:
+        "02.string_tie_assembly/{region}_assembly.filtered.gtf"
+    shell:"""
+    bedtools intersect -a {input.assemblies} -b {input.known_regions} -v -wa -s | bedtools sort -i - > {output}
+    """
+
+rule merge_gtf_file_features:
+    input:
+        "02.string_tie_assembly/{region}_assembly.filtered.gtf"
+    params:
+        final_name = ' '.join([output_group_name, "{region}"])
+    output:
+        "03.string_tie_assembly_merged/{region}_assembly_merged.gtf"
+    shell:"""
+        set +e
+        stringtie --merge -o {output} -m 25 -c 3.0 {input} 
+        exitcode=$?
+        if [ $exitcode -eq 1 ]
+        then
+            echo "failed Stringtie {params.final_name}" >> {config[base_output_name]}_failed.txt
+            exit 0
+        else
+            echo "passed Stringtie {params.final_name}" >> {config[base_output_name]}_passed.txt
+            exit 0
+        fi
+        """
+
+
+#Irritating this command still isn't working after a ton of effort and waiting
+#for issue to be solved. As of Thu Oct 10 10:29:13 EDT 2019 I am running an
+#intermediate command in the hopes this actually FUCKING works
+
+checkpoint clustering:
+    input:
+        "03.string_tie_assembly_merged/{region}_assembly_merged.gtf"
+    output:
+        directory("04.split_gtf_file/{region}_dir")
+    shell:"""
+        python scripts/collapse_gtf_file.py -gtf {input} -o 04.split_gtf_file/{wildcards.region}_dir/{wildcards.region}
+        """
+rule gtf_to_fasta:
+    input:
+        file_name = "04.split_gtf_file/{region}_dir/{region}_{i}.gtf",
+        reference = config['reference']
+    params:
+        name = "{region}_{i}"
+    output:
+        renamed_gtf_file = "04.split_gtf_file/{region}_dir/{region}_{i}.renamed.gtf",
+        fasta_output = "05.lncRNA_fasta/{region}_dir/canidate_{region}_{i}.fa"
+    shell:"""
+    
+    sed 's/MSTRG/{params.name}/g' {input.file_name} | sed 's/MSTR/{params.name}/g' | awk '$7 != "." {{print $0}}' > {output.renamed_gtf_file}
+    gffread -w {output.fasta_output} -g {input.reference} -M -W -O -E -K -Z -L -F {output.renamed_gtf_file}
+    """
+
+rule rename_fasta_files:
+    input:
+        "05.lncRNA_fasta/{region}_dir/canidate_{region}_{i}.fa"
+    output:
+        "05.lncRNA_fasta/{region}_dir/canidate_{region}_{i}_renamed.fa"
+    shell:
+        "seqtk rename {input} {wildcards.region}_{wildcards.i}_ > {output}"
+
+#Gather N number of output files from the GTF split
+def aggregate_input(wildcards):
+    checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
+    x = expand("05.lncRNA_fasta/{region}_dir/canidate_{region}_{i}_renamed.fa",
+        region=wildcards.region,
+        i=glob_wildcards(os.path.join(checkpoint_output, "{region}_{i}.gtf")).i)
+    print(x)
+    return x
+
+def aggregate_input2(wildcards):
+    checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
+    x = expand("04.split_gtf_file/{region}_dir/{region}_{i}.renamed.gtf",
+        region=wildcards.region,
+        i=glob_wildcards(os.path.join(checkpoint_output, "{region}_{i}.gtf")).i)
+    return x
+
+#Aggregate fasta from split GTF files together
+rule combine_fasta_file:
+    input:
+        aggregate_input
+    output:
+        "06.combined_region_fasta/{region}.fa"
+    shell:
+        "cat {input} > {output}"
+
+rule combine_GTF_files:
+    input:
+        aggregate_input2
+    output:
+        "06.combined_region_fasta/{region}.gtf"
+    shell:
+        "cat {input} > {output}"
+
+
+#Aggegate aggregated fasta files
+def gather_files(wildcards):
+    files = expand("06.combined_region_fasta/{region}.fa", 
+            region=all_regions)
+    return(files)
+
+def gather_files2(wildcards):
+    files = expand("06.combined_region_fasta/{region}.gtf", 
+            region=all_regions)
+    return(files)
+
+rule aggregate_fasta_files:
+    input:
+        gather_files
+    output:
+       "07.aggregated_fasta/{group_name}_all_fastas_combined.fa"
+    shell:
+        "cat {input} > {output}"
+
+rule aggregate_fasta_files2:
+    input:
+        gather_files2
+    output:
+       "07.aggregated_fasta/{group_name}_all_fastas_combined.gtf"
+    shell:
+        "cat {input} > {output}"
+
+
+
+#run CPC command on aggreaated guys
+rule run_CPC_command:
+    input:
+       "07.aggregated_fasta/{group_name}_all_fastas_combined.fa"
+    output:
+        "08.run_CPC2/{group_name}_cpc_calc_output.txt"
+    conda:
+        "envs/CPC2.yaml"
+    shell:
+        """
+        python2 /home/jpm73279/bin/CPC2-beta/bin/CPC2.py -i {input} -o {output}
+        """
+
+#Note that this weird move command is due to TransDecoder only outputting a
+#single directoro based off input fasta file 
+
+rule transdecoder:
+    input:
+       "07.aggregated_fasta/{group_name}_all_fastas_combined.fa"
+    params:
+        real_first_output = "{group_name}_all_fastas_combined.fa.transdecoder_dir",
+        real_final_output = "09.all_fastas_combined.fa.transdecoder_dir_{group_name}"
+    output:
+        "09.all_fastas_combined.fa.transdecoder_dir_{group_name}/{group_name}_all_fastas_combined.fa.transdecoder_dir/longest_orfs.pep"
+    shell:"""
+    TransDecoder.LongOrfs -t {input} ;
+
+    mv {params.real_first_output} {params.real_final_output}
+    """
+
+rule hmmer_comands:
+    input:
+        "09.all_fastas_combined.fa.transdecoder_dir_{group_name}/{group_name}_all_fastas_combined.fa.transdecoder_dir/longest_orfs.pep"
+    output:
+        raw_hmmer = "10.run_hmmer/{group_name}_all_fastas_hmmer_output.txt",
+        pruned_hmmer = "10.run_hmmer/{group_name}_all_fastas_hmmer_output_no_TE_prot.txt"
+    shell:
+        """
+        hmmscan --tblout {output.raw_hmmer} /scratch/jpm73279/PFAM_database/Pfam-A.hmm {input}; 
+
+        grep -f /scratch/jpm73279/PFAM_database/most_common_TE_domains.txt -v {output.raw_hmmer} > {output.pruned_hmmer}
+        """
+
+rule clean:
+    shell: """
+    rm -rf split_gtf_file
+    rm -rf run_CPC2
+    rm -rf lncRNA_fasta
+    rm -rf lncRNA_fasta_renamed
+    rm -rf aggregated_fasta
+    """
+

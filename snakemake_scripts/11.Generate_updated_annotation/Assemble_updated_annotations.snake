@@ -1,0 +1,121 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob
+import os
+from itertools import product
+
+##### load config and sample sheets #####
+configfile: "assemble_updated.config.yaml"
+
+bed_names = config['bed_files']
+bam_names = config['bam_files']
+
+value_overlap_minor = '.95'
+value_overlap_hyper_large = '.90'
+value_overlap_merge = '1'
+
+
+
+rule all:
+    input:
+        expand("01.bed_bam_intersect/{bed_name}_file_{bam_file}.bam",
+                bed_name = bed_names, bam_file = bam_names),
+        expand("01.bed_bam_intersect/{bed_name}_merged.bam", 
+                bed_name = bed_names),
+        expand("02.string_tie_assembly/{bed_name}_assembly.gtf", 
+                bed_name = bed_names),
+        expand("03.string_tie_assembly_merged/{bed_name}_assembly_merged.gtf",
+                bed_name = bed_names),
+        expand('04.correct_assemblies/{bed_name}_final_assemblies.bed',
+                bed_name = bed_names)
+
+rule rename_types:
+    input:
+    output:
+    shell:
+
+
+
+
+
+rule intersect_tissue_BAM_w_bed:
+    input:
+        bed_file = "00.data/bed_files/{bed_name}.bed",
+        bam_file = "00.data/rna_seq/{bam_file}_Aligned.sortedByCoord.out.bam"
+    output:
+        "01.bed_bam_intersect/{bed_name}_file_{bam_file}.bam"
+    shell:"""
+    bedtools intersect -abam {input.bam_file} -b {input.bed_file} > {output}
+    """
+
+rule samtools_index:
+    input:
+        "01.bed_bam_intersect/{bed_name}_file_{bam_file}.bam"
+    output:
+        "01.bed_bam_intersect/{bed_name}_file_{bam_file}.bam.bai"
+    shell:"""samtools index {input}"""
+
+rule samtools_merge_bam:
+    input:
+        bam_file_expand = expand("01.bed_bam_intersect/{{bed_name}}_file_{bam_file}.bam",
+                bam_file = bam_names),
+        bam_index_expand = expand("01.bed_bam_intersect/{{bed_name}}_file_{bam_file}.bam.bai",
+                bam_file = bam_names)
+    threads: 2 
+    output:
+        "01.bed_bam_intersect/{bed_name}_merged.bam"
+    shell:"""
+    samtools merge -@ {threads} {output} {input.bam_file_expand}
+    """
+rule samtools_index2:
+    input:
+        "01.bed_bam_intersect/{bed_name}_merged.bam"
+    output:
+        "01.bed_bam_intersect/{bed_name}_merged.bam.bai"
+    shell:"""samtools index {input}"""
+
+rule string_tie_assembly:
+    input:
+        bam_file = "01.bed_bam_intersect/{bed_name}_merged.bam",
+        bam_index = "01.bed_bam_intersect/{bed_name}_merged.bam.bai"
+    output:
+        "02.string_tie_assembly/{bed_name}_assembly.gtf"
+    threads: 5
+    shell:"""
+    stringtie {input.bam_file} -p {threads} --rf -f 0.0 -a 0 -m 50 -c 3.0 -f 0.0 -o {output}
+    """
+
+rule merge_gtf_file_features:
+    input:
+        "02.string_tie_assembly/{bed_name}_assembly.gtf"
+    output:
+        "03.string_tie_assembly_merged/{bed_name}_assembly_merged.gtf"
+    shell:"""
+        set +e
+        stringtie --merge -o {output} -m 25 -c 3.0 {input}
+
+        exitcode=$?
+        if [ $exitcode -eq 1 ]
+        then
+            echo {params} >> failed.txt
+            exit 0
+        else
+            echo {params} >> passed.txt
+            exit 0
+        fi
+        """
+
+#MERGE THE OUTPUT AS YOU ARE GETTING DUPLICATES DUMB ASS
+rule return_correct_assemblies:
+    input:
+        original_annotations = "00.data/bed_files/{bed_name}.bed",
+        updated_group = "03.string_tie_assembly_merged/{bed_name}_assembly_merged.gtf"
+    params:
+        '04.correct_assemblies/{bed_name}_final_assemblies.intermed.bed'
+    output:
+        correct_assemblies = '04.correct_assemblies/{bed_name}_final_assemblies.bed'
+    shell:"""
+    bedtools sort -i {input.updated_group} | bedtools intersect -sorted \
+    -a {input.original_annotations} -b - -f .95 -wa | uniq > {output}
+    """
+

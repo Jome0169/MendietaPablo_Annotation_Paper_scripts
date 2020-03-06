@@ -1,0 +1,5 @@
+reference: 00.data/reference/Zea_mays.AGPv4.dna.toplevel.unwrapped.nocontigs.reorderd.fa
+samples: ATAC_samples.txt
+#Kinda of a silly hack but I need a way to dis-entangle input and actual
+#tissues processed
+actual_tissues : "ear leaf root"

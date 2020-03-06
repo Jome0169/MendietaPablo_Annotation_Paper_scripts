@@ -1,0 +1,4 @@
+genome_file: 00.data/reference/Zm-B73-REFERENCE-NAM-5.0.fa
+reference: Zm-B73-REFERENCE-NAM-5.0
+samples: iso_seq_samples.txt
+primer_file: 00.data/IsoSeqPrimers_Express_SMRTLink6.0.fasta

@@ -1,0 +1,70 @@
+#PURPOSE OF THIS SCRIPT IS TO GENERATE BW FILES TO GENERATE FIGURE 1D
+
+
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+##### load config and sample sheets #####
+configfile: "pull_chip_regions_config_leaf.yaml"
+
+regions_to_use = config['regions']
+files_to_use = config['file_to_intersect']
+RNA_files = config['RNA_file']
+
+
+rule all:
+    input:
+        expand("01.region_intersects/{region}_dir/{region}_{filetype}.bam",
+                region = regions_to_use, filetype = files_to_use),
+        expand("01.region_intersects/{region}_dir/{region}_{filetype}.bam.bai", 
+                region = regions_to_use, filetype = files_to_use),
+        expand("02.big_wig/{region}_dir/{region}_{filetype}.bw", 
+                region = regions_to_use, filetype = files_to_use),
+        expand("02.big_wig/{region}_dir/{region}_{filetype}.bam", 
+                region = regions_to_use, filetype = RNA_files)
+
+rule isolate_region:
+    input:
+        region = "regions/{region}.bed", 
+        file_to_intersect = "{filetype}_Aligned.sortedByCoord.out.bam"
+    output:
+        "01.region_intersects/{region}_dir/{region}_{filetype}.bam"
+    shell:
+        """samtools view -b -h -L {input.region} {input.file_to_intersect} > {output}"""
+
+rule index_regions:
+    input:
+        "01.region_intersects/{region}_dir/{region}_{filetype}.bam"
+    output:
+        "01.region_intersects/{region}_dir/{region}_{filetype}.bam.bai"
+    shell:
+        """samtools index {input}"""
+
+rule convert_to_bw:
+    input:
+        useful = "01.region_intersects/{region}_dir/{region}_{filetype}.bam"
+    output:
+        "02.big_wig/{region}_dir/{region}_{filetype}.bw"
+    threads:
+        2
+    shell:
+        """
+        echo {params} ;
+        bamCoverage -b {input.useful} -p {threads} -o {output}
+        """
+
+rule link_bam_RNA:
+    input:
+        bam = "01.region_intersects/{region}_dir/{region}_{filetype}.bam",
+        bam_bai = "01.region_intersects/{region}_dir/{region}_{filetype}.bam.bai"
+    output:
+        link_1 = "02.big_wig/{region}_dir/{region}_{filetype}.bam",
+        link_2 = "02.big_wig/{region}_dir/{region}_{filetype}.bam.bai"
+    shell:
+        """
+        ln -sr {input.bam} {output.link_1}
+        ln -sr {input.bam_bai} {output.link_2}
+        """
+

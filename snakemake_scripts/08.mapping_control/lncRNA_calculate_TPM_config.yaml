@@ -1,0 +1,8 @@
+mappability: 00.data/00.bed_files/Zea_mays.AGPv4.mappability.bed
+maize_v4_annotation: 00.data/00.bed_files/Zea_mays.AGPv4.38.chr.bed
+maize_genes: 00.data/00.bed_files/Zea_mays.AGPv4.38.chr.genes.bed
+maize_lncRNAs: 00.data/00.bed_files/Zea_mays.AGPv4.38.chr.lincRNAs.bed
+samples:
+    RNA_B73_ear: 00.data/01.RNA_seq_BAMs/RNA_B73_ear_Aligned.sortedByCoord.out.bam
+    RNA_B73_leaf: 00.data/01.RNA_seq_BAMs/RNA_B73_leaf_Aligned.sortedByCoord.out.bam
+    RNA_B73_root: 00.data/01.RNA_seq_BAMs/RNA_B73_root_Aligned.sortedByCoord.out.bam

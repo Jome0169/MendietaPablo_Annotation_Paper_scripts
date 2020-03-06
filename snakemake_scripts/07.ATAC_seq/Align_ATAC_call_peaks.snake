@@ -1,0 +1,272 @@
+import pandas as pd
+from snakemake.utils import validate
+import glob 
+import os 
+
+
+##### load config and sample sheets #####
+configfile: "ATAC_config.yaml"
+
+#Load reference File
+ref = config['reference']
+
+#Load Samples from the CSV file - index the important ones
+samples = pd.read_csv(config["samples"], sep=' ').set_index(["tissue", "replicate"], drop=False)
+samples.index = samples.index.set_levels([i.astype(str) for i in samples.index.levels])  # enforce str in index
+
+actual_ATAC_tissues = config['actual_tissues'].split()
+
+
+rule all:
+    input:
+        "00.data/reference/bowtie_idx.1.bt2",
+        expand("01.ATAC_aligned_reads/{tissue}_rep_{replicate}_bowtie2_algn.sam",
+                tissue = samples['tissue'], replicate = samples['replicate']),
+        expand("03.HQ_ATAC_alignment/{tissue}_rep_{replicate}_bowtie2_algn.HQ.bam",
+                tissue = samples['tissue'], replicate = samples['replicate']),
+        expand("03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bam",tissue = samples['tissue']),
+        expand("03.HQ_ATAC_alignment/{tissue}_rep_{replicate}.HQ.sorted.bed", tissue = samples['tissue'], replicate = samples['replicate']),
+        expand("03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bed",tissue = samples['tissue'])
+
+        expand("03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bed",tissue =
+                samples['tissue']),
+        expand('04.ATAC_peaks/{tissue}_ATAC_peaks.narrowPeak', tissue =
+                actual_ATAC_tissues),
+        expand('04.ATAC_peaks/{tissue}_ATAC_{replicate}_peaks.narrowPeak', 
+        tissue = actual_ATAC_tissues, replicate = samples['replicate']),
+        expand("05.ATAC_peaks_Genrich/{tissue}_merged.narrowPeak",tissue =
+                actual_ATAC_tissues),
+        expand("05.ATAC_peaks_Genrich/{tissue}_rep_{replicate}.narrowPeak",tissue =
+                actual_ATAC_tissues,replicate = samples['replicate'])
+
+
+
+        expand("02.unique_align/{tissue}_{chip}_{replicate}_bowtie2_algn.bam", tissue = samples["tissue"],
+
+
+rule generate_reference_index:
+    input:
+        expand("{ref}", ref = ref)
+    params:
+        output_name = "00.data/reference/bowtie_idx"
+    output:
+        "00.data/reference/bowtie_idx.1.bt2"
+    threads: 40
+    shell:
+        "bowtie2-build {input} {params.output_name} -p {threads}"
+
+def get_ATAC_left(wildcards):
+    left_file = "00.data/ATAC/" + samples.loc[(wildcards.tissue, wildcards.replicate), ["left_file"]].dropna()
+    return left_file 
+
+
+def get_ATAC_right(wildcards):
+    right_file ="00.data/ATAC/" + samples.loc[(wildcards.tissue, wildcards.replicate), ["right_file"]].dropna()
+    return right_file 
+
+
+#Fastp
+rule trim_reads_left:
+    input:
+        right_input_file = get_ATAC_right,
+        left_input_file = get_ATAC_left
+    params:
+        right_trimmed_unpaired = "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_unpaired.R.fq",
+        left_trimmed_unpaired = "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_unpaired.L.fq"
+    output:
+        right_trimmed = "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_paired.R.fq",
+        left_trimmed = "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_paired.L.fq"
+    threads: 5
+    message:"""Trimming"""
+    shell:
+        """
+        java -jar /usr/local/apps/eb/Trimmomatic/0.36-Java-1.8.0_144/trimmomatic-0.36.jar \
+        PE -threads {threads} {input.right_input_file} {input.left_input_file} \
+        {output.right_trimmed} {params.right_trimmed_unpaired} \
+        {output.left_trimmed} {params.left_trimmed_unpaired} \
+        ILLUMINACLIP:/scratch/jpm73279/04.lncRNA/02.Analysis/05.ATAC_align/00.data/adapter/adapter.fa:2:30:10 \
+        LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+        """
+
+rule align_regions_to_genome:
+    input:
+        right_file =  "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_paired.R.fq",
+        left_file = "00.data/trimmed_ATAC/{tissue}_rep_{replicate}_trimmed_paired.L.fq",
+        geneome = "00.data/reference/bowtie_idx.1.bt2"
+    output:
+        chip_mod="01.ATAC_aligned_reads/{tissue}_rep_{replicate}_bowtie2_algn.sam"
+    params:
+        "01.ATAC_aligned_reads/{tissue}_rep_{replicate}_bowtie2_algn.metrics.txt"
+    message:"""Aligning"""
+    threads: 20
+    shell:
+        """
+        bowtie2 -x 00.data/reference/bowtie_idx -X 1000 --very-sensitive --met-file {params} -p {threads} -1 {input.right_file} -2 {input.left_file} -S {output.chip_mod}         
+        """
+
+
+#Allowing mapping of Non-unique. We may do this for Chip-Seq, but NOT ATAC
+
+#grep -E "@|NM:" {input.chip_mod} | grep -v "XS:" > {output.chip_mod_unique_sam} ;
+#samtools sort {output.chip_mod_unique_sam} > {output.chip_mod_unique_bam} -@ {threads}
+rule unique_reads_to_BAM_mapping_qual:
+    input:
+        chip_mod="01.ATAC_aligned_reads/{tissue}_rep_{replicate}_bowtie2_algn.sam"
+    output:
+        #chip_mod_unique_sam = "02.filtering_reads/01.unique_align/{tissue}_rep_{replicate}_bowtie2_algn.sam",
+        chip_mod_unique_bam = "02.filtering_reads/01.unique_align/{tissue}_rep_{replicate}_bowtie2_algn.bam"
+    threads: 10 
+    shell:"""
+        samtools sort -n --output-fmt BAM {input.chip_mod} > {output.chip_mod_unique_bam} -@ {threads}
+        """
+
+#Mark Duplicates
+rule mark_duplicates_picard:
+    input:
+        chip_mod_unique_bam = "02.filtering_reads/01.unique_align/{tissue}_rep_{replicate}_bowtie2_algn.bam"
+    params:
+        resorted_bam = "02.filtering_reads/01.unique_align/{tissue}_rep_{replicate}_bowtie2_algn.sorted.bam",
+        metrics = "02.filtering_reads/02.duplicates/{tissue}_rep_{replicate}.metrics.txt"
+    output:
+        chip_mod_unique_bam2 = "02.filtering_reads/02.duplicates/{tissue}_rep_{replicate}_bowtie2_algn.rmDup.bam"
+    threads: 5 
+    shell:"""
+    ml picard/2.16.0-Java-1.8.0_144
+
+    java -jar $EBROOTPICARD/picard.jar SortSam I={input.chip_mod_unique_bam} O={params.resorted_bam} SORT_ORDER=coordinate
+
+    java -jar $EBROOTPICARD/picard.jar MarkDuplicates REMOVE_DUPLICATES=true \
+    I={params.resorted_bam} O={output.chip_mod_unique_bam2} M={params.metrics}
+    """
+
+#Check Input Output
+rule filter_map_qual:
+    input:
+        "02.filtering_reads/02.duplicates/{tissue}_rep_{replicate}_bowtie2_algn.rmDup.bam"
+    output:
+        output_2 = "03.HQ_ATAC_alignment/{tissue}_rep_{replicate}_bowtie2_algn.HQ.bam"
+    threads: 10 
+    shell:"""
+    samtools index {input}
+    alignmentSieve -b {input} -o {output.output_2} --minMappingQuality 10 --filterMetrics log.txt --ATACshift
+    """
+
+
+rule merge_ATAC_reps:
+    input:
+        rep_1 = "03.HQ_ATAC_alignment/{tissue}_rep_1_bowtie2_algn.HQ.bam",
+        rep_2 = "03.HQ_ATAC_alignment/{tissue}_rep_2_bowtie2_algn.HQ.bam"
+    params:
+        "03.HQ_ATAC_alignment/{tissue}_merged.HQ.unsorted.bam"
+    output:
+        merge_output = "03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bam"
+    threads: 10 
+    shell:"""
+    samtools merge -f {params} {input.rep_1} {input.rep_1}
+    samtools sort -n -O BAM -o {output.merge_output} {params} 
+    """
+
+#Why I have to do this
+#https://www.biostars.org/p/364002/
+rule BAM_to_BED_merged:
+    input:
+        merge_output_bam= "03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bam"
+    output:
+        merge_output_bed = "03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bed"
+    threads: 10
+    shell:"""
+    bedtools bamtobed -i {input.merge_output_bam} > {output.merge_output_bed}
+    """
+
+rule BAM_to_BED_replicates:
+    input:
+        rep_bam = "03.HQ_ATAC_alignment/{tissue}_rep_{replicate}_bowtie2_algn.HQ.bam"
+    output:
+        rep_bed = "03.HQ_ATAC_alignment/{tissue}_rep_{replicate}.HQ.sorted.bed"
+    threads: 10
+    shell:"""
+    bedtools bamtobed -i {input.rep_bam} > {output.rep_bed}
+    """
+
+def grab_input_file(wildcards):
+    z = glob.glob(os.path.join("03.HQ_ATAC_alignment/", ("input" +"_merged.HQ.sorted.bed")))
+    print(z)
+    return z 
+
+
+def grab_ATAC_file(wildcards):
+    z = glob.glob(os.path.join("03.HQ_ATAC_alignment/", (wildcards.tissue + "_merged.HQ.sorted.bed")))
+    print(z)
+    return z 
+
+
+rule call_peaks_MACS:
+    input:
+        ATAC_reads_filtered = "03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bed",
+        ATAC_input = "03.HQ_ATAC_alignment/input_merged.HQ.sorted.bed"
+    params:
+        output_dir = "04.ATAC_peaks",
+        name_output = "{tissue}_ATAC"
+    output:
+        '04.ATAC_peaks/{tissue}_ATAC_peaks.narrowPeak'
+    threads: 10 
+    conda:
+        "envs/MACS_2.yml"
+    shell:"""
+    macs2 callpeak -t {input.ATAC_reads_filtered} -c {input.ATAC_input} \
+    -f BED --nomodel --extsize 200 --shift -100 -g 2.1e8 -q .01 -n {params.name_output} \
+    --outdir {params.output_dir}
+    """
+
+
+rule call_peaks_MACS_rep:
+    input:
+        ATAC_HQ_treatment = "03.HQ_ATAC_alignment/{tissue}_rep_{replicate}.HQ.sorted.bed",
+        ATAC_HQ_input = "03.HQ_ATAC_alignment/input_rep_{replicate}.HQ.sorted.bed"
+    params:
+        output_dir = "04.ATAC_peaks",
+        name_output = "{tissue}_ATAC_{replicate}"
+    output:
+        '04.ATAC_peaks/{tissue}_ATAC_{replicate}_peaks.narrowPeak'
+    threads: 10 
+    conda:
+        "envs/MACS_2.yml"
+    shell:"""
+    macs2 callpeak -t {input.ATAC_HQ_treatment} -c {input.ATAC_HQ_input} \
+    -f BED --nomodel --extsize 200 --shift -100 -g 1.6e8 -q .01 -n {params.name_output} \
+    --outdir {params.output_dir}
+    """
+
+rule call_peaks_GeneRich_rep:
+    input:
+        ATAC_tissue = "02.filtering_reads/01.unique_align/{tissue}_rep_{replicate}_bowtie2_algn.bam",
+        ATAC_control = "02.filtering_reads/01.unique_align/input_rep_{replicate}_bowtie2_algn.bam"
+    params:
+        frag_bed = "05.ATAC_peaks_Genrich/{tissue}_rep_{replicate}.fragments.bed",
+        bed_graphish = "05.ATAC_peaks_Genrich/{tissue}_rep_{replicate}.bedgraphish"
+    output:
+        "05.ATAC_peaks_Genrich/{tissue}_rep_{replicate}.narrowPeak"
+    shell:"""
+    ml Genrich
+
+    Genrich -j -y -r -d 200 -q .01 -v -c {input.ATAC_control} -t {input.ATAC_tissue} -b {params.frag_bed} -f {params.bed_graphish} -o {output}
+    """
+
+rule call_peaks_GeneRich_merged:
+    input:
+        ATAC_tissue = "03.HQ_ATAC_alignment/{tissue}_merged.HQ.sorted.bam",
+        ATAC_control = "03.HQ_ATAC_alignment/input_merged.HQ.sorted.bam"
+    params:
+        frag_bed = "05.ATAC_peaks_Genrich/{tissue}_merged.fragments.bed",
+        bed_graphish = "05.ATAC_peaks_Genrich/{tissue}_merged.bedgraphish"
+    output:
+        "05.ATAC_peaks_Genrich/{tissue}_merged.narrowPeak"
+    shell:"""
+    ml Genrich
+
+    Genrich -j -y -r -d 200 -q .01 -v -c {input.ATAC_control} -t {input.ATAC_tissue} -b {params.frag_bed} -f {params.bed_graphish} -o {output}
+    """
+
+
+
+
