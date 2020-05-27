@@ -328,68 +328,6 @@ def merge_gene_feature_promoter(feature, number_index_1):
 
 
 
-def merge_unkown_peaks_gene(feature):
-    """
-
-    :feature: TODO
-    :returns: TODO
-
-    """
-    #gene_strand_info = feature[11]
-
-    take_starts =  [feature.start, int(feature[11])]
-    take_stops = [feature.stop, int(feature[12])]
-
-    take_new_start = min(take_starts)
-    take_new_stop = max(take_stops)
-
-    #Alter Names
-    add_start_stop_diff = gene_extension_val(take_starts, take_stops)
-    if add_start_stop_diff >= 20000:
-        return feature
-    elif add_start_stop_diff >= 5000 and add_start_stop_diff < 20000:
-        feature.name = feature.name + '_major_extended_hyper_large'
-        feature.score = "3"
-    if add_start_stop_diff >= 500 and  add_start_stop_diff < 5000:
-        feature.score = "2"
-        feature.name = feature.name + '_major_extended'
-    elif add_start_stop_diff < 500 and add_start_stop_diff > 50:
-        feature.score = "1"
-        feature.name =  feature.name + '_minor_extended'
-
-    return feature
-
-#def merge_unkown_peaks_gene2(feature):
-#    """
-#
-#    :feature: TODO
-#    :returns: TODO
-#
-#    """
-#
-#    take_starts =  [feature.start, int(feature[7])]
-#    take_stops = [feature.stop, int(feature[8])]
-#
-#    take_new_start = min(take_starts)
-#    take_new_stop = max(take_stops)
-#
-#    add_start_stop_diff = gene_extension_val(take_starts, take_stops)
-#
-#    if add_start_stop_diff >= 20000:
-#        return feature
-#    elif add_start_stop_diff >= 5000 and add_start_stop_diff < 20000:
-#        feature.name = feature.name + '_major_extended_hyper_large'
-#        feature.score = "3"
-#    if add_start_stop_diff >= 500 and  add_start_stop_diff < 5000:
-#        feature.score = "2"
-#        feature.name = feature.name + '_major_extended'
-#    elif add_start_stop_diff < 500 and add_start_stop_diff > 50:
-#        feature.score = "1"
-#        feature.name =  feature.name + '_minor_extended'
-#
-#    return feature
-
-
 
 def find_closest_gene(isoalted_peaks_no_promoter, merged_promoter_gene_features):
         """Find the closes promoter to each gene. Initally split by strand
@@ -427,44 +365,6 @@ def find_closest_gene(isoalted_peaks_no_promoter, merged_promoter_gene_features)
 
         return(closest_grouping)
 
-#def find_closest_gene2(isoalted_peaks_no_promoter, conserved_promoter):
-#        """Find the closes promoter to each gene. Initally split by strand
-#        because that dictates what 'upsteam' and downstream are 
-#        :returns: TODO
-#
-#        """
-#
-#        def merge_unkown_peaks_gene(feature):
-#            """TODO: Docstring for merge_unkown_peaks_gene.
-#
-#            :feature: TODO
-#            :returns: TODO
-#
-#            """
-#            #gene_strand_info = feature[11]
-#
-#            take_starts =  [feature.start, int(feature[6])]
-#            take_stops = [feature.stop, int(feature[7])]
-#
-#            take_new_start = min(take_starts)
-#            take_new_stop = max(take_stops)
-#
-#
-#            #Generate the New Feature
-#            feature.start = take_new_start
-#            feature.stop = take_new_stop
-#            feature.strand = "."
-#            feature.name = "Possible_novel_gene"
-#            feature.score = '4'
-#            return feature
-#
-#        closest_grouping = isoalted_peaks_no_promoter.sort().closest(conserved_promoter,
-#                D='a').sort().each(merge_unkown_peaks_gene).sort().saveas()
-#
-#        merged_closest = closest_grouping.merge(c=[4,5,6,9],
-#                o=["distinct,distinct,distinct,min"])
-#
-#        return(merged_closest)
 
 def assign_strand_novel(feature):
     """Assign strand based off which direction promoter was from region of
