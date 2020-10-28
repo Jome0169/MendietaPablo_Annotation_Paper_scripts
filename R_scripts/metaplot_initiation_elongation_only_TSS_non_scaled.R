@@ -10,12 +10,17 @@ setwd("/Users/feilab/Projects/03.ncRNA_project/02.Analysis/lncRNA_copy_files/202
 
 
 
+
 H3K36me3_colors <- "#CB2026"
 H3K4me1_colors <-  "#642165"
 H3K4me3_colors <- "#B89BC9"
 H3K56ac_colors <- "#99CA3C"
+ATAC_colors <- "#FFCD05"
 H2A_colors <-  "#66c2a5"
 H3K27me3_colors <- "#234bb8"
+
+
+
 read_gunzipped_file <- function(zipped_file){
   
   bw_zipped_file <- read_delim(zipped_file, delim='\t', col_names = FALSE, skip = 1)
@@ -65,12 +70,12 @@ generate_complex_heatmaps_chip_scaled_region <- function(TSS_matrix, mark_name, 
   #Get the same max value for each 
   #y_max_val <- round(max(colMeans(TES_matrix, na.rm = TRUE), colMeans(TSS_matrix, na.rm = TRUE))) + 2 
   
-  axis_name = c("-2000bp","TSS")
+  axis_name = c("-2kb","TSS", "2kb")
   final_graph <-  EnrichedHeatmap(TSS_matrix,  column_title =  mark_name, show_heatmap_legend = FALSE, use_raster = TRUE,
                                   row_split = row_split_array, cluster_rows = FALSE, 
                                   column_title_gp = gpar(fontsize = 25, fontface = "bold"), 
                                   col = col_fun, axis_name_rot = 90, row_title_rot = 90, axis_name_gp = gpar(fontsize = 18), axis_name = axis_name,pos_line_gp = gpar(lty = 3),
-                                  top_annotation = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = 2:4)))) 
+                                  top_annotation = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = c(H3K27me3_colors, "#888A8D"))))) 
   
   
   
@@ -81,7 +86,7 @@ generate_complex_heatmaps_chip_scaled_region <- function(TSS_matrix, mark_name, 
   
 }
 normalize_to_input <- function(mark_name_1, input_mark){
-  normalized_to_input <- (mark_name_1 + 1)/(input_mark +1)
+  normalized_to_input <- (mark_name_1 + 1)-(input_mark +1)
   return(normalized_to_input)
 }
 combine_identical_marks_on_off <- function(genes_on, genes_off) {
@@ -118,24 +123,11 @@ take_subsample_multi_data_frame <- function(number_desired, file_1, file_2, file
 
 
 #Call sub functions depending on mark_type
-generate_final_plot_scaled <- function(file_1, mark_name, color_hex, row_split_array, mark_type) {
-  
-  if (mark_type == "R2C2"){
-    TSS_heatmap <- generate_tss_heatmap_r2c2_scaled_region(file_1, mark_name)
-    R2C2_graphed_heatmap <- generate_complex_heatmaps_R2C2_scaled_region(TSS_heatmap, mark_name, row_split_array, color_hex)
-    return(R2C2_graphed_heatmap)
-    
-  } else if (mark_type == "ATAC") {
-    ATAC_heatmap <- generate_tss_heatmap_scaled_region(file_1, mark_name)
-    ATAC_graphed_heatmap <- generate_complex_heatmaps_ATAC_scaled_region(ATAC_heatmap, mark_name, row_split_array, color_hex)
-    return(ATAC_graphed_heatmap)
-    
-  } else if (mark_type == "CHIP") {
-    Chip_heatmap <- generate_tss_heatmap_scaled_region(file_1, mark_name)
-    Chip_plot_heatmap <- generate_complex_heatmaps_chip_scaled_region(Chip_heatmap, mark_name, row_split_array, color_hex)
-    return(Chip_plot_heatmap)
-  } 
-}
+generate_final_plot_scaled <- function(file_1, mark_name, color_hex, row_split_array) {
+  Chip_heatmap <- generate_tss_heatmap_scaled_region(file_1, mark_name)
+  Chip_plot_heatmap <- generate_complex_heatmaps_chip_scaled_region(Chip_heatmap, mark_name, row_split_array, color_hex)
+  return(Chip_plot_heatmap)
+  }
 
 
 
@@ -210,12 +202,12 @@ leaf_initiation_only_leaf_H3K56ac_matrix_normalized <- normalize_to_input(leaf_i
 dim(leaf_initiation_only_leaf_H2AZ_matrix_normalized)
 length(final_split)
 
-leaf_initiation_only_leaf_H2AZ_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-leaf_initiation_only_leaf_H3K27me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-leaf_initiation_only_leaf_H3K36me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-leaf_initiation_only_leaf_H3K4me1_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-leaf_initiation_only_leaf_H3K4me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-leaf_initiation_only_leaf_H3K56ac_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+leaf_initiation_only_leaf_H2AZ_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+leaf_initiation_only_leaf_H3K27me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+leaf_initiation_only_leaf_H3K36me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+leaf_initiation_only_leaf_H3K4me1_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+leaf_initiation_only_leaf_H3K4me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+leaf_initiation_only_leaf_H3K56ac_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -231,8 +223,8 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 leaf_initiation_only_leaf_plot_draw = grid.grabExpr(draw(leaf_initiation_only_leaf_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="leaf_initiation_only_leaf_TSS_non_scaled.pdf", plot=leaf_initiation_only_leaf_plot_draw, width = 15, height = 18, units = "in")
-system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/leaf_initiation_only_leaf_TSS_non_scaled.pdf")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="leaf_initiation_only_leaf_TSS_non_scaled.pdf", plot=leaf_initiation_only_leaf_plot_draw, width = 6, height = 4, units = "in")
+system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots")
 
 
 
@@ -301,12 +293,12 @@ root_initiation_only_root_H3K56ac_matrix_normalized <- normalize_to_input(root_i
 
 
 
-root_initiation_only_root_H2AZ_plots <- generate_final_plot_scaled(root_initiation_only_root_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-root_initiation_only_root_H3K27me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-root_initiation_only_root_H3K36me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-root_initiation_only_root_H3K4me1_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-root_initiation_only_root_H3K4me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-root_initiation_only_root_H3K56ac_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+root_initiation_only_root_H2AZ_plots <- generate_final_plot_scaled(root_initiation_only_root_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+root_initiation_only_root_H3K27me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+root_initiation_only_root_H3K36me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+root_initiation_only_root_H3K4me1_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+root_initiation_only_root_H3K4me3_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+root_initiation_only_root_H3K56ac_plots <- generate_final_plot_scaled(root_initiation_only_root_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -322,8 +314,8 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 root_initiation_only_root_plot_draw = grid.grabExpr(draw(root_initiation_only_root_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="root_initiation_only_root_TSS_non_scaled.pdf", plot=root_initiation_only_root_plot_draw, width = 15, height = 18, units = "in")
-system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/root_initiation_only_root_TSS_non_scaled.pdf")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="root_initiation_only_root_TSS_non_scaled.png", plot=root_initiation_only_root_plot_draw, width = 15, height = 18, units = "in")
+system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/root_initiation_only_root_TSS_non_scaled.png")
 
 
 
@@ -390,12 +382,12 @@ ear_initiation_only_ear_H3K56ac_matrix_normalized <- normalize_to_input(ear_init
 
 
 
-ear_initiation_only_ear_H2AZ_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-ear_initiation_only_ear_H3K27me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-ear_initiation_only_ear_H3K36me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-ear_initiation_only_ear_H3K4me1_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-ear_initiation_only_ear_H3K4me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-ear_initiation_only_ear_H3K56ac_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+ear_initiation_only_ear_H2AZ_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+ear_initiation_only_ear_H3K27me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+ear_initiation_only_ear_H3K36me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+ear_initiation_only_ear_H3K4me1_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+ear_initiation_only_ear_H3K4me3_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+ear_initiation_only_ear_H3K56ac_plots <- generate_final_plot_scaled(ear_initiation_only_ear_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -411,8 +403,8 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 ear_initiation_only_ear_plot_draw = grid.grabExpr(draw(ear_initiation_only_ear_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="ear_initiation_only_ear_TSS_non_scaled.pdf", plot=ear_initiation_only_ear_plot_draw, width = 15, height = 18, units = "in")
-system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/ear_initiation_only_ear_TSS_non_scaled.pdf")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="ear_initiation_only_ear_TSS_non_scaled.png", plot=ear_initiation_only_ear_plot_draw, width = 15, height = 18, units = "in")
+system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/ear_initiation_only_ear_TSS_non_scaled.png")
 
 
 ######################s######################s###################################################s#######################################################S
@@ -503,12 +495,12 @@ leaf_elongation_only_leaf_H3K56ac_matrix_normalized <- normalize_to_input(leaf_e
 
 
 
-leaf_elongation_only_leaf_H2AZ_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-leaf_elongation_only_leaf_H3K27me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-leaf_elongation_only_leaf_H3K36me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-leaf_elongation_only_leaf_H3K4me1_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-leaf_elongation_only_leaf_H3K4me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-leaf_elongation_only_leaf_H3K56ac_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+leaf_elongation_only_leaf_H2AZ_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+leaf_elongation_only_leaf_H3K27me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+leaf_elongation_only_leaf_H3K36me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+leaf_elongation_only_leaf_H3K4me1_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+leaf_elongation_only_leaf_H3K4me3_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+leaf_elongation_only_leaf_H3K56ac_plots <- generate_final_plot_scaled(leaf_elongation_only_leaf_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -524,7 +516,7 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 leaf_elongation_only_leaf_plot_draw = grid.grabExpr(draw(leaf_elongation_only_leaf_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="leaf_elongation_only_leaf_TSS_non_scaled.pdf", plot=leaf_elongation_only_leaf_plot_draw, width = 15, height = 18, units = "in")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="leaf_elongation_only_leaf_TSS_non_scaled.pdf", plot=leaf_elongation_only_leaf_plot_draw, width = 6, height = 6, units = "in")
 system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/leaf_elongation_only_leaf_TSS_non_scaled.pdf")
 
 
@@ -575,7 +567,7 @@ values <- c( "root elongation Only", "Control Expressed Genes")
 final_split <- rep(values, times = c(root_elongation_only, root_elongation_only))
 
 
-root_elongation_only_control_merged_H2AZ <- combine_identical_marks_on_off(root_elongation_only_root_H2AZ_TSS,root_on_genes_root_H2AZ_sub_sampled)
+root_elongation_only_control_merged_H2AZ <- combine_identical_marks_on_off(root_elongation_only_root_H2AZ_TSS,root_on_genes_root_H2AZ_sub_sampled)f
 root_elongation_only_control_merged_H3K27me3 <- combine_identical_marks_on_off(root_elongation_only_root_H3K27me3_TSS,root_on_genes_root_H3K27me3_sub_sampled)
 root_elongation_only_control_merged_H3K36me3 <- combine_identical_marks_on_off(root_elongation_only_root_H3K36me3_TSS,root_on_genes_root_H3K36me3_sub_sampled)
 root_elongation_only_control_merged_H3K4me1 <- combine_identical_marks_on_off(root_elongation_only_root_H3K4me1_TSS,root_on_genes_root_H3K4me1_sub_sampled)
@@ -594,12 +586,12 @@ root_elongation_only_root_H3K56ac_matrix_normalized <- normalize_to_input(root_e
 
 
 
-root_elongation_only_root_H2AZ_plots <- generate_final_plot_scaled(root_elongation_only_root_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-root_elongation_only_root_H3K27me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-root_elongation_only_root_H3K36me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-root_elongation_only_root_H3K4me1_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-root_elongation_only_root_H3K4me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-root_elongation_only_root_H3K56ac_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+root_elongation_only_root_H2AZ_plots <- generate_final_plot_scaled(root_elongation_only_root_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+root_elongation_only_root_H3K27me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+root_elongation_only_root_H3K36me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+root_elongation_only_root_H3K4me1_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+root_elongation_only_root_H3K4me3_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+root_elongation_only_root_H3K56ac_plots <- generate_final_plot_scaled(root_elongation_only_root_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -615,8 +607,8 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 root_elongation_only_root_plot_draw = grid.grabExpr(draw(root_elongation_only_root_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="root_elongation_only_root_TSS_non_scaled.pdf", plot=root_elongation_only_root_plot_draw, width = 15, height = 18, units = "in")
-system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/root_elongation_only_root_TSS_non_scaled.pdf")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="root_elongation_only_root_TSS_non_scaled.png", plot=root_elongation_only_root_plot_draw, width = 15, height = 18, units = "in")
+system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/root_elongation_only_root_TSS_non_scaled.png")
 
 
 
@@ -682,12 +674,12 @@ ear_elongation_only_ear_H3K56ac_matrix_normalized <- normalize_to_input(ear_elon
 
 
 
-ear_elongation_only_ear_H2AZ_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split, "CHIP")
-ear_elongation_only_ear_H3K27me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split, "CHIP")
-ear_elongation_only_ear_H3K36me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split, "CHIP")
-ear_elongation_only_ear_H3K4me1_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
-ear_elongation_only_ear_H3K4me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
-ear_elongation_only_ear_H3K56ac_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+ear_elongation_only_ear_H2AZ_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H2AZ_matrix_normalized, "H2AZ", H2A_colors, final_split)
+ear_elongation_only_ear_H3K27me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K27me3_matrix_normalized, "H3K27me3", H3K27me3_colors, final_split)
+ear_elongation_only_ear_H3K36me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K36me3_matrix_normalized, "H3K36me3", H3K36me3_colors, final_split)
+ear_elongation_only_ear_H3K4me1_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split)
+ear_elongation_only_ear_H3K4me3_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split)
+ear_elongation_only_ear_H3K56ac_plots <- generate_final_plot_scaled(ear_elongation_only_ear_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split)
 
 
 
@@ -703,8 +695,8 @@ units_apart <- c(.7)
 draw_units <- rep(units_apart, 6)
 
 ear_elongation_only_ear_plot_draw = grid.grabExpr(draw(ear_elongation_only_ear_plot, ht_gap = unit(draw_units, "cm")))
-ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="ear_elongation_only_ear_TSS_non_scaled.pdf", plot=ear_elongation_only_ear_plot_draw, width = 15, height = 18, units = "in")
-system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/ear_elongation_only_ear_TSS_non_scaled.pdf")
+ggsave(path = "/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/", filename="ear_elongation_only_ear_TSS_non_scaled.png", plot=ear_elongation_only_ear_plot_draw, width = 15, height = 18, units = "in")
+system("open /Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/imgs/metaplots/ear_elongation_only_ear_TSS_non_scaled.png")
 
 
 

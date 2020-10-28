@@ -11,6 +11,21 @@ with open(argv[1]) as f:
 
 
 
+
+def count_number_novel(seperate_list):
+    """TODO: Docstring for count_number_novel.
+
+    :seperate_list: TODO
+    :returns: TODO
+
+    """
+    counter = 0
+    for i in seperate_list:
+        if "novel" in i:
+            counter += 1
+    return counter
+
+
 list_of_novel = []
 list_of_merged = []
 list_of_minor_extension = []
@@ -20,13 +35,19 @@ list_of_hyper_large = []
 
 
 
-
-
-
 for item in generate_list:
-    if "," in item[3] and "gene:" in item[3]:
-        list_of_merged.append(item)
-    elif "," in item[3] and "gene:" not in item[3]:
+    if "," in item[3] and str(argv[2]) in item[3]:
+        split_name_list = item[3].split(',')
+        number_novel = count_number_novel(split_name_list)
+        number_merged_items = len(split_name_list)
+        take_diff = (number_merged_items - number_novel)
+        if take_diff == 2:
+            list_of_major_extension.append(item)
+        elif take_diff == 0:
+            list_of_novel.append(item)
+        elif take_diff > 1:
+            list_of_merged.append(item)
+    elif "," in item[3] and  str(argv[2]) not in item[3]:
         list_of_novel.append(item)
     elif "," not in item[3] and "novel" in item[3]:
         list_of_novel.append(item)
@@ -40,26 +61,6 @@ for item in generate_list:
         list_of_un_altered.append(item)
 
 
-
-
-print('Novel')
-print(list_of_novel)
-
-print('Merged')
-print(list_of_merged)
-
-
-print('Minor')
-print(list_of_minor_extension )
-
-print('Major')
-print(list_of_major_extension)
-
-print('HyperLarge')
-print(list_of_hyper_large)
-
-print('Normal')
-print(list_of_un_altered)
 
 
 def write_output(list_of_bed, output_file):
@@ -77,9 +78,9 @@ def write_output(list_of_bed, output_file):
             f.write(tab_sep)
             f.write('\n')
 
-write_output(list_of_novel, argv[2] + '_' + "novel_genes.bed")
-write_output(list_of_merged, argv[2] + '_' + "merged_genes.bed")
-write_output(list_of_minor_extension, argv[2] + '_' + "minor_extension_genes.bed")
-write_output(list_of_major_extension, argv[2] + '_' + "major_extension_genes.bed")
-write_output(list_of_un_altered, argv[2] + '_' + "un_altered_genes.bed")
-write_output(list_of_hyper_large, argv[2] + '_' + "hyper_large_genes.bed")
+write_output(list_of_novel, argv[3] + '_' + "novel_genes.bed")
+write_output(list_of_merged, argv[3] + '_' + "merged_genes.bed")
+write_output(list_of_minor_extension, argv[3] + '_' + "minor_extension_genes.bed")
+write_output(list_of_major_extension, argv[3] + '_' + "major_extension_genes.bed")
+write_output(list_of_un_altered, argv[3] + '_' + "un_altered_genes.bed")
+write_output(list_of_hyper_large, argv[3] + '_' + "hyper_large_genes.bed")

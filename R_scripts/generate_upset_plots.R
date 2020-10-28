@@ -25,17 +25,49 @@ assign_overlap_yes_no <- function(histone_mod_tribble) {
   
   return(histone_mod_tribble_passing)
 }
-
-
-
-combine_overlap_TPM <- function(TPM_file, K36_file, K4me1_file, K4me3_file, K56ac_file){
-  
-
-  col_names_TPM_file <- c("gene_ID", "TPM")
+alternative_TPM_file <- function(TPM_file) {
+  col_names_TPM_file <- c("gene_ID", "Chr", "Start", "End", "Length", "Reads", "TPM")
   read_TPM_gene <- read_delim(TPM_file, '\t', col_names = col_names_TPM_file) %>% 
     mutate(updated_name = str_c("gene", gene_ID , sep =':')) %>% 
     select(-gene_ID) %>% 
-    dplyr::rename(gene_ID = updated_name)
+    dplyr::rename(gene_ID = updated_name) %>% 
+    select(gene_ID, TPM)
+  
+  
+  read_TPM_gene = read_TPM_gene[-1,]
+  
+  pound_sign_carriers <- read_TPM_gene %>% 
+    dplyr::filter(stringr::str_detect(gene_ID, '#')) %>% 
+    dplyr::mutate(sample = gsub("#.*", "", gene_ID)) %>% 
+    dplyr::group_by(sample) %>%
+    dplyr::summarize(new_TPM = mean(TPM)) %>% 
+    dplyr::rename(gene_ID = sample) %>% 
+    dplyr::rename(TPM = new_TPM)
+  
+  
+  read_TPM_gene_2 <- bind_rows(read_TPM_gene,pound_sign_carriers)
+  
+  read_TPM_gene_2$TPM <- as.numeric(read_TPM_gene_2$TPM)
+  
+  
+  return(read_TPM_gene_2)
+}
+
+
+
+
+
+
+
+
+combine_overlap_TPM <- function(TPM_file, K36_file, K4me1_file, K4me3_file, K56ac_file, mappability_file){
+  
+
+  col_names_TPM_file <- c("gene_ID", "TPM")
+  read_TPM_gene <- alternative_TPM_file(TPM_file)
+  
+  mapp_hit_cols <- c("chrom", "start", "stop", "gene_ID", "NA", "strand", "origin", "bio_ID", "other","other_2", "mapp")
+  mappability <- read_delim(mappability_file, '\t', col_names = mapp_hit_cols, col_types = "ccccccccccd" ) %>% select(gene_ID, mapp)
   
   bed_hit_col_names <- c("chrom", "start", "stop", "gene_ID", "NA", "strand", "origin", "bio_ID","none", "ID_string", "score", "hit_chrom", "hit_start", "hit_stop")
   gene_H3K36me3 <- read_delim(K36_file, '\t', col_names = bed_hit_col_names) 
@@ -55,7 +87,9 @@ combine_overlap_TPM <- function(TPM_file, K36_file, K4me1_file, K4me3_file, K56a
     left_join(., gene_H3K4me1_pass_fail,  by = c("gene_ID")) %>% 
     left_join(., gene_H3K4me3_pass_fail,  by = c("gene_ID")) %>% 
     left_join(., gene_H3K56ac_pass_fail,  by = c("gene_ID")) %>% 
-    filter(is.na(H3K36me3) == FALSE & is.na(H3K4me1) == FALSE & is.na(H3K4me3) == FALSE &  is.na(H3K56ac) == FALSE)
+    filter(is.na(H3K36me3) == FALSE & is.na(H3K4me1) == FALSE & is.na(H3K4me3) == FALSE &  is.na(H3K56ac) == FALSE) %>% 
+    left_join(., mappability, by = c("gene_ID")) %>% 
+    filter(mapp > .65)
   
   return(gene_all_combined)
   
@@ -63,14 +97,19 @@ combine_overlap_TPM <- function(TPM_file, K36_file, K4me1_file, K4me3_file, K56a
 
 setwd("/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2")
 
-"/Users/feilab/Projects/03.ncRNA_project/03.Figures/Figure2/00.data/TPM_vals/RNA_B73_leaf_TPM.surviving.txt"
+
+
+
 
 leaf_overlap_expression <- combine_overlap_TPM(
 "00.data/TPM_vals/RNA_B73_leaf_TPM.surviving.txt",
-"00.data/histone_mods_intersecting_genes/genes_leaf_overlapping_H3K36me3_broad.bed",
-"00.data/histone_mods_intersecting_genes/genes_leaf_overlapping_H3K4me1_broad.bed",
-"00.data/histone_mods_intersecting_genes/genes_leaf_overlapping_H3K4me3_narrow.bed",
-"00.data/histone_mods_intersecting_genes/genes_leaf_overlapping_H3K56ac_narrow.bed")
+"00.data/histone_mods_intersecting_genes/all_genes_leaf_overlapping_H3K36me3_broad.bed",
+"00.data/histone_mods_intersecting_genes/all_genes_leaf_overlapping_H3K4me1_broad.bed",
+"00.data/histone_mods_intersecting_genes/all_genes_leaf_overlapping_H3K4me3_narrow.bed",
+"00.data/histone_mods_intersecting_genes/all_genes_leaf_overlapping_H3K56ac_narrow.bed",
+"00.data/genome_annotation_mappability.values.bed")
+
+
 
 
 
@@ -110,18 +149,20 @@ leaf_overlap_expression <- combine_overlap_TPM(
 
 root_overlap_expression <- combine_overlap_TPM(
   "00.data/TPM_vals/RNA_B73_root_TPM.surviving.txt",
-  "00.data/histone_mods_intersecting_genes/genes_root_overlapping_H3K36me3_broad.bed",
-  "00.data/histone_mods_intersecting_genes/genes_root_overlapping_H3K4me1_broad.bed",
-  "00.data/histone_mods_intersecting_genes/genes_root_overlapping_H3K4me3_narrow.bed",
-  "00.data/histone_mods_intersecting_genes/genes_root_overlapping_H3K56ac_narrow.bed")
+  "00.data/histone_mods_intersecting_genes/all_genes_root_overlapping_H3K36me3_broad.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_root_overlapping_H3K4me1_broad.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_root_overlapping_H3K4me3_narrow.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_root_overlapping_H3K56ac_narrow.bed",
+  "00.data/genome_annotation_mappability.values.bed")
 
 
 ear_overlap_expression <- combine_overlap_TPM(
   "00.data/TPM_vals/RNA_B73_ear_TPM.surviving.txt",
-  "00.data/histone_mods_intersecting_genes/genes_ear_overlapping_H3K36me3_broad.bed",
-  "00.data/histone_mods_intersecting_genes/genes_ear_overlapping_H3K4me1_broad.bed",
-  "00.data/histone_mods_intersecting_genes/genes_ear_overlapping_H3K4me3_narrow.bed",
-  "00.data/histone_mods_intersecting_genes/genes_ear_overlapping_H3K56ac_narrow.bed")
+  "00.data/histone_mods_intersecting_genes/all_genes_ear_overlapping_H3K36me3_broad.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_ear_overlapping_H3K4me1_broad.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_ear_overlapping_H3K4me3_narrow.bed",
+  "00.data/histone_mods_intersecting_genes/all_genes_ear_overlapping_H3K56ac_narrow.bed",
+  "00.data/genome_annotation_mappability.values.bed")
 
 
 
@@ -172,18 +213,18 @@ ear_gene_all_combined_gr_1 <- generate_K36me3_K4me1ation_K56ac_K4me3iaion_classe
 #  return(generated_graph)
 #}
 #
-#pdf(file="imgs/leaf_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
+#pdf(file="imgs/upset_plots/leaf_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
 #leaf_upset_final <- generate_upset_R2(leaf_gene_all_combined_gr_1)
 #leaf_upset_final
 #dev.off()
 #
 #
-#pdf(file="imgs/root_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
+#pdf(file="imgs/upset_plots/root_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
 #root_upset_final <- generate_upset_R2(root_gene_all_combined_gr_1)
 #root_upset_final
 #dev.off()
 #
-#pdf(file="imgs/ear_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
+#pdf(file="imgs/upset_plots/ear_upset.pdf", onefile=FALSE, width = 12, height = 9) # or other device
 #ear_upset_final <- generate_upset_R2(ear_gene_all_combined_gr_1)
 #ear_upset_final
 #dev.off()
@@ -244,18 +285,20 @@ append_annotations <- function(heatmap, data_frame_filtered){
   
 }
 
+library(cowplot)
+
 
 #Generate Leaf Upset plot
 leaf_com_matrix <- generate_complex_heatmap_matrix(leaf_gene_all_combined_gr_1)
 leaf_upset_plot <- generate_complex_heatmap_UpSetR_plot(leaf_com_matrix)
-pdf(file="imgs/leaf_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/leaf_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 leaf_upset_plot
 append_annotations(leaf_upset_plot, leaf_com_matrix)
 dev.off()
 
 root_com_matrix <- generate_complex_heatmap_matrix(root_gene_all_combined_gr_1)
 root_upset_plot <- generate_complex_heatmap_UpSetR_plot(root_com_matrix)
-pdf(file="imgs/root_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/root_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 root_upset_plot
 append_annotations(root_upset_plot, root_com_matrix)
 dev.off()
@@ -263,7 +306,7 @@ dev.off()
 
 ear_com_matrix <- generate_complex_heatmap_matrix(ear_gene_all_combined_gr_1)
 ear_upset_plot <- generate_complex_heatmap_UpSetR_plot(ear_com_matrix)
-pdf(file="imgs/ear_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/ear_upset.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 ear_upset_plot
 append_annotations(ear_upset_plot, ear_com_matrix)
 dev.off()
@@ -326,14 +369,18 @@ generate_complex_heatmap_UpSetR_plot_split_mods <- function(data_frame_filtered)
 #Generate Leaf Upset plot
 leaf_com_matrix <- generate_complex_heatmap_matrix_split_mods(leaf_gene_all_combined_gr_1)
 leaf_upset_plot <- generate_complex_heatmap_UpSetR_plot(leaf_com_matrix)
-pdf(file="imgs/leaf_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+
+
+pdf(file="imgs/upset_plots/leaf_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 leaf_upset_plot
 append_annotations(leaf_upset_plot, leaf_com_matrix)
 dev.off()
 
+
+
 root_com_matrix <- generate_complex_heatmap_matrix_split_mods(root_gene_all_combined_gr_1)
 root_upset_plot <- generate_complex_heatmap_UpSetR_plot(root_com_matrix)
-pdf(file="imgs/root_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/root_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 root_upset_plot
 append_annotations(root_upset_plot, root_com_matrix)
 dev.off()
@@ -341,7 +388,7 @@ dev.off()
 
 ear_com_matrix <- generate_complex_heatmap_matrix_split_mods(ear_gene_all_combined_gr_1)
 ear_upset_plot <- generate_complex_heatmap_UpSetR_plot(ear_com_matrix)
-pdf(file="imgs/ear_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/ear_upset.split_mods.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 ear_upset_plot
 append_annotations(ear_upset_plot, ear_com_matrix)
 dev.off()
@@ -375,21 +422,21 @@ generate_complex_heatmap_matrix_independent_mod <- function(tissue_name_tribble)
 #Generate Leaf Upset plot
 leaf_com_matrix <- generate_complex_heatmap_matrix_independent_mod(leaf_gene_all_combined_gr_1)
 leaf_upset_plot <- generate_complex_heatmap_UpSetR_plot_split_mods(leaf_com_matrix)
-pdf(file="imgs/leaf_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/leaf_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 leaf_upset_plot
 append_annotations(leaf_upset_plot, leaf_com_matrix)
 dev.off()
 
 root_com_matrix <- generate_complex_heatmap_matrix_independent_mod(root_gene_all_combined_gr_1)
 root_upset_plot <- generate_complex_heatmap_UpSetR_plot_split_mods(root_com_matrix)
-pdf(file="imgs/root_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/root_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 root_upset_plot
 append_annotations(root_upset_plot, root_com_matrix)
 dev.off()
 
 ear_com_matrix <- generate_complex_heatmap_matrix_independent_mod(ear_gene_all_combined_gr_1)
 ear_upset_plot <- generate_complex_heatmap_UpSetR_plot_split_mods(ear_com_matrix)
-pdf(file="imgs/ear_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
+pdf(file="imgs/upset_plots/ear_upset.both_mods_req.pdf", onefile=FALSE, width = 4.5, height = 4) # or other device
 ear_upset_plot
 append_annotations(ear_upset_plot, ear_com_matrix)
 dev.off()
@@ -432,8 +479,8 @@ gather_gene_list <- function(K36_file, K4me1_file, K4me3_file, K56ac_file){
 write_bed_table_with_names <- function(origina_file_name, combined_genes, out_file_name_base){
   
   
-  K36me3_K4me1ation_bed_name = str_c(out_file_name_base, "_K36me3_K4me1ation_only.bed")
-  K56ac_K4me3iation_bed_name = str_c(out_file_name_base, "_K56ac_K4me3iation_only.bed")
+  K36me3_K4me1ation_bed_name = str_c(out_file_name_base, "_elongation_only.bed")
+  K56ac_K4me3iation_bed_name = str_c(out_file_name_base, "_initiation_only.bed")
   
 
   

@@ -81,7 +81,7 @@ generate_complex_heatmaps_chip_scaled_region <- function(TSS_matrix, mark_name, 
   
 }
 normalize_to_input <- function(mark_name_1, input_mark){
-  normalized_to_input <- (mark_name_1 + 1)/(input_mark +1)
+  normalized_to_input <- (mark_name_1 + 1)-(input_mark +1)
   return(normalized_to_input)
 }
 combine_identical_marks_on_off <- function(genes_on, genes_off) {
@@ -230,6 +230,9 @@ leaf_initiation_only_leaf_H3K36me3_plots <- generate_final_plot_scaled(leaf_init
 leaf_initiation_only_leaf_H3K4me1_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me1_matrix_normalized, "H3K4me1", H3K4me1_colors, final_split, "CHIP")
 leaf_initiation_only_leaf_H3K4me3_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K4me3_matrix_normalized, "H3K4me3", H3K4me3_colors, final_split, "CHIP")
 leaf_initiation_only_leaf_H3K56ac_plots <- generate_final_plot_scaled(leaf_initiation_only_leaf_H3K56ac_matrix_normalized, "H3K56ac", H3K56ac_colors, final_split, "CHIP")
+
+
+
 
 
 
