@@ -105,7 +105,7 @@ rule merge_gtf_file_features:
         fi
         """
 
-#MERGE THE OUTPUT AS YOU ARE GETTING DUPLICATES DUMB ASS
+#MERGE THE OUTPUT 
 rule return_correct_assemblies:
     input:
         original_annotations = "00.data/bed_files/{bed_name}.bed",

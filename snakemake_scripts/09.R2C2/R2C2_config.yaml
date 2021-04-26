@@ -1,4 +1,0 @@
-reference: Zm-B73-REFERENCE-NAM-5.0
-annotated_sequences: 00.data/bed_files/Zm-B73-REFERENCE-NAM-5.0.0_Zm00001e.1.genes.bed
-#Used for calculating the number of reads in the First exon, as well as the UTR
-annotated_sequences_exons: 00.data/bed_files/Zm-B73-REFERENCE-NAM-5.0_Zm00001e.1.gff3
