@@ -1,0 +1,7 @@
+tissue replicate chip file
+leaf rep1 Input 00.data/chip_seq/input/Soybean_10days_leaf_Input_rep1.fastq
+leaf rep1 H3K36me3 00.data/chip_seq/H3K36me3/Soybean_10days_leaf_H3K36me3_rep1.fastq
+leaf rep1 H3K4me1 00.data/chip_seq/H3K4me1/Soybean_10days_leaf_H3K4me1_rep1.fastq
+leaf rep1 H3K4me3 00.data/chip_seq/H3K4me3/Soybean_10days_leaf_H3K4me3_rep1.fastq
+leaf rep1 H3K56ac 00.data/chip_seq/H3K56ac/Soybean_10days_leaf_H3K56ac_rep1.fastq
+leaf rep1 RNA_Soybean_10days 00.data/rna/raw/RNA_Soybean_10days_leaf_all.fastq

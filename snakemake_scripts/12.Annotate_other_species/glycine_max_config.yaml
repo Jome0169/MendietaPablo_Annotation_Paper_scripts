@@ -1,0 +1,14 @@
+ruleorder: generate_reference_index > align_regions_to_genome
+samples: glycine_max_samples.txt
+reference: 00.data/reference/Gmax_508_v4.0
+reference_base: Gmax_508_v4.0
+base_name: "Soybean_10days"
+RNA_base_name: "RNA_Soybean_10days"
+control: 'input'
+broad: 'H3K36me3 H3K4me1'
+narrow: "H3K56ac H3K4me3"
+all: "H3K56ac H3K4me3 H3K36me3 H3K4me1"
+genes: 00.data/bed_files/Gmax_508_Wm82.a4.v1.gene.bed
+ncRNAs: 00.data/bed_files/Gmax_508_Wm82.a4.v1.gene.bed
+lncRNAs: 00.data/bed_files/Gmax_508_Wm82.a4.v1.gene.bed
+gene_base: "Glyma"
