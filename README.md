@@ -8,8 +8,8 @@ The corresponding directories are broken down by script type, with the `snakemak
 Below is a detailed example of how to utilize the annotation script implemented
 in Mendieta et al. Detailed infomration about pre-processing ChIP-seq data to
 utilize this script is included in the script `update_annotation_by_chromatin_mods.snake`. 
-But paired down, the script requires a set a genome annotations in bed format. 
-A set of peaks from ChIP-seq peak calling focused on modifications 
+But paired down, the script requires a set a genome annotations in bed format
+(genes and lncRNAs). A set of peaks from ChIP-seq peak calling focused on modifications 
 corresponding to elongation which should occur throughout the gene body
 (H3K36me3, H3K4me1), as well as initiation modifications which correlate with
 the promoter of a gene (H3K4me3, H3K56ac). At least one modification of
@@ -27,6 +27,9 @@ python scripts/Update_annotation.py -broad {input.broad} \
 -RNA {input.rna_file} -lncRNA {input.gene_annotation} -o {output}
 ```
 
+A list of test/example files can be found in this github repo under the file
+`example_data`.
+
 The output of this script is a list of annotations - with their potential
 annotation corrected class append as original.annot_ANNOTATION_CLASS. Potential
 novel annotations are awarded the name `Possible_novel_gene`. 
@@ -39,15 +42,15 @@ basis. This ensures that pysam is able to read the full RNA-seq BAM file
 without overflowing. 
 
 
-## Annotation Genomes Using Chromating Modification Data (Pipeline)
+## Annotating Genomes Using Chromating Modification Data (Pipeline)
 
 The implemenation of this method is further detailed in the snakemake script
 located `snakemake_scripts/12.Annotate_other_species`. Here you will find an
-example implementation in soybean (glycine max). With a snakemake config `yaml`
-file as well as a `sample` file corresponding to the features mentioned above.
-Note that tissues need to be matched in the `sample` file. Thie `snakemake`
+example implementation in soybean (glycine max). Structure of the inputs can be 
+gleaned from the snakemake config `yaml` file,  as well as a `sample` 
+file corresponding to the features mentioned above.
+Note that tissues need to be matched in the `sample` file. This `snakemake`
 analysis was done in version of `5.7.1`. Since then aggregate command behavior
-is slighly modified, so be aware of running this on more updated versions of
-snakemake.
-
+is slighly modified, so be aware that running this analysis on more updated
+version of snakemake may result in unexpected behaviors.
 

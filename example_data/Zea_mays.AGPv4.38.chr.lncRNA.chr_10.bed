@@ -1,0 +1,494 @@
+10	271216	272132	gene:Zm00001d023035	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023035;biotype=lincRNA;gene_id=Zm00001d023035;logic_name=lncrna_gene
+10	451732	451923	gene:ENSRNA049473059	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473059;Name=U2;biotype=snRNA;description=U2 spliceosomal RNA;gene_id=ENSRNA049473059;logic_name=rfam_12.2_gene
+10	699794	699868	gene:ENSRNA049451576	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451576;Name=tRNA-Ile;biotype=tRNA;description=tRNA-Ile for anticodon AAU;gene_id=ENSRNA049451576;logic_name=trnascan_gene
+10	699794	699868	gene:Zm00001d023219	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023219;biotype=tRNA;gene_id=Zm00001d023219;logic_name=maker_trnascan
+10	706259	706331	gene:ENSRNA049451572	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451572;Name=tRNA-Pro;biotype=tRNA;description=tRNA-Pro for anticodon CGG;gene_id=ENSRNA049451572;logic_name=trnascan_gene
+10	706259	706331	gene:Zm00001d023221	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023221;biotype=tRNA;gene_id=Zm00001d023221;logic_name=maker_trnascan
+10	826263	826336	gene:ENSRNA049451559	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451559;Name=tRNA-Lys;biotype=tRNA;description=tRNA-Lys for anticodon CUU;gene_id=ENSRNA049451559;logic_name=trnascan_gene
+10	826263	826336	gene:Zm00001d023224	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023224;biotype=tRNA;gene_id=Zm00001d023224;logic_name=maker_trnascan
+10	969664	970029	gene:Zm00001d023036	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023036;biotype=lincRNA;gene_id=Zm00001d023036;logic_name=lncrna_gene
+10	1367895	1367973	gene:Zm00001d023244	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023244;biotype=tRNA;gene_id=Zm00001d023244;logic_name=maker_trnascan
+10	1464567	1464640	gene:Zm00001d023250	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023250;biotype=tRNA;gene_id=Zm00001d023250;logic_name=maker_trnascan
+10	1465433	1465506	gene:Zm00001d023251	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023251;biotype=tRNA;gene_id=Zm00001d023251;logic_name=maker_trnascan
+10	1468122	1468421	gene:Zm00001d023037	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023037;biotype=lincRNA;gene_id=Zm00001d023037;logic_name=lncrna_gene
+10	1689569	1689643	gene:ENSRNA049450934	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049450934;Name=tRNA-Val;biotype=tRNA;description=tRNA-Val for anticodon CAC;gene_id=ENSRNA049450934;logic_name=trnascan_gene
+10	1689569	1689643	gene:Zm00001d023268	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023268;biotype=tRNA;gene_id=Zm00001d023268;logic_name=maker_trnascan
+10	2006391	2006477	gene:ENSRNA049450950	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049450950;Name=tRNA-Tyr;biotype=tRNA;description=tRNA-Tyr for anticodon GUA;gene_id=ENSRNA049450950;logic_name=trnascan_gene
+10	2006391	2006477	gene:Zm00001d023276	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023276;biotype=tRNA;gene_id=Zm00001d023276;logic_name=maker_trnascan
+10	2238231	2238337	gene:ENSRNA049473008	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473008;Name=snoR99;biotype=snoRNA;description=Small nucleolar RNA snoR99;gene_id=ENSRNA049473008;logic_name=rfam_12.2_gene
+10	3656422	3656496	gene:Zm00001d023338	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023338;biotype=tRNA;gene_id=Zm00001d023338;logic_name=maker_trnascan
+10	3675250	3675554	gene:ENSRNA049473114	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473114;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473114;logic_name=rfam_12.2_gene
+10	3732760	3734128	gene:Zm00001d023038	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023038;biotype=lincRNA;gene_id=Zm00001d023038;logic_name=lncrna_gene
+10	3741194	3741498	gene:ENSRNA049473089	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473089;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473089;logic_name=rfam_12.2_gene
+10	3743096	3743400	gene:ENSRNA049473127	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473127;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473127;logic_name=rfam_12.2_gene
+10	3743606	3743869	gene:Zm00001d023039	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023039;biotype=lincRNA;gene_id=Zm00001d023039;logic_name=lncrna_gene
+10	3744968	3745272	gene:ENSRNA049473148	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473148;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473148;logic_name=rfam_12.2_gene
+10	3746837	3747141	gene:ENSRNA049473178	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473178;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473178;logic_name=rfam_12.2_gene
+10	3748705	3749009	gene:ENSRNA049473154	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473154;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473154;logic_name=rfam_12.2_gene
+10	3750573	3750877	gene:ENSRNA049473204	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473204;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473204;logic_name=rfam_12.2_gene
+10	3752440	3752744	gene:ENSRNA049473192	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473192;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473192;logic_name=rfam_12.2_gene
+10	3754307	3754611	gene:ENSRNA049473198	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473198;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473198;logic_name=rfam_12.2_gene
+10	3756176	3756480	gene:ENSRNA049473170	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473170;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473170;logic_name=rfam_12.2_gene
+10	3758045	3758349	gene:ENSRNA049473225	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473225;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473225;logic_name=rfam_12.2_gene
+10	3759907	3760211	gene:ENSRNA049473160	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473160;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473160;logic_name=rfam_12.2_gene
+10	3761779	3762083	gene:ENSRNA049473251	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473251;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473251;logic_name=rfam_12.2_gene
+10	3763647	3763951	gene:ENSRNA049473228	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473228;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473228;logic_name=rfam_12.2_gene
+10	3765510	3765814	gene:ENSRNA049473236	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473236;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473236;logic_name=rfam_12.2_gene
+10	3767380	3767684	gene:ENSRNA049473246	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473246;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473246;logic_name=rfam_12.2_gene
+10	3769249	3769553	gene:ENSRNA049473182	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473182;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473182;logic_name=rfam_12.2_gene
+10	3771117	3771421	gene:ENSRNA049473188	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473188;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473188;logic_name=rfam_12.2_gene
+10	3772987	3773290	gene:ENSRNA049473122	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473122;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473122;logic_name=rfam_12.2_gene
+10	3774855	3775158	gene:ENSRNA049473142	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473142;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473142;logic_name=rfam_12.2_gene
+10	3776615	3790816	gene:Zm00001d023040	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023040;biotype=lincRNA;gene_id=Zm00001d023040;logic_name=lncrna_gene
+10	3776723	3777027	gene:ENSRNA049473241	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473241;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473241;logic_name=rfam_12.2_gene
+10	3787534	3787838	gene:ENSRNA049473254	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473254;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473254;logic_name=rfam_12.2_gene
+10	3789405	3789709	gene:ENSRNA049473105	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473105;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473105;logic_name=rfam_12.2_gene
+10	3790515	3790819	gene:ENSRNA049473220	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473220;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473220;logic_name=rfam_12.2_gene
+10	3792381	3792685	gene:ENSRNA049473166	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473166;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473166;logic_name=rfam_12.2_gene
+10	3793492	3793796	gene:ENSRNA049473210	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473210;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473210;logic_name=rfam_12.2_gene
+10	3795363	3795665	gene:ENSRNA049473080	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473080;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473080;logic_name=rfam_12.2_gene
+10	3796440	3796744	gene:ENSRNA049473133	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473133;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473133;logic_name=rfam_12.2_gene
+10	4009613	4009937	gene:Zm00001d023041	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023041;biotype=lincRNA;gene_id=Zm00001d023041;logic_name=lncrna_gene
+10	4063325	4063404	gene:Zm00001d023359	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023359;biotype=tRNA;gene_id=Zm00001d023359;logic_name=maker_trnascan
+10	4081614	4081949	gene:Zm00001d023042	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023042;biotype=lincRNA;gene_id=Zm00001d023042;logic_name=lncrna_gene
+10	4121888	4122069	gene:ENSRNA049473070	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473070;Name=snoZ112;biotype=snoRNA;description=Small nucleolar RNA Z112;gene_id=ENSRNA049473070;logic_name=rfam_12.2_gene
+10	4122256	4122375	gene:ENSRNA049473076	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473076;Name=SNORD14;biotype=snoRNA;description=Small nucleolar RNA SNORD14;gene_id=ENSRNA049473076;logic_name=rfam_12.2_gene
+10	4679459	4679532	gene:Zm00001d023397	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023397;biotype=tRNA;gene_id=Zm00001d023397;logic_name=maker_trnascan
+10	4730142	4731040	gene:Zm00001d023043	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023043;biotype=lincRNA;gene_id=Zm00001d023043;logic_name=lncrna_gene
+10	5013670	5013743	gene:Zm00001d023408	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023408;biotype=tRNA;gene_id=Zm00001d023408;logic_name=maker_trnascan
+10	5745563	5745791	gene:Zm00001d023044	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023044;biotype=lincRNA;gene_id=Zm00001d023044;logic_name=lncrna_gene
+10	5752292	5753439	gene:Zm00001d023045	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023045;biotype=lincRNA;gene_id=Zm00001d023045;logic_name=lncrna_gene
+10	5950816	5951626	gene:Zm00001d023046	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023046;biotype=lincRNA;gene_id=Zm00001d023046;logic_name=lncrna_gene
+10	6030671	6030953	gene:Zm00001d023047	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023047;biotype=lincRNA;gene_id=Zm00001d023047;logic_name=lncrna_gene
+10	6233807	6234132	gene:Zm00001d023048	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023048;biotype=lincRNA;gene_id=Zm00001d023048;logic_name=lncrna_gene
+10	6422881	6422955	gene:Zm00001d023463	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023463;biotype=tRNA;gene_id=Zm00001d023463;logic_name=maker_trnascan
+10	6921997	6922631	gene:Zm00001d023049	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023049;biotype=lincRNA;gene_id=Zm00001d023049;logic_name=lncrna_gene
+10	7304855	7308233	gene:Zm00001d023050	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023050;biotype=lincRNA;gene_id=Zm00001d023050;logic_name=lncrna_gene
+10	7376575	7379294	gene:Zm00001d023051	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023051;biotype=lincRNA;gene_id=Zm00001d023051;logic_name=lncrna_gene
+10	8776999	8777073	gene:ENSRNA049450969	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049450969;Name=tRNA-Thr;biotype=tRNA;description=tRNA-Thr for anticodon AGU;gene_id=ENSRNA049450969;logic_name=trnascan_gene
+10	8776999	8777073	gene:Zm00001d023526	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023526;biotype=tRNA;gene_id=Zm00001d023526;logic_name=maker_trnascan
+10	8777148	8777223	gene:Zm00001d023527	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023527;biotype=tRNA;gene_id=Zm00001d023527;logic_name=maker_trnascan
+10	8780565	8780639	gene:ENSRNA049450987	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049450987;Name=tRNA-Thr;biotype=tRNA;description=tRNA-Thr for anticodon AGU;gene_id=ENSRNA049450987;logic_name=trnascan_gene
+10	8780565	8780639	gene:Zm00001d023528	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023528;biotype=tRNA;gene_id=Zm00001d023528;logic_name=maker_trnascan
+10	8867845	8868221	gene:Zm00001d023052	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023052;biotype=lincRNA;gene_id=Zm00001d023052;logic_name=lncrna_gene
+10	8909801	8910933	gene:Zm00001d023053	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023053;biotype=lincRNA;gene_id=Zm00001d023053;logic_name=lncrna_gene
+10	8909801	8911944	gene:Zm00001d023054	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023054;biotype=lincRNA;gene_id=Zm00001d023054;logic_name=lncrna_gene
+10	9501001	9503469	gene:Zm00001d023055	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023055;biotype=lincRNA;gene_id=Zm00001d023055;logic_name=lncrna_gene
+10	9793436	9793509	gene:Zm00001d023549	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023549;biotype=tRNA;gene_id=Zm00001d023549;logic_name=maker_trnascan
+10	9794412	9794485	gene:Zm00001d023550	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023550;biotype=tRNA;gene_id=Zm00001d023550;logic_name=maker_trnascan
+10	10307024	10307473	gene:Zm00001d023056	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023056;biotype=lincRNA;gene_id=Zm00001d023056;logic_name=lncrna_gene
+10	10837096	10837168	gene:Zm00001d023584	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023584;biotype=tRNA;gene_id=Zm00001d023584;logic_name=maker_trnascan
+10	10880181	10880255	gene:Zm00001d023589	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023589;biotype=tRNA;gene_id=Zm00001d023589;logic_name=maker_trnascan
+10	11219754	11220185	gene:Zm00001d023057	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023057;biotype=lincRNA;gene_id=Zm00001d023057;logic_name=lncrna_gene
+10	11399236	11399308	gene:Zm00001d023598	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023598;biotype=tRNA;gene_id=Zm00001d023598;logic_name=maker_trnascan
+10	11808524	11809303	gene:Zm00001d023058	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023058;biotype=lincRNA;gene_id=Zm00001d023058;logic_name=lncrna_gene
+10	12082535	12088984	gene:Zm00001d023059	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023059;biotype=lincRNA;gene_id=Zm00001d023059;logic_name=lncrna_gene
+10	12082569	12087894	gene:Zm00001d023060	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023060;biotype=lincRNA;gene_id=Zm00001d023060;logic_name=lncrna_gene
+10	12354806	12355750	gene:Zm00001d023061	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023061;biotype=lincRNA;gene_id=Zm00001d023061;logic_name=lncrna_gene
+10	13156495	13215801	gene:Zm00001d023062	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023062;biotype=lincRNA;gene_id=Zm00001d023062;logic_name=lncrna_gene
+10	13310673	13311387	gene:Zm00001d023063	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023063;biotype=lincRNA;gene_id=Zm00001d023063;logic_name=lncrna_gene
+10	13357000	13357073	gene:Zm00001d023642	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023642;biotype=tRNA;gene_id=Zm00001d023642;logic_name=maker_trnascan
+10	13357640	13357713	gene:Zm00001d023643	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023643;biotype=tRNA;gene_id=Zm00001d023643;logic_name=maker_trnascan
+10	13988277	13988875	gene:Zm00001d023064	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023064;biotype=lincRNA;gene_id=Zm00001d023064;logic_name=lncrna_gene
+10	14538693	14538768	gene:Zm00001d023667	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023667;biotype=tRNA;gene_id=Zm00001d023667;logic_name=maker_trnascan
+10	15188858	15189300	gene:Zm00001d023065	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023065;biotype=lincRNA;gene_id=Zm00001d023065;logic_name=lncrna_gene
+10	15706274	15718555	gene:Zm00001d023066	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023066;biotype=lincRNA;gene_id=Zm00001d023066;logic_name=lncrna_gene
+10	16508119	16508191	gene:Zm00001d023709	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023709;biotype=tRNA;gene_id=Zm00001d023709;logic_name=maker_trnascan
+10	16727902	16728468	gene:Zm00001d023067	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023067;biotype=lincRNA;gene_id=Zm00001d023067;logic_name=lncrna_gene
+10	17141976	17142277	gene:Zm00001d023068	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023068;biotype=lincRNA;gene_id=Zm00001d023068;logic_name=lncrna_gene
+10	17522069	17522275	gene:Zm00001d023069	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023069;biotype=lincRNA;gene_id=Zm00001d023069;logic_name=lncrna_gene
+10	17677825	17678141	gene:Zm00001d023070	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023070;biotype=lincRNA;gene_id=Zm00001d023070;logic_name=lncrna_gene
+10	17742222	17742298	gene:Zm00001d023731	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023731;biotype=tRNA;gene_id=Zm00001d023731;logic_name=maker_trnascan
+10	18417695	18417769	gene:ENSRNA049474187	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474187;Name=snoR60;biotype=snoRNA;description=Small nucleolar RNA snoR60;gene_id=ENSRNA049474187;logic_name=rfam_12.2_gene
+10	19060086	19060167	gene:ENSRNA049474167	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474167;Name=snoZ199;biotype=snoRNA;description=Small nucleolar RNA Z199;gene_id=ENSRNA049474167;logic_name=rfam_12.2_gene
+10	19244125	19244951	gene:Zm00001d023071	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023071;biotype=lincRNA;gene_id=Zm00001d023071;logic_name=lncrna_gene
+10	19244277	19244931	gene:Zm00001d001632	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d001632;biotype=lincRNA;gene_id=Zm00001d001632;logic_name=lncrna_gene
+10	19253761	19253833	gene:Zm00001d023764	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023764;biotype=tRNA;gene_id=Zm00001d023764;logic_name=maker_trnascan
+10	20021781	20022392	gene:Zm00001d023072	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023072;biotype=lincRNA;gene_id=Zm00001d023072;logic_name=lncrna_gene
+10	20177088	20177160	gene:Zm00001d023786	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023786;biotype=tRNA;gene_id=Zm00001d023786;logic_name=maker_trnascan
+10	20178367	20178439	gene:Zm00001d023787	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023787;biotype=tRNA;gene_id=Zm00001d023787;logic_name=maker_trnascan
+10	20578280	20579300	gene:Zm00001d023073	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023073;biotype=lincRNA;gene_id=Zm00001d023073;logic_name=lncrna_gene
+10	20603391	20603765	gene:Zm00001d023074	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023074;biotype=lincRNA;gene_id=Zm00001d023074;logic_name=lncrna_gene
+10	21929370	21929977	gene:Zm00001d023075	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023075;biotype=lincRNA;gene_id=Zm00001d023075;logic_name=lncrna_gene
+10	22715892	22715966	gene:ENSRNA049451533	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451533;Name=tRNA-Thr;biotype=tRNA;description=tRNA-Thr for anticodon AGU;gene_id=ENSRNA049451533;logic_name=trnascan_gene
+10	22715892	22715966	gene:Zm00001d023809	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023809;biotype=tRNA;gene_id=Zm00001d023809;logic_name=maker_trnascan
+10	23415703	23415777	gene:Zm00001d023819	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023819;biotype=tRNA;gene_id=Zm00001d023819;logic_name=maker_trnascan
+10	23864640	23864711	gene:Zm00001d023837	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023837;biotype=tRNA;gene_id=Zm00001d023837;logic_name=maker_trnascan
+10	24338450	24339277	gene:Zm00001d023076	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023076;biotype=lincRNA;gene_id=Zm00001d023076;logic_name=lncrna_gene
+10	24345829	24346147	gene:Zm00001d023077	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023077;biotype=lincRNA;gene_id=Zm00001d023077;logic_name=lncrna_gene
+10	24620111	24620184	gene:Zm00001d023848	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023848;biotype=tRNA;gene_id=Zm00001d023848;logic_name=maker_trnascan
+10	24621027	24621100	gene:Zm00001d023849	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023849;biotype=tRNA;gene_id=Zm00001d023849;logic_name=maker_trnascan
+10	24854901	24855548	gene:Zm00001d023078	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023078;biotype=lincRNA;gene_id=Zm00001d023078;logic_name=lncrna_gene
+10	25327211	25327282	gene:Zm00001d023862	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023862;biotype=tRNA;gene_id=Zm00001d023862;logic_name=maker_trnascan
+10	26304631	26304868	gene:Zm00001d023079	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023079;biotype=lincRNA;gene_id=Zm00001d023079;logic_name=lncrna_gene
+10	26717964	26718036	gene:ENSRNA049451031	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451031;Name=tRNA-Pro;biotype=tRNA;description=tRNA-Pro for anticodon AGG;gene_id=ENSRNA049451031;logic_name=trnascan_gene
+10	26717964	26718036	gene:Zm00001d023894	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023894;biotype=tRNA;gene_id=Zm00001d023894;logic_name=maker_trnascan
+10	28710000	28710367	gene:Zm00001d023080	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023080;biotype=lincRNA;gene_id=Zm00001d023080;logic_name=lncrna_gene
+10	29344572	29345246	gene:Zm00001d023081	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023081;biotype=lincRNA;gene_id=Zm00001d023081;logic_name=lncrna_gene
+10	30084818	30084891	gene:Zm00001d023937	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023937;biotype=tRNA;gene_id=Zm00001d023937;logic_name=maker_trnascan
+10	30085568	30085641	gene:Zm00001d023938	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023938;biotype=tRNA;gene_id=Zm00001d023938;logic_name=maker_trnascan
+10	30381272	30382063	gene:Zm00001d023082	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023082;biotype=lincRNA;gene_id=Zm00001d023082;logic_name=lncrna_gene
+10	30752957	30753455	gene:Zm00001d023083	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023083;biotype=lincRNA;gene_id=Zm00001d023083;logic_name=lncrna_gene
+10	30977912	30977986	gene:Zm00001d023947	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023947;biotype=tRNA;gene_id=Zm00001d023947;logic_name=maker_trnascan
+10	31108958	31109290	gene:Zm00001d023084	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023084;biotype=lincRNA;gene_id=Zm00001d023084;logic_name=lncrna_gene
+10	31109364	31109835	gene:Zm00001d023085	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023085;biotype=lincRNA;gene_id=Zm00001d023085;logic_name=lncrna_gene
+10	31124662	31124885	gene:Zm00001d023086	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023086;biotype=lincRNA;gene_id=Zm00001d023086;logic_name=lncrna_gene
+10	31841898	31842282	gene:Zm00001d023087	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023087;biotype=lincRNA;gene_id=Zm00001d023087;logic_name=lncrna_gene
+10	32305030	32305781	gene:Zm00001d023088	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023088;biotype=lincRNA;gene_id=Zm00001d023088;logic_name=lncrna_gene
+10	32649345	32649418	gene:Zm00001d023970	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023970;biotype=tRNA;gene_id=Zm00001d023970;logic_name=maker_trnascan
+10	32664066	32664139	gene:Zm00001d023971	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023971;biotype=tRNA;gene_id=Zm00001d023971;logic_name=maker_trnascan
+10	34383670	34384376	gene:Zm00001d023089	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023089;biotype=lincRNA;gene_id=Zm00001d023089;logic_name=lncrna_gene
+10	34613123	34613206	gene:ENSRNA049479556	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479556;Name=snoR12;biotype=snoRNA;description=Small nucleolar RNA R12;gene_id=ENSRNA049479556;logic_name=rfam_12.2_gene
+10	35055010	35065115	gene:Zm00001d023090	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023090;biotype=lincRNA;gene_id=Zm00001d023090;logic_name=lncrna_gene
+10	35063468	35065279	gene:ENSRNA049479540	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479540;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049479540;logic_name=rfam_12.2_gene
+10	35065497	35065653	gene:ENSRNA049479549	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479549;Name=5_8S_rRNA;biotype=rRNA;description=5.8S ribosomal RNA;gene_id=ENSRNA049479549;logic_name=rfam_12.2_gene
+10	35072673	35073762	gene:ENSRNA049479546	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479546;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049479546;logic_name=rfam_12.2_gene
+10	35345886	35345960	gene:Zm00001d023996	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023996;biotype=tRNA;gene_id=Zm00001d023996;logic_name=maker_trnascan
+10	35599618	35599804	gene:Zm00001d023091	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023091;biotype=lincRNA;gene_id=Zm00001d023091;logic_name=lncrna_gene
+10	37637228	37637300	gene:Zm00001d024024	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024024;biotype=tRNA;gene_id=Zm00001d024024;logic_name=maker_trnascan
+10	37650091	37650162	gene:Zm00001d024025	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024025;biotype=tRNA;gene_id=Zm00001d024025;logic_name=maker_trnascan
+10	37820442	37820669	gene:Zm00001d023092	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023092;biotype=lincRNA;gene_id=Zm00001d023092;logic_name=lncrna_gene
+10	38898284	38899018	gene:Zm00001d023093	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023093;biotype=lincRNA;gene_id=Zm00001d023093;logic_name=lncrna_gene
+10	40896034	40896856	gene:Zm00001d023094	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023094;biotype=lincRNA;gene_id=Zm00001d023094;logic_name=lncrna_gene
+10	41276947	41277242	gene:Zm00001d023095	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023095;biotype=lincRNA;gene_id=Zm00001d023095;logic_name=lncrna_gene
+10	42443886	42444020	gene:ENSRNA049475344	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475344;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475344;logic_name=rfam_12.2_gene
+10	45437445	45438161	gene:Zm00001d023096	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023096;biotype=lincRNA;gene_id=Zm00001d023096;logic_name=lncrna_gene
+10	46408843	46408924	gene:ENSRNA049475356	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475356;Name=snoZ199;biotype=snoRNA;description=Small nucleolar RNA Z199;gene_id=ENSRNA049475356;logic_name=rfam_12.2_gene
+10	46444583	46445120	gene:Zm00001d023097	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023097;biotype=lincRNA;gene_id=Zm00001d023097;logic_name=lncrna_gene
+10	47625658	47626233	gene:Zm00001d023098	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023098;biotype=lincRNA;gene_id=Zm00001d023098;logic_name=lncrna_gene
+10	48832173	48832245	gene:Zm00001d024136	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024136;biotype=tRNA;gene_id=Zm00001d024136;logic_name=maker_trnascan
+10	48834697	48834771	gene:ENSRNA049475327	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475327;Name=Intron_gpII;biotype=sense_intronic;description=Group II catalytic intron;gene_id=ENSRNA049475327;logic_name=rfam_12.2_gene
+10	48838433	48838514	gene:Zm00001d024137	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024137;biotype=tRNA;gene_id=Zm00001d024137;logic_name=maker_trnascan
+10	48840159	48840256	gene:ENSRNA049475331	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475331;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475331;logic_name=rfam_12.2_gene
+10	48840319	48840453	gene:ENSRNA049475340	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475340;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475340;logic_name=rfam_12.2_gene
+10	48842591	48842705	gene:ENSRNA049475336	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475336;Name=Intron_gpII;biotype=sense_intronic;description=Group II catalytic intron;gene_id=ENSRNA049475336;logic_name=rfam_12.2_gene
+10	48844910	48845007	gene:ENSRNA049475348	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475348;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475348;logic_name=rfam_12.2_gene
+10	48845020	48845140	gene:ENSRNA049475359	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475359;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475359;logic_name=rfam_12.2_gene
+10	48845210	48845522	gene:ENSRNA049475322	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475322;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475322;logic_name=rfam_12.2_gene
+10	51055709	51056249	gene:ENSRNA049475645	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475645;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049475645;logic_name=rfam_12.2_gene
+10	53539771	53539844	gene:Zm00001d024180	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024180;biotype=tRNA;gene_id=Zm00001d024180;logic_name=maker_trnascan
+10	53541106	53541179	gene:Zm00001d024182	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024182;biotype=tRNA;gene_id=Zm00001d024182;logic_name=maker_trnascan
+10	54067241	54067927	gene:Zm00001d023099	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023099;biotype=lincRNA;gene_id=Zm00001d023099;logic_name=lncrna_gene
+10	54116544	54116764	gene:Zm00001d023100	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023100;biotype=lincRNA;gene_id=Zm00001d023100;logic_name=lncrna_gene
+10	54733521	54734027	gene:Zm00001d023101	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023101;biotype=lincRNA;gene_id=Zm00001d023101;logic_name=lncrna_gene
+10	56436919	56437351	gene:Zm00001d023102	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023102;biotype=lincRNA;gene_id=Zm00001d023102;logic_name=lncrna_gene
+10	56436936	56437279	gene:Zm00001d023103	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023103;biotype=lincRNA;gene_id=Zm00001d023103;logic_name=lncrna_gene
+10	56626223	56629642	gene:Zm00001d023104	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023104;biotype=lincRNA;gene_id=Zm00001d023104;logic_name=lncrna_gene
+10	57031101	57033329	gene:Zm00001d023105	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023105;biotype=lincRNA;gene_id=Zm00001d023105;logic_name=lncrna_gene
+10	57031347	57033342	gene:Zm00001d023106	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023106;biotype=lincRNA;gene_id=Zm00001d023106;logic_name=lncrna_gene
+10	59006551	59006680	gene:zma-MIR171j	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR171j;biotype=miRNA;gene_id=zma-MIR171j;logic_name=mirna
+10	59006561	59006673	gene:ENSRNA049475639	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049475639;Name=MIR171_1;biotype=pre_miRNA;description=microRNA MIR171_1;gene_id=ENSRNA049475639;logic_name=rfam_12.2_gene
+10	59355019	59356349	gene:Zm00001d023107	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023107;biotype=lincRNA;gene_id=Zm00001d023107;logic_name=lncrna_gene
+10	59532315	59532812	gene:Zm00001d023108	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023108;biotype=lincRNA;gene_id=Zm00001d023108;logic_name=lncrna_gene
+10	60226633	60226707	gene:ENSRNA049451091	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451091;Name=tRNA-Val;biotype=tRNA;description=tRNA-Val for anticodon AAC;gene_id=ENSRNA049451091;logic_name=trnascan_gene
+10	60226633	60226707	gene:Zm00001d024269	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024269;biotype=tRNA;gene_id=Zm00001d024269;logic_name=maker_trnascan
+10	60297031	60297291	gene:Zm00001d023109	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023109;biotype=lincRNA;gene_id=Zm00001d023109;logic_name=lncrna_gene
+10	60318332	60318539	gene:Zm00001d023110	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023110;biotype=lincRNA;gene_id=Zm00001d023110;logic_name=lncrna_gene
+10	60318332	60319744	gene:Zm00001d023111	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023111;biotype=lincRNA;gene_id=Zm00001d023111;logic_name=lncrna_gene
+10	60731287	60731759	gene:Zm00001d023112	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023112;biotype=lincRNA;gene_id=Zm00001d023112;logic_name=lncrna_gene
+10	62018115	62018188	gene:Zm00001d024287	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024287;biotype=tRNA;gene_id=Zm00001d024287;logic_name=maker_trnascan
+10	62019441	62019514	gene:Zm00001d024288	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024288;biotype=tRNA;gene_id=Zm00001d024288;logic_name=maker_trnascan
+10	62081994	62082821	gene:Zm00001d023113	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023113;biotype=lincRNA;gene_id=Zm00001d023113;logic_name=lncrna_gene
+10	62655664	62655735	gene:Zm00001d024297	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024297;biotype=tRNA;gene_id=Zm00001d024297;logic_name=maker_trnascan
+10	63553335	63553416	gene:ENSRNA049470144	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049470144;Name=snoZ199;biotype=snoRNA;description=Small nucleolar RNA Z199;gene_id=ENSRNA049470144;logic_name=rfam_12.2_gene
+10	64180291	64180669	gene:Zm00001d023114	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023114;biotype=lincRNA;gene_id=Zm00001d023114;logic_name=lncrna_gene
+10	64180291	64181897	gene:Zm00001d023115	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023115;biotype=lincRNA;gene_id=Zm00001d023115;logic_name=lncrna_gene
+10	64180401	64183189	gene:Zm00001d023116	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023116;biotype=lincRNA;gene_id=Zm00001d023116;logic_name=lncrna_gene
+10	64821994	64822066	gene:Zm00001d024328	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024328;biotype=tRNA;gene_id=Zm00001d024328;logic_name=maker_trnascan
+10	65124763	65125065	gene:Zm00001d023117	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023117;biotype=lincRNA;gene_id=Zm00001d023117;logic_name=lncrna_gene
+10	66581793	66581865	gene:Zm00001d024358	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024358;biotype=tRNA;gene_id=Zm00001d024358;logic_name=maker_trnascan
+10	67744628	67744696	gene:Zm00001d024374	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024374;biotype=tRNA;gene_id=Zm00001d024374;logic_name=maker_trnascan
+10	67788431	67788504	gene:Zm00001d024375	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024375;biotype=tRNA;gene_id=Zm00001d024375;logic_name=maker_trnascan
+10	68044271	68044715	gene:Zm00001d023118	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023118;biotype=lincRNA;gene_id=Zm00001d023118;logic_name=lncrna_gene
+10	68248850	68249453	gene:Zm00001d023119	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023119;biotype=lincRNA;gene_id=Zm00001d023119;logic_name=lncrna_gene
+10	68462768	68462840	gene:Zm00001d024391	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024391;biotype=tRNA;gene_id=Zm00001d024391;logic_name=maker_trnascan
+10	68728043	68728698	gene:Zm00001d023120	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023120;biotype=lincRNA;gene_id=Zm00001d023120;logic_name=lncrna_gene
+10	70573556	70573793	gene:zma-MIR2275c	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR2275c;biotype=miRNA;gene_id=zma-MIR2275c;logic_name=mirna
+10	72076015	72076588	gene:Zm00001d023121	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023121;biotype=lincRNA;gene_id=Zm00001d023121;logic_name=lncrna_gene
+10	72536757	72536830	gene:Zm00001d024472	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024472;biotype=tRNA;gene_id=Zm00001d024472;logic_name=maker_trnascan
+10	72537432	72537505	gene:Zm00001d024473	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024473;biotype=tRNA;gene_id=Zm00001d024473;logic_name=maker_trnascan
+10	72953503	72954126	gene:Zm00001d023122	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023122;biotype=lincRNA;gene_id=Zm00001d023122;logic_name=lncrna_gene
+10	72968378	72968597	gene:Zm00001d023123	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023123;biotype=lincRNA;gene_id=Zm00001d023123;logic_name=lncrna_gene
+10	73239940	73240631	gene:Zm00001d023124	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023124;biotype=lincRNA;gene_id=Zm00001d023124;logic_name=lncrna_gene
+10	73705517	73705591	gene:Zm00001d024485	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024485;biotype=tRNA;gene_id=Zm00001d024485;logic_name=maker_trnascan
+10	73716687	73717306	gene:Zm00001d023125	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023125;biotype=lincRNA;gene_id=Zm00001d023125;logic_name=lncrna_gene
+10	73725408	73725499	gene:ENSRNA049471642	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471642;Name=snoR1;biotype=snoRNA;description=Small nucleolar RNA snoR1;gene_id=ENSRNA049471642;logic_name=rfam_12.2_gene
+10	74956674	74956844	gene:ENSRNA049471654	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471654;Name=snoR143;biotype=snoRNA;description=small nucleolar RNA snoR143;gene_id=ENSRNA049471654;logic_name=rfam_12.2_gene
+10	74957019	74957188	gene:ENSRNA049471660	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471660;Name=snoR143;biotype=snoRNA;description=small nucleolar RNA snoR143;gene_id=ENSRNA049471660;logic_name=rfam_12.2_gene
+10	75086285	75086940	gene:Zm00001d023126	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023126;biotype=lincRNA;gene_id=Zm00001d023126;logic_name=lncrna_gene
+10	77759313	77759962	gene:Zm00001d023127	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023127;biotype=lincRNA;gene_id=Zm00001d023127;logic_name=lncrna_gene
+10	77861315	77861644	gene:Zm00001d023128	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023128;biotype=lincRNA;gene_id=Zm00001d023128;logic_name=lncrna_gene
+10	78042911	78043592	gene:Zm00001d023129	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023129;biotype=lincRNA;gene_id=Zm00001d023129;logic_name=lncrna_gene
+10	78600231	78600335	gene:ENSRNA049471630	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471630;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049471630;logic_name=rfam_12.2_gene
+10	78600240	78600324	gene:zma-MIR395k	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR395k;biotype=miRNA;gene_id=zma-MIR395k;logic_name=mirna
+10	78600402	78600503	gene:ENSRNA049471624	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471624;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049471624;logic_name=rfam_12.2_gene
+10	78600411	78600492	gene:zma-MIR395l	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR395l;biotype=miRNA;gene_id=zma-MIR395l;logic_name=mirna
+10	78600531	78600633	gene:ENSRNA049471669	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471669;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049471669;logic_name=rfam_12.2_gene
+10	78600540	78600622	gene:zma-MIR395m	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR395m;biotype=miRNA;gene_id=zma-MIR395m;logic_name=mirna
+10	78600686	78600824	gene:zma-MIR395c	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR395c;biotype=miRNA;gene_id=zma-MIR395c;logic_name=mirna
+10	78600695	78600814	gene:ENSRNA049471593	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471593;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049471593;logic_name=rfam_12.2_gene
+10	78697496	78697593	gene:ENSRNA049471617	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049471617;Name=snosnR60_Z15;biotype=snoRNA;description=Small nucleolar RNA snR60/Z15/Z230/Z193/J17;gene_id=ENSRNA049471617;logic_name=rfam_12.2_gene
+10	80136469	80136542	gene:Zm00001d024603	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024603;biotype=tRNA;gene_id=Zm00001d024603;logic_name=maker_trnascan
+10	80137085	80137158	gene:Zm00001d024604	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024604;biotype=tRNA;gene_id=Zm00001d024604;logic_name=maker_trnascan
+10	80382037	80382122	gene:ENSRNA049479186	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479186;Name=snoZ102_R77;biotype=snoRNA;description=Small nucleolar RNA Z102/R77;gene_id=ENSRNA049479186;logic_name=rfam_12.2_gene
+10	81136976	81137332	gene:Zm00001d023130	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023130;biotype=lincRNA;gene_id=Zm00001d023130;logic_name=lncrna_gene
+10	81560359	81560430	gene:Zm00001d024641	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024641;biotype=tRNA;gene_id=Zm00001d024641;logic_name=maker_trnascan
+10	82507819	82508277	gene:Zm00001d023131	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023131;biotype=lincRNA;gene_id=Zm00001d023131;logic_name=lncrna_gene
+10	83285129	83285232	gene:ENSRNA049479127	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479127;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479127;logic_name=rfam_12.2_gene
+10	83285446	83285549	gene:ENSRNA049479211	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479211;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479211;logic_name=rfam_12.2_gene
+10	83286003	83286103	gene:ENSRNA049479158	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479158;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479158;logic_name=rfam_12.2_gene
+10	83286273	83286373	gene:ENSRNA049479153	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479153;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479153;logic_name=rfam_12.2_gene
+10	83286545	83286645	gene:ENSRNA049479185	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479185;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479185;logic_name=rfam_12.2_gene
+10	83286820	83286920	gene:ENSRNA049479169	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479169;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479169;logic_name=rfam_12.2_gene
+10	83287082	83287182	gene:ENSRNA049479136	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479136;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479136;logic_name=rfam_12.2_gene
+10	83287363	83287463	gene:ENSRNA049479178	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479178;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479178;logic_name=rfam_12.2_gene
+10	83287919	83288018	gene:ENSRNA049479219	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049479219;Name=snoZ118;biotype=snoRNA;description=Small nucleolar RNA Z118/Z121/Z120;gene_id=ENSRNA049479219;logic_name=rfam_12.2_gene
+10	83684582	83684655	gene:Zm00001d024688	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024688;biotype=tRNA;gene_id=Zm00001d024688;logic_name=maker_trnascan
+10	83684829	83684902	gene:Zm00001d024689	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024689;biotype=tRNA;gene_id=Zm00001d024689;logic_name=maker_trnascan
+10	83684958	83685031	gene:Zm00001d024690	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024690;biotype=tRNA;gene_id=Zm00001d024690;logic_name=maker_trnascan
+10	83720703	83720775	gene:ENSRNA049451137	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451137;Name=tRNA-Asn;biotype=tRNA;description=tRNA-Asn for anticodon GUU;gene_id=ENSRNA049451137;logic_name=trnascan_gene
+10	83720703	83720775	gene:Zm00001d024692	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024692;biotype=tRNA;gene_id=Zm00001d024692;logic_name=maker_trnascan
+10	85134070	85134646	gene:Zm00001d023132	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023132;biotype=lincRNA;gene_id=Zm00001d023132;logic_name=lncrna_gene
+10	85277934	85279115	gene:Zm00001d023133	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023133;biotype=lincRNA;gene_id=Zm00001d023133;logic_name=lncrna_gene
+10	85277934	85279208	gene:Zm00001d023134	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023134;biotype=lincRNA;gene_id=Zm00001d023134;logic_name=lncrna_gene
+10	85868372	85868731	gene:Zm00001d023135	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023135;biotype=lincRNA;gene_id=Zm00001d023135;logic_name=lncrna_gene
+10	87959346	87973896	gene:Zm00001d023136	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023136;biotype=lincRNA;gene_id=Zm00001d023136;logic_name=lncrna_gene
+10	88500018	88502710	gene:Zm00001d023137	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023137;biotype=lincRNA;gene_id=Zm00001d023137;logic_name=lncrna_gene
+10	89270287	89271539	gene:Zm00001d023138	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023138;biotype=lincRNA;gene_id=Zm00001d023138;logic_name=lncrna_gene
+10	89571045	89571119	gene:Zm00001d024820	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024820;biotype=tRNA;gene_id=Zm00001d024820;logic_name=maker_trnascan
+10	91003187	91003261	gene:Zm00001d024859	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024859;biotype=tRNA;gene_id=Zm00001d024859;logic_name=maker_trnascan
+10	91178747	91179280	gene:Zm00001d023139	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023139;biotype=lincRNA;gene_id=Zm00001d023139;logic_name=lncrna_gene
+10	91497052	91497126	gene:ENSRNA049451159	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451159;Name=tRNA-Val;biotype=tRNA;description=tRNA-Val for anticodon AAC;gene_id=ENSRNA049451159;logic_name=trnascan_gene
+10	91497052	91497126	gene:Zm00001d024870	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024870;biotype=tRNA;gene_id=Zm00001d024870;logic_name=maker_trnascan
+10	92113076	92113149	gene:Zm00001d024881	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024881;biotype=tRNA;gene_id=Zm00001d024881;logic_name=maker_trnascan
+10	92114131	92114204	gene:Zm00001d024882	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024882;biotype=tRNA;gene_id=Zm00001d024882;logic_name=maker_trnascan
+10	93452472	93452749	gene:Zm00001d023140	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023140;biotype=lincRNA;gene_id=Zm00001d023140;logic_name=lncrna_gene
+10	93634898	93648288	gene:Zm00001d023141	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023141;biotype=lincRNA;gene_id=Zm00001d023141;logic_name=lncrna_gene
+10	93635504	93648241	gene:Zm00001d023142	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023142;biotype=lincRNA;gene_id=Zm00001d023142;logic_name=lncrna_gene
+10	93656215	93656294	gene:Zm00001d024899	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d024899;biotype=tRNA;gene_id=Zm00001d024899;logic_name=maker_trnascan
+10	94783275	94783754	gene:Zm00001d023143	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023143;biotype=lincRNA;gene_id=Zm00001d023143;logic_name=lncrna_gene
+10	95462146	95462218	gene:Zm00001d024929	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d024929;biotype=tRNA;gene_id=Zm00001d024929;logic_name=maker_trnascan
+10	95795649	95796397	gene:Zm00001d023144	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023144;biotype=lincRNA;gene_id=Zm00001d023144;logic_name=lncrna_gene
+10	97217143	97218735	gene:Zm00001d023145	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023145;biotype=lincRNA;gene_id=Zm00001d023145;logic_name=lncrna_gene
+10	97273996	97275045	gene:Zm00001d023146	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023146;biotype=lincRNA;gene_id=Zm00001d023146;logic_name=lncrna_gene
+10	97674596	97675594	gene:Zm00001d023147	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023147;biotype=lincRNA;gene_id=Zm00001d023147;logic_name=lncrna_gene
+10	99060385	99060643	gene:Zm00001d023148	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023148;biotype=lincRNA;gene_id=Zm00001d023148;logic_name=lncrna_gene
+10	100533598	100533671	gene:Zm00001d025029	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025029;biotype=tRNA;gene_id=Zm00001d025029;logic_name=maker_trnascan
+10	100539937	100540011	gene:Zm00001d025030	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025030;biotype=tRNA;gene_id=Zm00001d025030;logic_name=maker_trnascan
+10	101423232	101423304	gene:Zm00001d025046	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025046;biotype=tRNA;gene_id=Zm00001d025046;logic_name=maker_trnascan
+10	101582243	101582477	gene:Zm00001d023149	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023149;biotype=lincRNA;gene_id=Zm00001d023149;logic_name=lncrna_gene
+10	102429393	102429466	gene:Zm00001d025068	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025068;biotype=tRNA;gene_id=Zm00001d025068;logic_name=maker_trnascan
+10	102430362	102430435	gene:Zm00001d025069	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025069;biotype=tRNA;gene_id=Zm00001d025069;logic_name=maker_trnascan
+10	102851110	102851750	gene:Zm00001d023150	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023150;biotype=lincRNA;gene_id=Zm00001d023150;logic_name=lncrna_gene
+10	104815031	104815106	gene:Zm00001d025109	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025109;biotype=tRNA;gene_id=Zm00001d025109;logic_name=maker_trnascan
+10	104816347	104816420	gene:Zm00001d025110	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025110;biotype=tRNA;gene_id=Zm00001d025110;logic_name=maker_trnascan
+10	105049610	105049704	gene:ENSRNA049473286	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473286;Name=snoZ103;biotype=snoRNA;description=Small nucleolar RNA Z103;gene_id=ENSRNA049473286;logic_name=rfam_12.2_gene
+10	105049799	105049895	gene:ENSRNA049473303	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473303;Name=snoZ103;biotype=snoRNA;description=Small nucleolar RNA Z103;gene_id=ENSRNA049473303;logic_name=rfam_12.2_gene
+10	105050527	105050622	gene:ENSRNA049473290	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473290;Name=snoZ103;biotype=snoRNA;description=Small nucleolar RNA Z103;gene_id=ENSRNA049473290;logic_name=rfam_12.2_gene
+10	105050718	105050814	gene:ENSRNA049473297	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473297;Name=snoZ103;biotype=snoRNA;description=Small nucleolar RNA Z103;gene_id=ENSRNA049473297;logic_name=rfam_12.2_gene
+10	105208352	105208423	gene:Zm00001d025119	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025119;biotype=tRNA;gene_id=Zm00001d025119;logic_name=maker_trnascan
+10	105503847	105518051	gene:Zm00001d023151	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023151;biotype=lincRNA;gene_id=Zm00001d023151;logic_name=lncrna_gene
+10	105517056	105518051	gene:Zm00001d023152	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023152;biotype=lincRNA;gene_id=Zm00001d023152;logic_name=lncrna_gene
+10	105637947	105638019	gene:Zm00001d025127	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025127;biotype=tRNA;gene_id=Zm00001d025127;logic_name=maker_trnascan
+10	106271623	106271696	gene:Zm00001d025137	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025137;biotype=tRNA;gene_id=Zm00001d025137;logic_name=maker_trnascan
+10	106272504	106272577	gene:Zm00001d025138	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025138;biotype=tRNA;gene_id=Zm00001d025138;logic_name=maker_trnascan
+10	107014176	107014974	gene:Zm00001d023153	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023153;biotype=lincRNA;gene_id=Zm00001d023153;logic_name=lncrna_gene
+10	107282600	107282673	gene:Zm00001d025168	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025168;biotype=tRNA;gene_id=Zm00001d025168;logic_name=maker_trnascan
+10	107283672	107283745	gene:Zm00001d025169	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025169;biotype=tRNA;gene_id=Zm00001d025169;logic_name=maker_trnascan
+10	107307365	107307668	gene:ENSRNA049473338	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473338;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473338;logic_name=rfam_12.2_gene
+10	107308882	107309185	gene:ENSRNA049473372	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473372;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473372;logic_name=rfam_12.2_gene
+10	107310806	107311584	gene:Zm00001d023154	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023154;biotype=lincRNA;gene_id=Zm00001d023154;logic_name=lncrna_gene
+10	107315734	107316038	gene:ENSRNA049473307	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473307;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473307;logic_name=rfam_12.2_gene
+10	107323082	107323358	gene:ENSRNA049473271	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473271;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473271;logic_name=rfam_12.2_gene
+10	107391524	107391828	gene:ENSRNA049473351	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473351;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473351;logic_name=rfam_12.2_gene
+10	107400299	107400602	gene:ENSRNA049473346	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473346;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473346;logic_name=rfam_12.2_gene
+10	107402166	107402470	gene:ENSRNA049473380	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473380;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473380;logic_name=rfam_12.2_gene
+10	107410898	107411202	gene:ENSRNA049473389	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473389;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473389;logic_name=rfam_12.2_gene
+10	107412639	107412943	gene:ENSRNA049473363	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473363;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473363;logic_name=rfam_12.2_gene
+10	107414503	107414807	gene:ENSRNA049473322	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473322;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473322;logic_name=rfam_12.2_gene
+10	107416358	107416662	gene:ENSRNA049473334	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473334;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473334;logic_name=rfam_12.2_gene
+10	107428178	107428482	gene:ENSRNA049473385	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473385;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473385;logic_name=rfam_12.2_gene
+10	107429920	107430224	gene:ENSRNA049473354	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473354;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473354;logic_name=rfam_12.2_gene
+10	107431784	107432088	gene:ENSRNA049473315	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473315;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473315;logic_name=rfam_12.2_gene
+10	107433638	107433942	gene:ENSRNA049473328	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049473328;Name=Plant_SRP;biotype=SRP_RNA;description=Plant signal recognition particle RNA;gene_id=ENSRNA049473328;logic_name=rfam_12.2_gene
+10	107624583	107624655	gene:Zm00001d025172	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025172;biotype=tRNA;gene_id=Zm00001d025172;logic_name=maker_trnascan
+10	108123211	108123792	gene:Zm00001d023155	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023155;biotype=lincRNA;gene_id=Zm00001d023155;logic_name=lncrna_gene
+10	109221698	109222755	gene:Zm00001d023156	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023156;biotype=lincRNA;gene_id=Zm00001d023156;logic_name=lncrna_gene
+10	110851701	110851773	gene:Zm00001d025245	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025245;biotype=tRNA;gene_id=Zm00001d025245;logic_name=maker_trnascan
+10	111555993	111556091	gene:ENSRNA049474065	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474065;Name=snoZ43;biotype=snoRNA;description=Small nucleolar RNA Z43;gene_id=ENSRNA049474065;logic_name=rfam_12.2_gene
+10	111794649	111794961	gene:Zm00001d023157	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023157;biotype=lincRNA;gene_id=Zm00001d023157;logic_name=lncrna_gene
+10	112577061	112577421	gene:Zm00001d023158	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023158;biotype=lincRNA;gene_id=Zm00001d023158;logic_name=lncrna_gene
+10	112670619	112671190	gene:Zm00001d023159	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023159;biotype=lincRNA;gene_id=Zm00001d023159;logic_name=lncrna_gene
+10	112932403	112932475	gene:Zm00001d025293	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025293;biotype=tRNA;gene_id=Zm00001d025293;logic_name=maker_trnascan
+10	114216701	114216923	gene:ENSRNA049474083	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474083;Name=U2;biotype=snRNA;description=U2 spliceosomal RNA;gene_id=ENSRNA049474083;logic_name=rfam_12.2_gene
+10	114660393	114660841	gene:Zm00001d023160	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023160;biotype=lincRNA;gene_id=Zm00001d023160;logic_name=lncrna_gene
+10	116717794	116717956	gene:ENSRNA049474094	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474094;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474094;logic_name=rfam_12.2_gene
+10	116909695	116909856	gene:ENSRNA049474089	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474089;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474089;logic_name=rfam_12.2_gene
+10	117193167	117193554	gene:Zm00001d023161	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023161;biotype=lincRNA;gene_id=Zm00001d023161;logic_name=lncrna_gene
+10	117401263	117402056	gene:Zm00001d023162	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023162;biotype=lincRNA;gene_id=Zm00001d023162;logic_name=lncrna_gene
+10	117540499	117541039	gene:Zm00001d023163	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023163;biotype=lincRNA;gene_id=Zm00001d023163;logic_name=lncrna_gene
+10	117612882	117613521	gene:Zm00001d023164	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023164;biotype=lincRNA;gene_id=Zm00001d023164;logic_name=lncrna_gene
+10	118145612	118145688	gene:Zm00001d025422	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025422;biotype=tRNA;gene_id=Zm00001d025422;logic_name=maker_trnascan
+10	118293187	118293437	gene:Zm00001d023165	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023165;biotype=lincRNA;gene_id=Zm00001d023165;logic_name=lncrna_gene
+10	118293766	118293838	gene:Zm00001d025424	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025424;biotype=tRNA;gene_id=Zm00001d025424;logic_name=maker_trnascan
+10	118611865	118611937	gene:Zm00001d025432	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025432;biotype=tRNA;gene_id=Zm00001d025432;logic_name=maker_trnascan
+10	118740279	118740399	gene:zma-MIR2118f	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR2118f;biotype=miRNA;gene_id=zma-MIR2118f;logic_name=mirna
+10	118740500	118740643	gene:zma-MIR2118e	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR2118e;biotype=miRNA;gene_id=zma-MIR2118e;logic_name=mirna
+10	118790594	118790712	gene:zma-MIR2118a	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR2118a;biotype=miRNA;gene_id=zma-MIR2118a;logic_name=mirna
+10	118813613	118813746	gene:zma-MIR2118c	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR2118c;biotype=miRNA;gene_id=zma-MIR2118c;logic_name=mirna
+10	119891315	119891389	gene:Zm00001d025471	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025471;biotype=tRNA;gene_id=Zm00001d025471;logic_name=maker_trnascan
+10	120316977	120317058	gene:Zm00001d025486	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025486;biotype=tRNA;gene_id=Zm00001d025486;logic_name=maker_trnascan
+10	120355247	120355328	gene:Zm00001d025488	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025488;biotype=tRNA;gene_id=Zm00001d025488;logic_name=maker_trnascan
+10	122850721	122850793	gene:ENSRNA049451230	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451230;Name=tRNA-Trp;biotype=tRNA;description=tRNA-Trp for anticodon CCA;gene_id=ENSRNA049451230;logic_name=trnascan_gene
+10	122850721	122850793	gene:Zm00001d025578	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025578;biotype=tRNA;gene_id=Zm00001d025578;logic_name=maker_trnascan
+10	124145055	124145622	gene:Zm00001d023166	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023166;biotype=lincRNA;gene_id=Zm00001d023166;logic_name=lncrna_gene
+10	124629770	124629843	gene:Zm00001d025630	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025630;biotype=tRNA;gene_id=Zm00001d025630;logic_name=maker_trnascan
+10	124630350	124630423	gene:Zm00001d025631	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025631;biotype=tRNA;gene_id=Zm00001d025631;logic_name=maker_trnascan
+10	124653436	124653509	gene:Zm00001d025634	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025634;biotype=tRNA;gene_id=Zm00001d025634;logic_name=maker_trnascan
+10	124654018	124654091	gene:Zm00001d025635	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025635;biotype=tRNA;gene_id=Zm00001d025635;logic_name=maker_trnascan
+10	125276910	125277343	gene:Zm00001d023167	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023167;biotype=lincRNA;gene_id=Zm00001d023167;logic_name=lncrna_gene
+10	125277617	125277869	gene:Zm00001d023168	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023168;biotype=lincRNA;gene_id=Zm00001d023168;logic_name=lncrna_gene
+10	126198318	126198473	gene:ENSRNA049463218	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049463218;Name=MIR444;biotype=pre_miRNA;description=microRNA MIR444;gene_id=ENSRNA049463218;logic_name=rfam_12.2_gene
+10	126429109	126429802	gene:Zm00001d023169	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023169;biotype=lincRNA;gene_id=Zm00001d023169;logic_name=lncrna_gene
+10	127128799	127128917	gene:ENSRNA049463233	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049463233;Name=U5;biotype=snRNA;description=U5 spliceosomal RNA;gene_id=ENSRNA049463233;logic_name=rfam_12.2_gene
+10	129638148	129641774	gene:Zm00001d023170	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023170;biotype=lincRNA;gene_id=Zm00001d023170;logic_name=lncrna_gene
+10	129642869	129642984	gene:zma-MIR156h	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR156h;biotype=miRNA;gene_id=zma-MIR156h;logic_name=mirna
+10	129642886	129642966	gene:ENSRNA049463188	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049463188;Name=mir-156;biotype=pre_miRNA;description=mir-156 microRNA precursor;gene_id=ENSRNA049463188;logic_name=rfam_12.2_gene
+10	129704193	129704267	gene:Zm00001d025790	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025790;biotype=tRNA;gene_id=Zm00001d025790;logic_name=maker_trnascan
+10	129705164	129705241	gene:ENSRNA049463137	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049463137;Name=Intron_gpII;biotype=sense_intronic;description=Group II catalytic intron;gene_id=ENSRNA049463137;logic_name=rfam_12.2_gene
+10	129706291	129706365	gene:Zm00001d025791	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025791;biotype=tRNA;gene_id=Zm00001d025791;logic_name=maker_trnascan
+10	130018221	130018293	gene:Zm00001d025802	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025802;biotype=tRNA;gene_id=Zm00001d025802;logic_name=maker_trnascan
+10	130669945	130670109	gene:Zm00001d023171	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023171;biotype=lincRNA;gene_id=Zm00001d023171;logic_name=lncrna_gene
+10	130719033	130719129	gene:ENSRNA049474585	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474585;Name=SNORD25;biotype=snoRNA;description=Small nucleolar RNA SNORD25;gene_id=ENSRNA049474585;logic_name=rfam_12.2_gene
+10	131304014	131304088	gene:ENSRNA049451266	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451266;Name=tRNA-Ile;biotype=tRNA;description=tRNA-Ile for anticodon AAU;gene_id=ENSRNA049451266;logic_name=trnascan_gene
+10	131304014	131304088	gene:Zm00001d025832	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025832;biotype=tRNA;gene_id=Zm00001d025832;logic_name=maker_trnascan
+10	131919024	131919626	gene:Zm00001d023172	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023172;biotype=lincRNA;gene_id=Zm00001d023172;logic_name=lncrna_gene
+10	132451642	132452264	gene:Zm00001d023173	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023173;biotype=lincRNA;gene_id=Zm00001d023173;logic_name=lncrna_gene
+10	133144588	133148237	gene:Zm00001d023174	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023174;biotype=lincRNA;gene_id=Zm00001d023174;logic_name=lncrna_gene
+10	133144693	133148255	gene:Zm00001d023175	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023175;biotype=lincRNA;gene_id=Zm00001d023175;logic_name=lncrna_gene
+10	133146959	133148284	gene:Zm00001d023176	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023176;biotype=lincRNA;gene_id=Zm00001d023176;logic_name=lncrna_gene
+10	133226510	133226582	gene:Zm00001d025895	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025895;biotype=tRNA;gene_id=Zm00001d025895;logic_name=maker_trnascan
+10	133247672	133247745	gene:Zm00001d025897	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025897;biotype=tRNA;gene_id=Zm00001d025897;logic_name=maker_trnascan
+10	133410371	133410444	gene:ENSRNA049451399	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451399;Name=tRNA-Ala;biotype=tRNA;description=tRNA-Ala for anticodon UGC;gene_id=ENSRNA049451399;logic_name=trnascan_gene
+10	133410371	133410444	gene:Zm00001d025902	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025902;biotype=tRNA;gene_id=Zm00001d025902;logic_name=maker_trnascan
+10	133738328	133739379	gene:Zm00001d023177	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023177;biotype=lincRNA;gene_id=Zm00001d023177;logic_name=lncrna_gene
+10	134172140	134172380	gene:Zm00001d023178	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023178;biotype=lincRNA;gene_id=Zm00001d023178;logic_name=lncrna_gene
+10	134358550	134358622	gene:Zm00001d025945	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025945;biotype=tRNA;gene_id=Zm00001d025945;logic_name=maker_trnascan
+10	134648349	134648421	gene:ENSRNA049451411	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451411;Name=tRNA-Pro;biotype=tRNA;description=tRNA-Pro for anticodon CGG;gene_id=ENSRNA049451411;logic_name=trnascan_gene
+10	134648349	134648421	gene:Zm00001d025954	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d025954;biotype=tRNA;gene_id=Zm00001d025954;logic_name=maker_trnascan
+10	134659681	134660544	gene:Zm00001d023179	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023179;biotype=lincRNA;gene_id=Zm00001d023179;logic_name=lncrna_gene
+10	134659705	134660441	gene:Zm00001d023180	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023180;biotype=lincRNA;gene_id=Zm00001d023180;logic_name=lncrna_gene
+10	134659740	134660506	gene:Zm00001d023181	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023181;biotype=lincRNA;gene_id=Zm00001d023181;logic_name=lncrna_gene
+10	134813487	134813598	gene:ENSRNA049474541	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474541;Name=U2;biotype=snRNA;description=U2 spliceosomal RNA;gene_id=ENSRNA049474541;logic_name=rfam_12.2_gene
+10	134962588	134962749	gene:ENSRNA049474599	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474599;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474599;logic_name=rfam_12.2_gene
+10	134998897	134998985	gene:Zm00001d025969	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025969;biotype=tRNA;gene_id=Zm00001d025969;logic_name=maker_trnascan
+10	135014549	135014624	gene:Zm00001d025972	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025972;biotype=tRNA;gene_id=Zm00001d025972;logic_name=maker_trnascan
+10	135300997	135302010	gene:Zm00001d023182	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023182;biotype=lincRNA;gene_id=Zm00001d023182;logic_name=lncrna_gene
+10	135672592	135672665	gene:Zm00001d025995	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d025995;biotype=tRNA;gene_id=Zm00001d025995;logic_name=maker_trnascan
+10	135763634	135763906	gene:Zm00001d023183	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023183;biotype=lincRNA;gene_id=Zm00001d023183;logic_name=lncrna_gene
+10	135862215	135862288	gene:Zm00001d026007	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026007;biotype=tRNA;gene_id=Zm00001d026007;logic_name=maker_trnascan
+10	136370227	136370729	gene:Zm00001d023184	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023184;biotype=lincRNA;gene_id=Zm00001d023184;logic_name=lncrna_gene
+10	136487418	136487646	gene:Zm00001d023185	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023185;biotype=lincRNA;gene_id=Zm00001d023185;logic_name=lncrna_gene
+10	137264228	137264332	gene:ENSRNA049474593	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474593;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474593;logic_name=rfam_12.2_gene
+10	137272680	137272776	gene:ENSRNA049474580	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474580;Name=snoR64;biotype=snoRNA;description=Small nucleolar RNA R64/Z200 family;gene_id=ENSRNA049474580;logic_name=rfam_12.2_gene
+10	137273008	137273081	gene:ENSRNA049474524	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474524;Name=snoZ199;biotype=snoRNA;description=Small nucleolar RNA Z199;gene_id=ENSRNA049474524;logic_name=rfam_12.2_gene
+10	137921485	137922009	gene:Zm00001d023186	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023186;biotype=lincRNA;gene_id=Zm00001d023186;logic_name=lncrna_gene
+10	137978863	137978936	gene:Zm00001d026082	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026082;biotype=tRNA;gene_id=Zm00001d026082;logic_name=maker_trnascan
+10	138083435	138085314	gene:Zm00001d023187	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023187;biotype=lincRNA;gene_id=Zm00001d023187;logic_name=lncrna_gene
+10	138088360	138088433	gene:Zm00001d026085	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026085;biotype=tRNA;gene_id=Zm00001d026085;logic_name=maker_trnascan
+10	138415297	138415600	gene:Zm00001d023188	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023188;biotype=lincRNA;gene_id=Zm00001d023188;logic_name=lncrna_gene
+10	138536837	138536941	gene:zma-MIR171k	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR171k;biotype=miRNA;gene_id=zma-MIR171k;logic_name=mirna
+10	138536841	138536937	gene:ENSRNA049474589	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474589;Name=MIR171_2;biotype=pre_miRNA;description=microRNA MIR171_2;gene_id=ENSRNA049474589;logic_name=rfam_12.2_gene
+10	138970186	138970258	gene:Zm00001d026123	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026123;biotype=tRNA;gene_id=Zm00001d026123;logic_name=maker_trnascan
+10	140763174	140763335	gene:ENSRNA049474823	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474823;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474823;logic_name=rfam_12.2_gene
+10	140791460	140791621	gene:ENSRNA049474838	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474838;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474838;logic_name=rfam_12.2_gene
+10	140792687	140792840	gene:ENSRNA049474799	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474799;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474799;logic_name=rfam_12.2_gene
+10	140816374	140816527	gene:ENSRNA049474807	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474807;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474807;logic_name=rfam_12.2_gene
+10	140818783	140818952	gene:ENSRNA049474679	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474679;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474679;logic_name=rfam_12.2_gene
+10	140820757	140820917	gene:ENSRNA049474812	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474812;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474812;logic_name=rfam_12.2_gene
+10	140822410	140822571	gene:ENSRNA049474847	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474847;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474847;logic_name=rfam_12.2_gene
+10	140824050	140824211	gene:ENSRNA049474894	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474894;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474894;logic_name=rfam_12.2_gene
+10	140830118	140830238	gene:ENSRNA049474668	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474668;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474668;logic_name=rfam_12.2_gene
+10	140836697	140836859	gene:ENSRNA049474860	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474860;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474860;logic_name=rfam_12.2_gene
+10	140865563	140865717	gene:ENSRNA049474685	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474685;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474685;logic_name=rfam_12.2_gene
+10	140951544	140951703	gene:ENSRNA049474872	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474872;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474872;logic_name=rfam_12.2_gene
+10	140953526	140953685	gene:ENSRNA049474832	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474832;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474832;logic_name=rfam_12.2_gene
+10	140955514	140955673	gene:ENSRNA049474852	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474852;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474852;logic_name=rfam_12.2_gene
+10	140957503	140957662	gene:ENSRNA049474866	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474866;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474866;logic_name=rfam_12.2_gene
+10	140959500	140959659	gene:ENSRNA049474882	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474882;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474882;logic_name=rfam_12.2_gene
+10	140976635	140976797	gene:ENSRNA049474877	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474877;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474877;logic_name=rfam_12.2_gene
+10	140991967	140992128	gene:ENSRNA049474818	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474818;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474818;logic_name=rfam_12.2_gene
+10	140994457	140994618	gene:ENSRNA049474843	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474843;Name=U1;biotype=snRNA;description=U1 spliceosomal RNA;gene_id=ENSRNA049474843;logic_name=rfam_12.2_gene
+10	141537097	141537171	gene:ENSRNA049474675	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474675;Name=Intron_gpII;biotype=sense_intronic;description=Group II catalytic intron;gene_id=ENSRNA049474675;logic_name=rfam_12.2_gene
+10	141537869	141537946	gene:ENSRNA049474661	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474661;Name=Intron_gpII;biotype=sense_intronic;description=Group II catalytic intron;gene_id=ENSRNA049474661;logic_name=rfam_12.2_gene
+10	142262615	142262877	gene:ENSRNA049474903	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474903;Name=SSU_rRNA_eukarya;biotype=rRNA;description=Eukaryotic small subunit ribosomal RNA;gene_id=ENSRNA049474903;logic_name=rfam_12.2_gene
+10	142356306	142356380	gene:Zm00001d026264	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026264;biotype=tRNA;gene_id=Zm00001d026264;logic_name=maker_trnascan
+10	142389865	142390471	gene:Zm00001d023189	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023189;biotype=lincRNA;gene_id=Zm00001d023189;logic_name=lncrna_gene
+10	142705811	142705884	gene:Zm00001d026275	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026275;biotype=tRNA;gene_id=Zm00001d026275;logic_name=maker_trnascan
+10	142706788	142706861	gene:Zm00001d026276	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026276;biotype=tRNA;gene_id=Zm00001d026276;logic_name=maker_trnascan
+10	143162796	143163018	gene:ENSRNA049474917	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474917;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474917;logic_name=rfam_12.2_gene
+10	143189247	143189338	gene:ENSRNA049474778	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474778;Name=snoR1;biotype=snoRNA;description=Small nucleolar RNA snoR1;gene_id=ENSRNA049474778;logic_name=rfam_12.2_gene
+10	143213840	143213958	gene:ENSRNA049474772	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474772;Name=U5;biotype=snRNA;description=U5 spliceosomal RNA;gene_id=ENSRNA049474772;logic_name=rfam_12.2_gene
+10	143390087	143390161	gene:Zm00001d026314	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026314;biotype=tRNA;gene_id=Zm00001d026314;logic_name=maker_trnascan
+10	143564920	143564994	gene:ENSRNA049451307	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451307;Name=tRNA-Val;biotype=tRNA;description=tRNA-Val for anticodon AAC;gene_id=ENSRNA049451307;logic_name=trnascan_gene
+10	143564920	143564994	gene:Zm00001d026320	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026320;biotype=tRNA;gene_id=Zm00001d026320;logic_name=maker_trnascan
+10	143624700	143624772	gene:Zm00001d026330	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026330;biotype=tRNA;gene_id=Zm00001d026330;logic_name=maker_trnascan
+10	143628763	143628985	gene:ENSRNA049474924	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474924;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474924;logic_name=rfam_12.2_gene
+10	143630391	143630528	gene:ENSRNA049474898	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474898;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474898;logic_name=rfam_12.2_gene
+10	143745127	143745228	gene:ENSRNA049474750	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474750;Name=MIR171_1;biotype=pre_miRNA;description=microRNA MIR171_1;gene_id=ENSRNA049474750;logic_name=rfam_12.2_gene
+10	143808213	143808285	gene:Zm00001d026338	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026338;biotype=tRNA;gene_id=Zm00001d026338;logic_name=maker_trnascan
+10	144120754	144121053	gene:Zm00001d023190	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023190;biotype=lincRNA;gene_id=Zm00001d023190;logic_name=lncrna_gene
+10	144510621	144510694	gene:Zm00001d026372	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026372;biotype=tRNA;gene_id=Zm00001d026372;logic_name=maker_trnascan
+10	144511299	144511372	gene:Zm00001d026373	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026373;biotype=tRNA;gene_id=Zm00001d026373;logic_name=maker_trnascan
+10	144720111	144720358	gene:ENSRNA049474888	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474888;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474888;logic_name=rfam_12.2_gene
+10	144721353	144721573	gene:ENSRNA049474911	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474911;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474911;logic_name=rfam_12.2_gene
+10	144728317	144728543	gene:ENSRNA049474907	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474907;Name=Plant_U3;biotype=snoRNA;description=Plant small nucleolar RNA U3;gene_id=ENSRNA049474907;logic_name=rfam_12.2_gene
+10	144992922	144993035	gene:ENSRNA049474645	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474645;Name=snoZ278;biotype=snoRNA;description=Small nucleolar RNA Z278;gene_id=ENSRNA049474645;logic_name=rfam_12.2_gene
+10	145140278	145141125	gene:Zm00001d023191	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023191;biotype=lincRNA;gene_id=Zm00001d023191;logic_name=lncrna_gene
+10	145259152	145259224	gene:ENSRNA049451328	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451328;Name=tRNA-Trp;biotype=tRNA;description=tRNA-Trp for anticodon CCA;gene_id=ENSRNA049451328;logic_name=trnascan_gene
+10	145259152	145259224	gene:Zm00001d026400	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026400;biotype=tRNA;gene_id=Zm00001d026400;logic_name=maker_trnascan
+10	145308527	145308599	gene:Zm00001d026403	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026403;biotype=tRNA;gene_id=Zm00001d026403;logic_name=maker_trnascan
+10	145465752	145465840	gene:ENSRNA049474652	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474652;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049474652;logic_name=rfam_12.2_gene
+10	145465899	145465985	gene:ENSRNA049474767	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474767;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049474767;logic_name=rfam_12.2_gene
+10	145465910	145465976	gene:zma-MIR395n	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR395n;biotype=miRNA;gene_id=zma-MIR395n;logic_name=mirna
+10	145466072	145466158	gene:ENSRNA049474787	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474787;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049474787;logic_name=rfam_12.2_gene
+10	145466083	145466309	gene:zma-MIR395o	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR395o;biotype=miRNA;gene_id=zma-MIR395o;logic_name=mirna
+10	145466228	145466318	gene:ENSRNA049474736	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474736;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049474736;logic_name=rfam_12.2_gene
+10	145466390	145466499	gene:ENSRNA049474794	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474794;Name=mir-395;biotype=pre_miRNA;description=mir-395 microRNA precursor family;gene_id=ENSRNA049474794;logic_name=rfam_12.2_gene
+10	145466401	145466490	gene:zma-MIR395p	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR395p;biotype=miRNA;gene_id=zma-MIR395p;logic_name=mirna
+10	145471010	145471685	gene:Zm00001d023192	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023192;biotype=lincRNA;gene_id=Zm00001d023192;logic_name=lncrna_gene
+10	145718911	145718985	gene:ENSRNA049451338	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451338;Name=tRNA-Glu;biotype=tRNA;description=tRNA-Glu for anticodon UUC;gene_id=ENSRNA049451338;logic_name=trnascan_gene
+10	145718911	145718985	gene:Zm00001d026430	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026430;biotype=tRNA;gene_id=Zm00001d026430;logic_name=maker_trnascan
+10	145878717	145879193	gene:Zm00001d023193	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023193;biotype=lincRNA;gene_id=Zm00001d023193;logic_name=lncrna_gene
+10	145955184	145955256	gene:ENSRNA049451374	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451374;Name=tRNA-Asp;biotype=tRNA;description=tRNA-Asp for anticodon GUC;gene_id=ENSRNA049451374;logic_name=trnascan_gene
+10	145955184	145955256	gene:Zm00001d026443	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026443;biotype=tRNA;gene_id=Zm00001d026443;logic_name=maker_trnascan
+10	146115803	146116113	gene:Zm00001d023194	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023194;biotype=lincRNA;gene_id=Zm00001d023194;logic_name=lncrna_gene
+10	146324059	146324804	gene:Zm00001d023195	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023195;biotype=lincRNA;gene_id=Zm00001d023195;logic_name=lncrna_gene
+10	146324079	146324875	gene:Zm00001d023196	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023196;biotype=lincRNA;gene_id=Zm00001d023196;logic_name=lncrna_gene
+10	146324085	146324799	gene:Zm00001d023197	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023197;biotype=lincRNA;gene_id=Zm00001d023197;logic_name=lncrna_gene
+10	146711992	146712108	gene:ENSRNA049474764	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474764;Name=U5;biotype=snRNA;description=U5 spliceosomal RNA;gene_id=ENSRNA049474764;logic_name=rfam_12.2_gene
+10	146950197	146950671	gene:Zm00001d023198	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023198;biotype=lincRNA;gene_id=Zm00001d023198;logic_name=lncrna_gene
+10	147159191	147159264	gene:Zm00001d026496	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026496;biotype=tRNA;gene_id=Zm00001d026496;logic_name=maker_trnascan
+10	147159861	147159934	gene:Zm00001d026497	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026497;biotype=tRNA;gene_id=Zm00001d026497;logic_name=maker_trnascan
+10	147254705	147264839	gene:Zm00001d023199	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023199;biotype=lincRNA;gene_id=Zm00001d023199;logic_name=lncrna_gene
+10	147855095	147855382	gene:Zm00001d023200	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023200;biotype=lincRNA;gene_id=Zm00001d023200;logic_name=lncrna_gene
+10	148022465	148025016	gene:Zm00001d023201	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023201;biotype=lincRNA;gene_id=Zm00001d023201;logic_name=lncrna_gene
+10	148126149	148126790	gene:Zm00001d023202	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023202;biotype=lincRNA;gene_id=Zm00001d023202;logic_name=lncrna_gene
+10	148130819	148130893	gene:Zm00001d026561	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026561;biotype=tRNA;gene_id=Zm00001d026561;logic_name=maker_trnascan
+10	148159380	148159453	gene:Zm00001d026564	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026564;biotype=tRNA;gene_id=Zm00001d026564;logic_name=maker_trnascan
+10	148160166	148160239	gene:Zm00001d026565	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026565;biotype=tRNA;gene_id=Zm00001d026565;logic_name=maker_trnascan
+10	148383548	148383621	gene:ENSRNA049451362	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451362;Name=tRNA-Ala;biotype=tRNA;description=tRNA-Ala for anticodon CGC;gene_id=ENSRNA049451362;logic_name=trnascan_gene
+10	148383548	148383621	gene:Zm00001d026583	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026583;biotype=tRNA;gene_id=Zm00001d026583;logic_name=maker_trnascan
+10	148413197	148414582	gene:Zm00001d023203	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023203;biotype=lincRNA;gene_id=Zm00001d023203;logic_name=lncrna_gene
+10	148727702	148727776	gene:zma-MIR396d	.	+	gramene	ncRNA_gene	.	ID=gene:zma-MIR396d;biotype=miRNA;gene_id=zma-MIR396d;logic_name=mirna
+10	148727703	148727947	gene:ENSRNA049474713	.	+	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474713;Name=MIR396;biotype=pre_miRNA;description=microRNA MIR396;gene_id=ENSRNA049474713;logic_name=rfam_12.2_gene
+10	148930155	148931188	gene:Zm00001d023204	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d023204;biotype=lincRNA;gene_id=Zm00001d023204;logic_name=lncrna_gene
+10	149091260	149092049	gene:Zm00001d023205	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023205;biotype=lincRNA;gene_id=Zm00001d023205;logic_name=lncrna_gene
+10	149189364	149189434	gene:Zm00001d026631	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026631;biotype=tRNA;gene_id=Zm00001d026631;logic_name=maker_trnascan
+10	149321747	149321818	gene:Zm00001d026644	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d026644;biotype=tRNA;gene_id=Zm00001d026644;logic_name=maker_trnascan
+10	149451803	149451915	gene:ENSRNA049474758	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049474758;Name=mir-393;biotype=pre_miRNA;description=mir-393 microRNA precursor family;gene_id=ENSRNA049474758;logic_name=rfam_12.2_gene
+10	149451809	149451906	gene:zma-MIR393c	.	-	gramene	ncRNA_gene	.	ID=gene:zma-MIR393c;biotype=miRNA;gene_id=zma-MIR393c;logic_name=mirna
+10	149606588	149606994	gene:Zm00001d023206	.	+	gramene	ncRNA_gene	.	ID=gene:Zm00001d023206;biotype=lincRNA;gene_id=Zm00001d023206;logic_name=lncrna_gene
+10	149715136	149715210	gene:Zm00001d026674	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026674;biotype=tRNA;gene_id=Zm00001d026674;logic_name=maker_trnascan
+10	149953362	149953434	gene:ENSRNA049451382	.	-	Ensembl_Plants	ncRNA_gene	.	ID=gene:ENSRNA049451382;Name=tRNA-Gln;biotype=tRNA;description=tRNA-Gln for anticodon UUG;gene_id=ENSRNA049451382;logic_name=trnascan_gene
+10	149953362	149953434	gene:Zm00001d026688	.	-	gramene	ncRNA_gene	.	ID=gene:Zm00001d026688;biotype=tRNA;gene_id=Zm00001d026688;logic_name=maker_trnascan
